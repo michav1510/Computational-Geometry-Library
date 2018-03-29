@@ -1,6 +1,5 @@
 #include <iostream>
-#include "/home/mike/c++/My_Programms_in_C++/Developing/Computational Geometry/Source/Convexhull2d.hpp"
-
+#include "../../Convexhull2d.hpp"
 
 void test_push()
 {
@@ -11,7 +10,7 @@ void test_push()
 	a.push(1);
 	Convexhull2d<int>::ch_iterator it = a.begin();
 	Convexhull2d<int>::ch_iterator flag = it;
-	std::cout << "---arxi listas---(a)"<< "\n";
+	std::cout << "---start of list---(a)"<< "\n";
 	std::cout << *it << " ";
 	while(++it != flag)
 	{
@@ -19,7 +18,7 @@ void test_push()
 	}
 	std::cout << "\n";
 	std::cout << "The size is " << a.size() << "\n";
-	std::cout << "---telos listas---(a)"<< "\n";
+	std::cout << "---end of list---(a)"<< "\n";
 	std::cout << "\n";
 	std::cout << "End-----Testing: void push(T a)----------" << "\n\n";
 }
@@ -46,7 +45,7 @@ void test_copy_constructor()
 	std::cout << "to see two same lists \n";
 	Convexhull2d<int>::ch_iterator it = a.begin();
 	Convexhull2d<int>::ch_iterator flag = it;
-	std::cout << "---arxi listas---(a)"<< "\n";
+	std::cout << "---start of list---(a)"<< "\n";
 	std::cout << *it << " ";
 	while(++it != flag)
 	{
@@ -54,11 +53,11 @@ void test_copy_constructor()
 	}
 	std::cout << "\n";
 	std::cout << "The size is " << a.size() << "\n";
-	std::cout << "---telos listas---(a)"<< "\n";
+	std::cout << "---end of list---(a)"<< "\n";
 	
 	it = b.begin();
 	flag = it;
-	std::cout << "---arxi listas---(b)"<< "\n";
+	std::cout << "---start of list---(b)"<< "\n";
 	std::cout << *it << " ";
 	while(++it != flag)
 	{
@@ -66,7 +65,7 @@ void test_copy_constructor()
 	}
 	std::cout << "\n";
 	std::cout << "The size is " << b.size() << "\n";
-	std::cout << "---telos listas---(b)"<< "\n";
+	std::cout << "---end of list---(b)"<< "\n";
 	
 	std::cout << "Now we will see if the addresses of the elements are equal\n";
 	it = a.begin();
@@ -100,7 +99,7 @@ void test_destructor()
 		a.push(2);
 		Convexhull2d<int>::ch_iterator it = a.begin();
 		Convexhull2d<int>::ch_iterator flag = it;
-		std::cout << "---arxi listas---(a)"<< "\n";
+		std::cout << "---start of list---(a)"<< "\n";
 		std::cout << *it << " ";
 		while(++it != flag)
 		{
@@ -108,7 +107,7 @@ void test_destructor()
 		}
 		std::cout << "\n";
 		std::cout << "The size is " << a.size() << "\n";
-		std::cout << "---telos listas---(a)"<< "\n";
+		std::cout << "---end of list---(a)"<< "\n";
 		
 	}
 	std::cout << "End-------Testing: Destructor---------------" << "\n\n"; 
@@ -127,7 +126,7 @@ void test_assign_operator()
 	std::cout << "destructor. Below you have to see two same lists \n";
 	Convexhull2d<int>::ch_iterator it = a.begin();
 	Convexhull2d<int>::ch_iterator flag = it;
-	std::cout << "---arxi listas---(a)"<< "\n";
+	std::cout << "---start of list---(a)"<< "\n";
 	std::cout << *it << " ";
 	while(++it != flag)
 	{
@@ -135,11 +134,11 @@ void test_assign_operator()
 	}
 	std::cout << "\n";
 	std::cout << "The size is " << a.size() << "\n";
-	std::cout << "---telos listas---(a)"<< "\n";
+	std::cout << "---end of list---(a)"<< "\n";
 	
 	it = b.begin();
 	flag = it;
-	std::cout << "---arxi listas---(b)"<< "\n";
+	std::cout << "---start of list---(b)"<< "\n";
 	std::cout << *it << " ";
 	while(++it != flag)
 	{
@@ -147,7 +146,7 @@ void test_assign_operator()
 	}
 	std::cout << "\n";
 	std::cout << "The size is " << b.size() << "\n";
-	std::cout << "---telos listas---(b)"<< "\n";
+	std::cout << "---end of list---(b)"<< "\n";
 	
 	std::cout << "Now we will see if the addresses of the elements are equal\n";
 	it = a.begin();
@@ -241,7 +240,7 @@ void test_iterators()
 	
 	Convexhull2d<int>::ch_iterator it = a.begin();
 	Convexhull2d<int>::ch_iterator flag = it;
-	std::cout << "---arxi listas---(a)"<< "\n";
+	std::cout << "---start of list---(a)"<< "\n";
 	std::cout << *it << " ";
 	while(++it != flag)
 	{
@@ -249,7 +248,7 @@ void test_iterators()
 	}
 	std::cout << "\n";
 	std::cout << "The size is " << a.size() << "\n";
-	std::cout << "---telos listas---(a)"<< "\n";
+	std::cout << "---end of list---(a)"<< "\n";
 	
 	std::cout << "head   : " << *(a.begin()) << "\n";
 	std::cout << "head+1 : " << *(a.begin()+1) << "\n";
@@ -300,6 +299,7 @@ void test_iterators()
 
 int main(int argc, char* argv[])
 {
+	std::cout << "You can uncomment everything you want to test from the main of this file \n"; 
 	
 //	test_push();
 	test_copy_constructor();
