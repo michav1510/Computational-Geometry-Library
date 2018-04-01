@@ -17,7 +17,7 @@ Point2d::Point2d(const double x, const double y)
 }
 
 
-static double Distanceof2dPoints(const Point2d p1, const Point2d p2)
+double Point2d::Distanceof2dPoints(const Point2d p1, const Point2d p2)
 {
 	return sqrt( pow(p1.GetX()-p2.GetX(),2) + pow(p1.GetY()-p2.GetY(),2) );
 }
