@@ -27,10 +27,56 @@ template <class T> class Convexhull2d{
 private:
 	Node* head;
 	unsigned int my_size;
+	double my_area;
+
+	double area_of_triangle(const Point2d& p1, const Point2d& p2, const Point2d& p3)
+	{
+		double A_x = p1.GetX();
+		double A_y = p1.GetY();
+		double B_x = p2.GetX();
+		double B_y = p2.GetY();
+		double C_x = p3.GetX();
+		double C_y = p3.GetY();
+		return std::abs( (A_x*(B_y-C_y) + B_x*(C_y-A_y) + C_x*(A_y-B_y))/2.0 );
+	}
+
+	
+	void notify_area ()
+	{
+		if (typeid(T) == typeid(Point2d))
+		{
+			if(my_size == 0 || my_size == 1 || my_size == 2){
+				my_area = 0;
+			}else 
+			{
+				//in order to find the area of the convex hull we will divide it 
+				//into triangles 
+				
+				// the below three iterators point to different nodes because
+				// there are at least three nodes in the list
+				Convexhull2d<Point2d>::ch_iterator it_clo_back = ch_iterator(head);
+				Convexhull2d<Point2d>::ch_iterator it_clo_front = it_clo_back + 1;
+				Convexhull2d<Point2d>::ch_iterator it_cou_clo = it_clo_back-1;
+				
+				// at the below variable we will keep the sum of the areas of 
+				//every triangle
+				double sum = 0;
+				sum += area_of_triangle(*it_clo_back,*it_clo_front,*it_cou_clo);
+				
+				while(++it_clo_front != it_cou_clo)
+				{
+					it_clo_back++;
+					sum += area_of_triangle(*it_clo_back,*it_clo_front,*it_cou_clo);
+				}	
+				my_area = sum;
+			}
+		}
+		
+	}
 public:
 	class ch_iterator{
 	private:
-		const Node* p;
+		const Node* p;		
 	public:
 		ch_iterator(){p=0;}
 		ch_iterator(Node* x) { p = x; }
@@ -79,6 +125,7 @@ public:
 	{
 		head = 0;
 		my_size = 0;
+		my_area = 0;
 	}
 	
 	
@@ -104,10 +151,12 @@ public:
 			head->back = curr;
 			
 			my_size = other_ch.my_size;
+			my_area = other_ch.my_area;
 		}else
 		{
 			head = 0;
 			my_size = 0;
+			my_area = 0;
 		}
 	}
 	
@@ -115,21 +164,24 @@ public:
 	//destructor
 	~Convexhull2d()
 	{
-		Node* curr;
-		Node* last;
-		curr = head;
-		last = head->back;
-		while( curr != last )
+		if (head != 0)
 		{
-			Node* tmp = curr;
-			curr = curr->front;
+			Node* curr;
+			Node* last;
+			curr = head;
+			last = head->back;
+			while( curr != last )
+			{
+				Node* tmp = curr;
+				curr = curr->front;
+				//you should uncomment the below if you are running tests
+				//std::cout << "deletion : " << tmp->data <<  ", with address : " << tmp << "\n";
+				delete tmp;
+			}
 			//you should uncomment the below if you are running tests
-			std::cout << "deletion : " << tmp->data <<  ", with address : " << tmp << "\n";
-			delete tmp;
+			//std::cout << "deletion : " << last->data << ", with address : " << last << "\n"; 
+			delete last;
 		}
-		//you should uncomment the below if you are running tests
-		std::cout << "deletion : " << last->data << ", with address : " << last << "\n"; 
-		delete last;
 	}
 	
 	//assignmnent operator
@@ -179,10 +231,12 @@ public:
 				head->back = curr;
 			
 				my_size = other_ch.my_size;
+				my_area = other_ch.my_area;
 			}else
 			{
 				head = 0;
 				my_size = 0;
+				my_area = 0;
 			}
 		}
 		return *this;
@@ -230,7 +284,11 @@ public:
 		return ch_iterator(head);
 	}
 
+	
 
+	
+	
+	
 	
 };
 
