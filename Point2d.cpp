@@ -2,6 +2,12 @@
 #include <cmath>
 
 
+Point2d::Point2d()
+{
+	myx = 0;
+	myy = 0;
+}
+
 
 Point2d::Point2d(const Point2d& otherPoint)
 {
@@ -85,7 +91,10 @@ Point2d Point2d::operator-(const Point2d& p1) const
 }
 
 
-
+std::ostream& operator<<(std::ostream& output, const Point2d& z)
+{
+	output << "( " << z.GetX() <<" , " << z.GetY() <<" ) ";
+}
 
 
 

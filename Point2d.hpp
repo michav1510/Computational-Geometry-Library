@@ -18,6 +18,7 @@ private:
 	double myx;
 	double myy;
 public:
+	Point2d();
 	Point2d(const Point2d& otherPoint);
 	Point2d(const double x, const double y);
 	
@@ -92,6 +93,9 @@ public:
 	 */
 	static double Distanceof2dPoints(const Point2d p1, const Point2d p2);
 	
+	
+	friend std::ostream& operator<<(std::ostream& output,const Point2d& z);
+
 };
 
 
