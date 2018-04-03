@@ -93,7 +93,11 @@ public:
 	 */
 	static double Distanceof2dPoints(const Point2d p1, const Point2d p2);
 	
-	
+	/**
+	 *  This is the classic operator that allow us to return a stream representation
+	 *  of the Point2d.
+	 *  @returns The stream that represents the Point2d and is of the form "( , ) "
+	 */
 	friend std::ostream& operator<<(std::ostream& output,const Point2d& z);
 
 };
