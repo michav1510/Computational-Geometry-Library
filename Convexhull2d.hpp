@@ -35,7 +35,10 @@ private:
 	 * calculate the area of a triangle.
 	 * Purpose :  It is an auxilliary function to be used in the function notify_area.
 	 * Maybe it should be in another class as a static class.
-	 * 
+	 * @param p1 A point of the triangle
+	 * @param p2 A point of the triangle
+	 * @param p3 A point of the triangle 
+	 * @returns The area of the triangle consistute of the 3 points
 	 */
 	double area_of_triangle(const Point2d& p1, const Point2d& p2, const Point2d& p3)
 	{
