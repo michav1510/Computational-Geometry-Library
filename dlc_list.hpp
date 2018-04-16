@@ -1,28 +1,20 @@
-/**
-    Purpose: To represent a convex hull of 2d points. It is a list with the vertices of a convex hull of 2d points. I 
-    implemented it using a double linked cyclic list in order to read the points in clockwise order and counterclockwise
-    order. The iterator I implemented is an iterator that keep the encapsulation and you can't change the list from the 
-    iterator. The push(T elem) will add the (elem) into the list and at the right position if it is not interior to the
-    current convex hull. So this class provide a unified way to read the points and to add a point keeping in mind that
-    this list would represent a convex hul of 2d points, i.e you can't add a point to the list which is not a vertex of
-    the convex hull.
-
-    
-
+ /** 
+  * Purpose : This class was made by the necessity to maintain as a template class the list which was written initially 
+  *           to hold the convexhull of 2d points. This because I changed the Convexhull2d from template class to a class
+  *           that is a dlc_list but which holds Point2d in its nodes.
+  * 
     @author Chaviaras Michalis
-    @version 1.1  2/2018 
+    @version 1.1  4/2018 
 */
-#ifndef CONVEXHULL2DDEF
-#define CONVEXHULL2DDEF
+#ifndef DLC_LISTDEF
+#define DLC_LISTDEF
 #include <iostream>
 #include <cassert>
-#include <cmath>
-#include "Point2d.hpp"
 
 
-class Convexhull2d{
+template <class T> class dlc_list{
 	struct Node{
-		Point2d data;
+		T data;
 		Node* back;
 		Node* front;
 	};
@@ -31,61 +23,6 @@ private:
 	unsigned int my_size;
 	double my_area;
 
-	/**
-	 * calculate the area of a triangle.
-	 * Purpose :  It is an auxilliary function to be used in the function notify_area.
-	 * Maybe it should be in another class as a static class.
-	 * 
-	 */
-	double area_of_triangle(const Point2d& p1, const Point2d& p2, const Point2d& p3)
-	{
-		double A_x = p1.GetX();
-		double A_y = p1.GetY();
-		double B_x = p2.GetX();
-		double B_y = p2.GetY();
-		double C_x = p3.GetX();
-		double C_y = p3.GetY();
-		return std::abs( (A_x*(B_y-C_y) + B_x*(C_y-A_y) + C_x*(A_y-B_y))/2.0 );
-	}
-
-	/**
-	 * This method notify the area of the convex hull.
-	 * Purpose : This method was made because of the time complexity of the notification of 
-	 * the area which is O(size of convex hull), thus maybe in future edition we change it 
-	 * in public in order to give to the user of this class to decide whether or not to notify 
-	 * the area. In this way the user of this class can handle whether or not to pay this 
-	 * linear time to notify the area.
-	 */
-	void notify_area ()
-	{
-		if(my_size == 0 || my_size == 1 || my_size == 2){
-			my_area = 0;
-		}else 
-		{
-			//in order to find the area of the convex hull we will divide it 
-			//into triangles 
-			
-			// the below three iterators point to different nodes because
-			// there are at least three nodes in the list
-			Convexhull2d::ch_iterator it_clo_back = ch_iterator(head);
-			Convexhull2d::ch_iterator it_clo_front = it_clo_back + 1;
-			Convexhull2d::ch_iterator it_cou_clo = it_clo_back-1;
-			
-			// at the below variable we will keep the sum of the areas of 
-			//every triangle
-			double sum = 0;
-			sum += area_of_triangle(*it_clo_back,*it_clo_front,*it_cou_clo);
-			
-			while(++it_clo_front != it_cou_clo)
-			{
-				it_clo_back++;
-				sum += area_of_triangle(*it_clo_back,*it_clo_front,*it_cou_clo);
-			}	
-			my_area = sum;
-		}
-		
-		
-	}
 public:
 	class ch_iterator{
 	private:
@@ -101,9 +38,9 @@ public:
 		bool operator==(const ch_iterator& other_it) const {return p == other_it.p ;}
 		bool operator!=(const ch_iterator& other_it) const {return p!= other_it.p;}
 		ch_iterator& operator=(const ch_iterator& other_ch_it){p = other_ch_it.p; return *this;}
-		//the returned type below must remain Point2d instead of Point2d& because I don't want to change the data of the list
+		//the returned type below must remain T instead of T& because I don't want to change the data of the list
 		// from the iterator
-		Point2d operator*() const {return p->data;}
+		T operator*() const {return p->data;}
 		ch_iterator operator+(const unsigned int num) const 
 		{
 			ch_iterator res;
@@ -133,11 +70,8 @@ public:
 		
 	};
 
-	/**
-	 *   Default Constructor
-	 * 
-	 */
-	Convexhull2d() 
+	//default constructor
+	dlc_list() 
 	{
 		head = 0;
 		my_size = 0;
@@ -145,16 +79,12 @@ public:
 	}
 	
 	
-	/**
-	 *    Copy Constructor
-	 *
-	 *    @returns other_ch is the Convexhull2d that we make a copy of this.
-	 */
-	Convexhull2d(const Convexhull2d& other_ch)
+	//copy constructor
+	dlc_list(const dlc_list<T>& other_ch)
 	{
 		if(other_ch.my_size > 0)
 		{
-			Convexhull2d::ch_iterator curr_it(other_ch.begin());
+			typename dlc_list<T>::ch_iterator curr_it(other_ch.begin());
 			Node* curr = new Node;
 			curr->data = *curr_it;
 			head = curr;
@@ -181,10 +111,8 @@ public:
 	}
 	
 	
-	/**
-	 *   Destructor 
-	 */
-	~Convexhull2d()
+	//destructor
+	~dlc_list()
 	{
 		if (head != 0)
 		{
@@ -206,10 +134,8 @@ public:
 		}
 	}
 	
-	/**
-	 *    Assignment Operator
-	 */
-	Convexhull2d& operator=(const Convexhull2d& other_ch)
+	//assignmnent operator
+	dlc_list<T>& operator=(const dlc_list<T>& other_ch)
 	{
 		if (this != &other_ch)
 		{
@@ -238,7 +164,7 @@ public:
 			{
 			// we can't iterate through the iterator we made because with this we can only access the 
 			// list not to modify. Here we make modification in order the nodes point where we want !!
-				Convexhull2d::ch_iterator curr_it(other_ch.begin());
+				typename dlc_list<T>::ch_iterator curr_it(other_ch.begin());
 				Node* curr = new Node;
 				curr->data = *curr_it;
 				head = curr;
@@ -267,24 +193,20 @@ public:
 	}
 	
 
-	/**
-	 * @returns the number of the points consistute the convex hull
-	 */
+	
 	unsigned int size() const
 	{
 		return my_size;
 	}
 
+	
 	/**
-	* initially this method will add a Point2d to the "head" of the list, but 
-	* at the next stage it will check if the element is in the convex hull or not.
-	* If it is in the convex hull it will be added to the list
-	* @param point Is the point that will be add to the head of the list.
-	*/
-	void push(Point2d point) 
+	 * @param a The object that will be insert to the head of the list.
+	 */
+	void push(T a) 
 	{
 		Node* tmp = new Node;
-		tmp->data = point;
+		tmp->data = a;
 		if(my_size == 0)
 		{
 			head = tmp;
@@ -302,9 +224,10 @@ public:
 		my_size++;
 	}
 	
+	
 	/**
-	* @returns an iterator at the head of the list.
-	*/
+	 * @returns an iterator that points to the head of the list.
+	 */
 	ch_iterator begin() const
 	{
 		//assert(my_size > 0);

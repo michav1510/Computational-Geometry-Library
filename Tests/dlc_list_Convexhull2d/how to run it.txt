@@ -1,0 +1,5 @@
+>> g++ -o test_Convexhull2d test_Convexhull2d.cpp
+>> ./test_Convexhull2d
+
+>> g++ -o test_dlc_list test_dlc_list.cpp
+>> ./test_dlc_list
