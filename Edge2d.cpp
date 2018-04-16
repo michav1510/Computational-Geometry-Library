@@ -17,11 +17,6 @@ Edge2d::Edge2d(const Edge2d& other_edge) :mypoints(2,Point2d(0,0))
 	mypoints[1] = Point2d(other_vector[1]);
 }
 
-// soon
-//Edge2d::~Edge2d()
-//{
-//	mypoints.~list();
-//}
 
 
 std::vector<Point2d> Edge2d::GetPoints() const
