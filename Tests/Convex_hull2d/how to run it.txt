@@ -1,2 +1,0 @@
->> g++ -o test_Convexhull2d test_Convexhull2d.cpp
->> ./test_Convexhull2d
