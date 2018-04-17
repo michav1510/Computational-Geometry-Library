@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
 //	test_default_constructor();
 //	test_parameter_constructor();
 //	test_copy_constructor();
-//	test_assignment_operator();
+	test_assignment_operator();
 //	test_plus_minus_unary_operator();
 //	test_addition_and_subtraction_binary_operator();
 }

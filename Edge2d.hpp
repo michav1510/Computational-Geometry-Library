@@ -30,6 +30,7 @@ public:
 	std::vector<Point2d> GetPoints() const;
 	
 	/**
+	 * It uses the "equality of points" with the tolerance.
 	 * @returns true if other_edge is neighbour to *this 
 	 * @param other_edge an edge 
 	 */

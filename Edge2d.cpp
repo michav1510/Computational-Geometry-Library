@@ -50,5 +50,5 @@ bool Edge2d::IsNeighbour(const Edge2d& other_edge)
 
 std::ostream& operator<<(std::ostream& output,const Edge2d& z)
 {
-	output << "( " << z[0].GetX() <<" , " << z[0].GetY() <<" ) " << "( " << z[1].GetX() <<" , " << z[1].GetY() <<" ) ";
+	output << "{( " << z.mypoints[0].GetX() <<" , " << z.mypoints[0].GetY() <<" ), " << "( " << z.mypoints[1].GetX() <<" , " << z.mypoints[1].GetY() <<" )}";
 }
