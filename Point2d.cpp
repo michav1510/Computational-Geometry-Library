@@ -29,7 +29,7 @@ double Point2d::Distanceof2dPoints(const Point2d p1, const Point2d p2)
 }
 
 
-double Point2d::GetToleranceOfEquality() const
+double Point2d::GetToleranceOfEquality()
 {
 	return TOL_OF_EQUALITY_OF_POINTS2D;
 }

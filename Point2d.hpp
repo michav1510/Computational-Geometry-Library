@@ -45,7 +45,7 @@ public:
 	 * @returns The tolerance of the class. If two points are distant smaller or equal to this number
 	 * then they are considered equal
 	 */
-	double GetToleranceOfEquality() const;
+	static double GetToleranceOfEquality();
 	
 	
 	

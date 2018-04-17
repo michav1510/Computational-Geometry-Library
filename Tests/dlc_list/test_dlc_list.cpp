@@ -299,10 +299,10 @@ void test_iterators()
 
 int main(int argc, char* argv[])
 {
-	std::cout << "You can uncomment everything you want to test from the main of this file \n"; 
+	std::cout << "!!!In order to test what you want, just uncomment the corresponding function call from the main!!! \n";
 	
 //	test_push();
-	test_copy_constructor();
+//	test_copy_constructor();
 //	test_default_constructor();
 //	test_destructor();
 //	test_assign_operator();

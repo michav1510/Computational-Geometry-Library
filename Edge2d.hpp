@@ -22,7 +22,7 @@ private:
 public:
 	Edge2d(const Edge2d& other_edge);
 	Edge2d(const Point2d& p1, const Point2d& p2);
-	//~Edge2d(); soon 
+
 	
 	/**
 	 * @returns A vector with the 2d points corresponds to the edge 
@@ -35,6 +35,13 @@ public:
 	 */
 	bool IsNeighbour(const Edge2d& other_edge);
 	
+	
+	/**
+	 *  This is the classic operator that allow us to return a stream representation
+	 *  of the Edge2d.
+	 *  @returns The stream that represents the Edge2d and is of the form "{( , ),( , )} "
+	 */
+	friend std::ostream& operator<<(std::ostream& output,const Edge2d& z);
 	
 	 
 };
