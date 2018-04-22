@@ -298,10 +298,39 @@ void test_iterators()
 }
 
 
+void test_parameter_constructor()
+{
+	std::vector<Point2d> vec;
+	vec.push_back(Point2d(0,0));
+	vec.push_back(Point2d(0,1));
+	vec.push_back(Point2d(0,1.5));
+	vec.push_back(Point2d(0.5,2));
+	vec.push_back(Point2d(1,1.75));
+	vec.push_back(Point2d(1,1));
+	vec.push_back(Point2d(0.5,-0.5));
+	vec.push_back(Point2d(0.1,-0.5));
+	Convexhull2d a(vec,"Jarvis");
+	Convexhull2d::ch_iterator it = a.begin();
+	std::cout << *it << "\n";
+	it++;
+	std::cout << *it << "\n";
+	it++;
+	std::cout << *it << "\n";
+	it++;
+	std::cout << *it << "\n";
+	it++;
+	std::cout << *it << "\n";
+	it++;
+	std::cout << *it << "\n";
+	it++;
+	std::cout << *it << "\n";
+	std::cout << "The size of the Convexhull2d is " << a.size() << "\n";
+	std::cout << "The tail of the list is " << *(a.end()) << "\n";
+}
+
 int main(int argc, char* argv[])
 {
-	std::cout << "!!!In order to test what you want, just uncomment the corresponding function call from the main!!! \n";
-	
+	std::cout << "!!!In order to test what you want, just uncomment the corresponding function call from the main!!! \n\n";
 //	test_push();
 //	test_copy_constructor();
 //	test_default_constructor();
@@ -310,7 +339,7 @@ int main(int argc, char* argv[])
 //	test_size();
 //	test_begin();
 //	test_iterators();
-	
+	test_parameter_constructor();
 	
 	
 }

@@ -190,17 +190,7 @@ public:
 	}
 	
 	
-	/**
-	 * Purpose: It is an auxilliary function for the sorting of the points by x 
-	 * in the constructor. If you change the "<" in the return command you reverse
-	 * the order from ascending to descending order.
-	 * @param p1 It is the first point of two that will be compared
-	 * @param p2 It is the second point of two that will be compared
-	 * 
-	 */
-	bool comp_points_by_x(const Point2d& p1, const Poin2dt& p2) { return p1.GetX() < p2.GetX(); } 
-
-	
+		
 	/**
 	 * 
 	 * Purpose : To implement basic algorithm or algorithms for the creation of a convex hull 
@@ -209,7 +199,7 @@ public:
 	 * @param algorithm The algorithm we will use to construct the convex hull(2d) 
 	 * 
 	 */
-	Convexhull2d(std::vector<Point2d> points, std::string algorithm = "Jarvis")
+	Convexhull2d(const std::vector<Point2d>& points, std::string algorithm = "Jarvis")
 	{
 		int size_of_vec = points.size();
 		if ( size_of_vec == 0)
@@ -235,7 +225,7 @@ public:
 			my_size = 2;
 			my_area = 0;
 		}
-		if( algorithm.compare("Jarvis") )
+		if( algorithm.compare("Jarvis") == 0 )
 		{
 			//firstly we have to find the point with the minimum x  i.e the one we get from
 			// GetX() from Point2d class
@@ -248,7 +238,6 @@ public:
 				}
 			}// end of finding minimum
 		
-			
 			//the minimum is not surely a point of the convex hull 
 			// for example if there is three point with the same minimum x 
 			// then one of them or two of them must be included to the 
@@ -274,18 +263,16 @@ public:
 				
 			}// for sure the points[pos_best_x] wil be the first point of the
 			// convex hull(2d).
-			
-			int pos_max_x = 0; // the position with the maximum x will be 
+			int pos_tail = 0; // the position with the maximum x will be 
 			//needed in order to set the tail of the list to this position.
 			//But it will be better if this maximum x has only the minimum y.
 			for( int i = 1; i < size_of_vec; i++ )
 			{
-				if( points[i].GetX() > points[pos_min_x].GetX() )
+				if( points[i].GetX() > points[pos_tail].GetX() )
 				{
-					pos_max_x = i;
+					pos_tail = i;
 				}
 			}
-			int pos_tail = pos_max_x;
 			for( int i = 0 ; i < size_of_vec; i++ )
 			{
 				if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) )
@@ -293,11 +280,10 @@ public:
 					pos_tail = i;
 				}
 			}
-			
-			
-			Node* head = new Node;
+
+			head = new Node;
 			head->data = points[pos_head];
-			my_size++;
+			my_size =1;
 			Node* last_node = head;//we have to hold also the last node added to the list
 			int last_ch_pos = pos_head;// the position of the last point added to the convex
 			//hull (2d).
@@ -316,7 +302,7 @@ public:
 				{
 					if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
 						// check the angle if one of the point is the same with another
-						if ( Predicates::Orient_Pred(points[pos_next_cand],points[last_ch_pos],points[i]) < 0 )
+						if ( Predicates::Orient_Pred(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 )
 						{
 							pos_next_cand = i;
 						}						
@@ -334,11 +320,11 @@ public:
 				// convex hull(2d).
 				for( int i = 0; i < size_of_vec ; i++ )
 				{
-					if( Predicates::Orient_Pred(pos_next_cand,last_ch_pos,i) == 0 &&
+					if( Predicates::Orient_Pred(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
 						Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
 						Point2d::Distanceof2dPoints(points[last_ch_pos],points[i]) )
 						pos_next_cand = i;
-				}
+				}//with the finish of the for we have the new point of the convex hull in the pos_next_cand
 				if( pos_next_cand != pos_head )
 				{
 					//below we insert the point to the dlc list
@@ -346,7 +332,7 @@ public:
 					tmp->data = points[pos_next_cand];
 					last_node->front = tmp;
 					tmp->back = last_node;
-					if( points[pos_next_cand] == pos_tail )
+					if( pos_next_cand == pos_tail )
 					{
 						tail = tmp;
 					}
@@ -362,10 +348,7 @@ public:
 					last_node->front = head;
 					head->back = last_node;
 				}
-				
 			}
-			
-			
 		}
 	};
 
@@ -503,8 +486,13 @@ public:
 	}
 
 	
-
-	
+	/**
+	 * @returns the point with the maximum x, and the minimum y
+	 */
+	ch_iterator end() const
+	{
+		return ch_iterator(tail);
+	}
 	
 	
 	
