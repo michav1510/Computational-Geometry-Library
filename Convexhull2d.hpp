@@ -17,7 +17,9 @@
 #include <iostream>
 #include <cassert>
 #include <cmath>
+#include <vector>
 #include "Point2d.hpp"
+#include "Predicates.hpp"
 
 
 class Convexhull2d{
@@ -28,6 +30,7 @@ class Convexhull2d{
 	};
 private:
 	Node* head;
+	Node* tail;
 	unsigned int my_size;
 	double my_area;
 
@@ -143,6 +146,7 @@ public:
 	Convexhull2d() 
 	{
 		head = 0;
+		tail = 0;
 		my_size = 0;
 		my_area = 0;
 	}
@@ -172,16 +176,200 @@ public:
 			}
 			curr->front = head;
 			head->back = curr;
+			tail = other_ch.tail;
 			
 			my_size = other_ch.my_size;
 			my_area = other_ch.my_area;
 		}else
 		{
 			head = 0;
+			tail = 0;
 			my_size = 0;
 			my_area = 0;
 		}
 	}
+	
+	
+	/**
+	 * Purpose: It is an auxilliary function for the sorting of the points by x 
+	 * in the constructor. If you change the "<" in the return command you reverse
+	 * the order from ascending to descending order.
+	 * @param p1 It is the first point of two that will be compared
+	 * @param p2 It is the second point of two that will be compared
+	 * 
+	 */
+	bool comp_points_by_x(const Point2d& p1, const Poin2dt& p2) { return p1.GetX() < p2.GetX(); } 
+
+	
+	/**
+	 * 
+	 * Purpose : To implement basic algorithm or algorithms for the creation of a convex hull 
+	 * in the plane(2d).
+	 * @param points The set of points of which we will build the convex hull(2d)
+	 * @param algorithm The algorithm we will use to construct the convex hull(2d) 
+	 * 
+	 */
+	Convexhull2d(std::vector<Point2d> points, std::string algorithm = "Jarvis")
+	{
+		int size_of_vec = points.size();
+		if ( size_of_vec == 0)
+		{
+			head = 0;
+			tail = 0;
+			my_size = 0;
+			my_area = 0;
+		}else if ( size_of_vec == 1)
+		{
+			Node* tmp = new Node;
+			tmp->data = points[0];
+			head = tmp;
+			tail = tmp;
+			head->front = head;
+			head->back = head;
+			my_size = 1;
+			my_area = 0;
+		}else if (size_of_vec == 2)
+		{
+			//I have to be carefull about whether two points are on the same 
+			//vertical line, whether the two points are different 
+			my_size = 2;
+			my_area = 0;
+		}
+		if( algorithm.compare("Jarvis") )
+		{
+			//firstly we have to find the point with the minimum x  i.e the one we get from
+			// GetX() from Point2d class
+			int pos_min_x = 0; //the position with the minimum x
+			for (int i = 1; i < size_of_vec; i++)
+			{
+				if ( points[i].GetX() < points[pos_min_x].GetX() )
+				{
+					pos_min_x = i;
+				}
+			}// end of finding minimum
+		
+			
+			//the minimum is not surely a point of the convex hull 
+			// for example if there is three point with the same minimum x 
+			// then one of them or two of them must be included to the 
+			// convex hull . but we must start from this ?
+			// probably I have to find all the minimum and to place them 
+			// in a vector, and after that i have to find the one with 
+			//the minimum or maximum y. So if we start from the point with
+			// the minimum or maximum y then the others will be rejected 
+			// from the algorithm because it will be colinear.
+			
+			// from all the points with the minimum x we must select the one 
+			// with the minimum y. But you can't avoid that you have to find 
+			// first the minimum x. If you don't find the minimum by x first
+			// then if the point with the minimum x is only one then the algorithm
+			// will fail.
+			int pos_head = pos_min_x;
+			for(int i = 0; i < size_of_vec; i++ )
+			{
+				if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) )
+				{
+					pos_head = i;
+				}
+				
+			}// for sure the points[pos_best_x] wil be the first point of the
+			// convex hull(2d).
+			
+			int pos_max_x = 0; // the position with the maximum x will be 
+			//needed in order to set the tail of the list to this position.
+			//But it will be better if this maximum x has only the minimum y.
+			for( int i = 1; i < size_of_vec; i++ )
+			{
+				if( points[i].GetX() > points[pos_min_x].GetX() )
+				{
+					pos_max_x = i;
+				}
+			}
+			int pos_tail = pos_max_x;
+			for( int i = 0 ; i < size_of_vec; i++ )
+			{
+				if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) )
+				{
+					pos_tail = i;
+				}
+			}
+			
+			
+			Node* head = new Node;
+			head->data = points[pos_head];
+			my_size++;
+			Node* last_node = head;//we have to hold also the last node added to the list
+			int last_ch_pos = pos_head;// the position of the last point added to the convex
+			//hull (2d).
+			int pos_next_cand = (pos_head+1)%size_of_vec; // with this we can guarantee
+			//that we start from a "random" candidate different than the pos_head
+			while( pos_next_cand != pos_head )
+			{
+				pos_next_cand = (pos_head+1)%size_of_vec;// there is no problem if we 
+				//assign a standard possible next candidate, I added this line because
+				//from the end of the while if we come here the pos_next_cand doesn't
+				//change and at this run of the while you will have the pos_next_cand
+				// and the last_ch_pos equals. So the first if in the for will not be 
+				// true never.
+				
+				for( int i = 0; i < size_of_vec; i++ )
+				{
+					if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
+						// check the angle if one of the point is the same with another
+						if ( Predicates::Orient_Pred(points[pos_next_cand],points[last_ch_pos],points[i]) < 0 )
+						{
+							pos_next_cand = i;
+						}						
+					}
+				}
+				// if there are more than one points which are good as the 
+				// points[pos_next_cand] i.e, the vector that starts from the
+				// last point of the convex hull and ends to the point that
+				// is the best, is colinear with the vector that starts from
+				// the last point of the convex hull and ends to another point
+				// (the last point is the point which is as good as the 
+				// points[pos_next_cand]. From the points[pos_next_cand] and 
+				// the other point we have to insert to the convex hull the 
+				// one with the greater distance from the last point of the
+				// convex hull(2d).
+				for( int i = 0; i < size_of_vec ; i++ )
+				{
+					if( Predicates::Orient_Pred(pos_next_cand,last_ch_pos,i) == 0 &&
+						Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
+						Point2d::Distanceof2dPoints(points[last_ch_pos],points[i]) )
+						pos_next_cand = i;
+				}
+				if( pos_next_cand != pos_head )
+				{
+					//below we insert the point to the dlc list
+					Node* tmp = new Node;
+					tmp->data = points[pos_next_cand];
+					last_node->front = tmp;
+					tmp->back = last_node;
+					if( points[pos_next_cand] == pos_tail )
+					{
+						tail = tmp;
+					}
+					//below we have to update the indexes and the pointers to node
+					last_node = tmp;
+					last_ch_pos = pos_next_cand;
+					my_size++;
+					//becareful don't updathe pos_next_cand because it is checked in the 
+					//condition of the while
+				
+				}else //if the next point of the ch(2d) is the head then 
+				{	//we don't have to allocate memory it is already allocated
+					last_node->front = head;
+					head->back = last_node;
+				}
+				
+			}
+			
+			
+		}
+	};
+
+	
 	
 	
 	/**
