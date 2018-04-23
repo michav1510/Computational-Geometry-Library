@@ -22,7 +22,7 @@
 #include "Predicates.hpp"
 
 
-class Convexhull2d{
+class CH2d_dlclist{
 	struct Node{
 		Point2d data;
 		Node* back;
@@ -73,9 +73,9 @@ private:
 			
 			// the below three iterators point to different nodes because
 			// there are at least three nodes in the list
-			Convexhull2d::ch_iterator it_clo_back = ch_iterator(head);
-			Convexhull2d::ch_iterator it_clo_front = it_clo_back + 1;
-			Convexhull2d::ch_iterator it_cou_clo = it_clo_back-1;
+			CH2d_dlclist::ch_iterator it_clo_back = ch_iterator(head);
+			CH2d_dlclist::ch_iterator it_clo_front = it_clo_back + 1;
+			CH2d_dlclist::ch_iterator it_cou_clo = it_clo_back-1;
 			
 			// at the below variable we will keep the sum of the areas of 
 			//every triangle
@@ -143,7 +143,7 @@ public:
 	 *   Default Constructor
 	 * 
 	 */
-	Convexhull2d() 
+	CH2d_dlclist() 
 	{
 		head = 0;
 		tail = 0;
@@ -157,11 +157,11 @@ public:
 	 *
 	 *    @returns other_ch is the Convexhull2d that we make a copy of this.
 	 */
-	Convexhull2d(const Convexhull2d& other_ch)
+	CH2d_dlclist(const CH2d_dlclist& other_ch)
 	{
 		if(other_ch.my_size > 0)
 		{
-			Convexhull2d::ch_iterator curr_it(other_ch.begin());
+			CH2d_dlclist::ch_iterator curr_it(other_ch.begin());
 			Node* curr = new Node;
 			curr->data = *curr_it;
 			head = curr;
@@ -199,7 +199,7 @@ public:
 	 * @param algorithm The algorithm we will use to construct the convex hull(2d) 
 	 * 
 	 */
-	Convexhull2d(const std::vector<Point2d>& points, std::string algorithm = "Jarvis")
+	CH2d_dlclist(const std::vector<Point2d>& points, std::string algorithm = "Jarvis")
 	{
 		int size_of_vec = points.size();
 		if ( size_of_vec == 0)
@@ -358,7 +358,7 @@ public:
 	/**
 	 *   Destructor 
 	 */
-	~Convexhull2d()
+	~CH2d_dlclist()
 	{
 		if (head != 0)
 		{
@@ -383,7 +383,7 @@ public:
 	/**
 	 *    Assignment Operator
 	 */
-	Convexhull2d& operator=(const Convexhull2d& other_ch)
+	CH2d_dlclist& operator=(const CH2d_dlclist& other_ch)
 	{
 		if (this != &other_ch)
 		{
@@ -412,7 +412,7 @@ public:
 			{
 			// we can't iterate through the iterator we made because with this we can only access the 
 			// list not to modify. Here we make modification in order the nodes point where we want !!
-				Convexhull2d::ch_iterator curr_it(other_ch.begin());
+				CH2d_dlclist::ch_iterator curr_it(other_ch.begin());
 				Node* curr = new Node;
 				curr->data = *curr_it;
 				head = curr;

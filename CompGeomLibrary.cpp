@@ -46,7 +46,7 @@ bool comp_edges_by_min_x(const Edge2d& e_1, const Edge2d& e_2) {
 	
 	
 	
-std::list<Point2d> CompGeomLibrary::ComposeConvexHull2d(const std::list< Edge2d > list_of_edges)
+std::list<Point2d> CompGeomLibrary::Compose_ch2d(const std::list< Edge2d > list_of_edges)
 {
 	// the list we would return, with the vertices of the convex hull in clock wise order
 	std::list<Point2d> conv_hull;

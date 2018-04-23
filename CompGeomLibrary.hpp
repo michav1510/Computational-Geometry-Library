@@ -25,7 +25,7 @@ public:
   @returns A list that contains the vertices of a 2d convex hull in a clockwise order
   @throws exception if there are colinear edges
 */
-static std::list<Point2d> ComposeConvexHull2d(const std::list<Edge2d> list_of_edges);
+static std::list<Point2d> Compose_ch2d(const std::list<Edge2d> list_of_edges);
 	
 };
 

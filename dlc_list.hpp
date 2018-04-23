@@ -1,7 +1,7 @@
  /** 
-  * Purpose : This class was made by the necessity to maintain as a template class the list which was written initially 
-  *           to hold the convexhull of 2d points. This because I changed the Convexhull2d from template class to a class
-  *           that is a dlc_list but which holds Point2d in its nodes.
+  * Purpose : This class was initially the CH2d_dlclist but I renamed it in order to maintain 
+  *           it as a template class, the CH2d_dlclist became a non template dlc list which
+  * 		  contains as data Point2d.
   * 
     @author Chaviaras Michalis
     @version 1.1  4/2018 
