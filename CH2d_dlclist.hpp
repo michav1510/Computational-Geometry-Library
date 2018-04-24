@@ -12,8 +12,8 @@
     @author Chaviaras Michalis
     @version 1.1  2/2018 
 */
-#ifndef CONVEXHULL2DDEF
-#define CONVEXHULL2DDEF
+#ifndef CH2D_DLCLISTDEF
+#define CH2D_DLCLISTDEF
 #include <iostream>
 #include <cassert>
 #include <cmath>
@@ -408,7 +408,7 @@ public:
 			//the above was the last command of the deletion of the "this" list.
 				
 			//now we have the same list as the other_ch 
-			if(other_ch.my_size > 0)
+			if( other_ch.my_size > 0 )
 			{
 			// we can't iterate through the iterator we made because with this we can only access the 
 			// list not to modify. Here we make modification in order the nodes point where we want !!
@@ -450,30 +450,172 @@ public:
 	}
 
 	/**
-	* initially this method will add a Point2d to the "head" of the list, but 
-	* at the next stage it will check if the element is in the convex hull or not.
-	* If it is in the convex hull it will be added to the list
+	* This function will push a point to the dlc list if it is not in the
+	* convex hull(2d), otherwise it will not be added. The complexity of 
+	* the addition of the point to a list, if the list size is >= 3, is
+	* O(n). Because it runs the upper hull and the lower hull to check 
+	* if it is in the convex hull(2d). 
+	* Purpose : to add a point if it is not in the convex hull(2d) 
 	* @param point Is the point that will be add to the head of the list.
+	* @returns -1 if the point wasn't added to the list, 1 if the point
+	* was added to the list.
 	*/
-	void push(Point2d point) 
+	int push(const Point2d& query_po) 
 	{
-		Node* tmp = new Node;
-		tmp->data = point;
-		if(my_size == 0)
+		if( my_size == 0 )
 		{
-			head = tmp;
+			head = new Node;
+			head->data = query_po;
 			head->front = head;
 			head->back = head;
-		}else
+			tail = head;
+			my_size ++ ;
+			my_area = 0;
+			return 1;
+		}else if( my_size == 1 )
 		{
-			Node* last = head->back;			
-			last->front = tmp;
-			tmp->back = last;
-			tmp->front = head;
-			head->back = tmp;
-			head = tmp;
+			Node* list_elem ;
+			list_elem = head;
+			Node* new_elem = new Node;
+			new_elem->data = query_po;
+			// we must set as head of the list the point with the 
+			// smallest GetX() and as tail the one with the bigger
+			// x
+			if( new_elem->data.GetX() < list_elem->data.GetX() )
+			{
+				head = new_elem;
+				tail = list_elem;
+				my_size ++;
+				my_area = 0;
+				return 1;
+			}else if( new_elem->data.GetX() > list_elem->data.GetX() )
+			{
+				head = list_elem;
+				tail = new_elem;
+				my_size ++;
+				my_area = 0;
+				return 1;
+			}else//if the two points are on the same vertical position
+			{// then we set as head the one  with the smallest y and
+			 // as tail the one with the biggest y 
+				if( list_elem->data.GetY() > new_elem->data.GetY() )
+				{
+					head = new_elem;
+					head->front = tail;
+					head->back = tail;
+					tail = list_elem;
+					tail->front = head;
+					tail->back = head;
+					my_size ++;
+					my_area = 0;
+					return 1;
+				}else if( list_elem->data.GetY() < new_elem->data.GetY() )
+				{
+					head = list_elem;
+					tail = new_elem;
+					head->front = tail;
+					head->back = tail;
+					tail->front = head;
+					tail->back = head;
+					my_size ++;
+					my_area = 0;
+					return 1;
+				}else // here the two points have the same GetX and the 
+				// same GetY, so they are equal. 
+				{
+					return -1;
+				}
+			}
+		}else if( my_size == 2 )
+		{
+			if( head->data == query_po || tail->data == query_po )
+			{//if the query point is equal with one of the current points
+				return -1;
+			}
+			if( Predicates::Orient_Pred(query_po,head->data,tail->data == 0) )
+			{//then we have to find the middle one of the three colinear points
+			// in order to find it we can find the three distances of one point
+			// to other
+				double d1 = Point2d::Distanceof2dPoints(head->data,tail->data);
+				double d2 = Point2d::Distanceof2dPoints(head->data,query_po);
+				double d3 = Point2d::Distanceof2dPoints(tail->data,query_po);
+				if( (d1 > d2 && d2 >= d3) || (d1 > d3 && d3 >= d2) )
+				{// then d1 is the biggest one, and the query point doesn't
+				// pushed in the list
+					return -1;
+				}else if( (d2 > d1 && d1 >= d3) || (d2 > d3 && d3 >= d1) )
+				{
+					tail = new Node;
+					tail->data = query_po;
+					head->front = tail;
+					head->back = tail;
+					tail->front = head;
+					tail->back = head;
+					//we will return 1 because the query point inserted to the
+					//list, although the size of the list doesn't change
+					return 1;
+				}else
+				{
+					head = new Node;
+					head->data = query_po;
+					head->front = tail;
+					head->back = tail;
+					tail->front = head;
+					tail->back = head;
+					//we will return 1 because the query point inserted to the
+					//list, although the size of the list doesn't change
+					return 1;
+				}
+					
+			}else//in this case we have to find the new head and tail because the 
+			//query point is not collinear with the other two nor the same with 
+			//one of them, so we will have a triangle
+			{
+				Node* query_nod = new Node;
+				query_nod->data = query_po;
+				if( (query_nod->data.GetX() <= head->data.GetX() && query_nod->data.GetY()> head->data.GetY()) 
+				    || query_nod->data.GetX() < head->data.GetX() )
+				{//if the query_p is better as "head" then we have to assign it as head
+					Node* swap;
+					swap = head;
+					head = query_nod;
+					query_nod = swap;
+				}
+				if( (query_nod->data.GetX() >= tail->data.GetX() && query_nod->data.GetY() < tail->data.GetY()) 
+				    || query_nod->data.GetX() > tail->data.GetX() )
+				{//if the query_p is better as "tail" then we have to assign it as tail
+					Node* swap;
+					swap = tail;
+					tail = query_nod;
+					query_nod = swap;
+				}
+				if( Predicates::Orient_Pred(tail->data,head->data,query_nod->data)> 0 )
+				{// then the new point is "upper" than the head-tail edge
+					head->front = query_nod;
+					query_nod->back = head;
+					query_nod->front = tail;
+					tail->back = query_nod;
+					tail->front = head;
+					head->back = tail;
+				}else // then the query point is "lower" than the head-tail edge
+				{
+					head->front = tail;
+					tail->back = head;
+					tail->front = query_nod;
+					query_nod->back = tail;
+					query_nod->front = head;
+					head->back = query_nod;
+				}
+				notify_area();
+				my_size++;
+				return 1;
+			}
+		}else//in this case we have an at least 3 points current convex hull(2d)
+		{
+			
 		}
-		my_size++;
+			
+
 	}
 	
 	/**
@@ -481,7 +623,7 @@ public:
 	*/
 	ch_iterator begin() const
 	{
-		//assert(my_size > 0);
+		assert(my_size > 0);
 		return ch_iterator(head);
 	}
 
@@ -491,6 +633,7 @@ public:
 	 */
 	ch_iterator end() const
 	{
+		assert( my_size > 0 );
 		return ch_iterator(tail);
 	}
 	

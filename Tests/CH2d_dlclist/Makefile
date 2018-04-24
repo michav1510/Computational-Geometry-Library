@@ -13,4 +13,4 @@ Edge2d.o : Edge2d.cpp
 	g++ -c ../../Edge2d.cpp
 	
 clean : 
-	rm test_CH2d_dlclist Point2d.o Predicates.o Edge2d.o
+	rm test_CH2d_dlclist convex_hull_res.dat Point2d.o Predicates.o Edge2d.o 

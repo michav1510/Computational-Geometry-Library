@@ -10,11 +10,12 @@
 #define POINT2DDEF
 
 #include <iostream>
+#include <cassert>
 
 class Point2d
 {
 private: 
-	static const double TOL_OF_EQUALITY_OF_POINTS2D = 1e-9;
+	static double TOL_OF_EQUALITY_OF_POINTS2D = 1e-9;
 	double myx;
 	double myy;
 public:
@@ -38,7 +39,7 @@ public:
 	/**
 	 * @returns true if two points are distant smaller or equal than TOL_OF_EQUALITY_OF_POINTS2D
 	 */
-	bool operator==(const Point2d &other_point) const;
+	bool operator==(const Point2d& other_point) const;
 	
 	
 	/**
@@ -46,6 +47,12 @@ public:
 	 * then they are considered equal
 	 */
 	static double GetToleranceOfEquality();
+	
+	
+	/**
+	 * @param new_tol is the new ToleranceOfEquality
+	 */
+	static void SetToleranceOfEquality(double new_tol);
 	
 	
 	

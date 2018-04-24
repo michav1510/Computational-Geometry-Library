@@ -35,6 +35,13 @@ double Point2d::GetToleranceOfEquality()
 }
 
 
+void Point2d::SetToleranceOfEquality(double new_tol)
+{
+	assert( new_tol > 0 );
+	TOL_OF_EQUALITY_OF_POINTS2D = new_tol;		
+}
+
+
 double Point2d::GetX() const
 {
 	return this->myx;
@@ -49,11 +56,10 @@ double Point2d::GetY() const
 
 bool Point2d::operator==(const Point2d& other_point) const
 {
-	if ( Distanceof2dPoints(*this,other_point) <= TOL_OF_EQUALITY_OF_POINTS2D )
+	if( (this->GetX() == other_point.GetX()) && (this->GetY() == other_point.GetY()) )
 	{
 		return true;
-	}
-	else 
+	}else
 	{
 		return false;
 	}

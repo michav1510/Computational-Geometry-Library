@@ -1,0 +1,10 @@
+If you have matlab installed :
+1)run the generate_random_points_for_testing_CH2d_dlclist.m
+2)run the make file 
+3)run the sets_os_points.dat
+You will see points with blue and the convex hull with red 
+lines.
+The "sets_of_points.dat" is the file that the test_CH2d_dlclist.cpp
+reads and it makes a convex hull and writes it to the "convex_hull_res.dat".
+After the plot_data.m read the "sets_of_points.dat" and the 
+"convex_hull_res.dat" to plot the input and the output.

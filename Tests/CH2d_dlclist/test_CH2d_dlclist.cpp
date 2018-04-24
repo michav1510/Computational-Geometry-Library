@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "../../CH2d_dlclist.hpp"
 #include "../../Point2d.hpp"
 
@@ -300,33 +301,37 @@ void test_iterators()
 
 void test_parameter_constructor()
 {
-	std::vector<Point2d> vec;
-	vec.push_back(Point2d(0,0));
-	vec.push_back(Point2d(0,1));
-	vec.push_back(Point2d(0,1.5));
-	vec.push_back(Point2d(0.5,2));
-	vec.push_back(Point2d(1,1.75));
-	vec.push_back(Point2d(1,1));
-	vec.push_back(Point2d(0.5,-0.5));
-	vec.push_back(Point2d(0.1,-0.5));
-	CH2d_dlclist a(vec,"Jarvis");
-	CH2d_dlclist::ch_iterator it = a.begin();
-	std::cout << *it << "\n";
-	it++;
-	std::cout << *it << "\n";
-	it++;
-	std::cout << *it << "\n";
-	it++;
-	std::cout << *it << "\n";
-	it++;
-	std::cout << *it << "\n";
-	it++;
-	std::cout << *it << "\n";
-	it++;
-	std::cout << *it << "\n";
-	std::cout << "The size of the CH2d_dlclist is " << a.size() << "\n";
-	std::cout << "The tail of the list is " << *(a.end()) << "\n";
+	// this test reads from the file "sets_of_points.dat"
+	// and write the resulted convex hull to "convex_hull_res.dat"
+	std::ifstream infile("sets_of_points.dat");
+	std::ofstream outfile("convex_hull_res.dat");
+	double a;
+	double b;
+	std::string tmp;
+	std::vector<Point2d> vec1;
+	while (infile >> tmp >> a  >> tmp >>  b >> tmp)
+	{
+		vec1.push_back(Point2d(a,b));
+	}
+	CH2d_dlclist a1(vec1,"Jarvis");
+	
+	
+	CH2d_dlclist::ch_iterator it1 = a1.begin();
+	CH2d_dlclist::ch_iterator flag1 = it1;
+	outfile << *it1 << "\n";
+	while(++it1 != flag1)
+	{
+		outfile << *it1 << "\n" ;
+	}
+	outfile << "The size of the convex hull is " << a1.size() << "\n";
+	outfile << "The head is " << *a1.begin() << "\n";
+	outfile << "The tail is " << *a1.end() << "\n";
+	outfile << "\n";
+		
+	outfile.close();
 }
+
+
 
 int main(int argc, char* argv[])
 {
