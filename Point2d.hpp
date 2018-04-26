@@ -15,7 +15,8 @@
 class Point2d
 {
 private: 
-	static double TOL_OF_EQUALITY_OF_POINTS2D = 1e-9;
+	//THE USAGE OF THE TOL_OF_EQUALITY_OF_POINTS2D is dubious 
+	//static double TOL_OF_EQUALITY_OF_POINTS2D = 1e-9;
 	double myx;
 	double myy;
 public:
@@ -43,16 +44,20 @@ public:
 	
 	
 	/**
+	 * THE USAGE OF THE TOL_OF_EQUALITY_OF_POINTS2D is dubious therefore and the usage of this 
+	 * function
 	 * @returns The tolerance of the class. If two points are distant smaller or equal to this number
 	 * then they are considered equal
 	 */
-	static double GetToleranceOfEquality();
+	//static double GetToleranceOfEquality();
 	
 	
 	/**
+	 * THE USAGE OF THE TOL_OF_EQUALITY_OF_POINTS2D is dubious therefore and the usage of this 
+	 * function
 	 * @param new_tol is the new ToleranceOfEquality
 	 */
-	static void SetToleranceOfEquality(double new_tol);
+	//static void SetToleranceOfEquality(double new_tol);
 	
 	
 	

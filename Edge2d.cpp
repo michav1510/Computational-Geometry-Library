@@ -30,11 +30,11 @@ bool Edge2d::IsNeighbour(const Edge2d& other_edge)
 	std::vector<Point2d> other_points(other_edge.GetPoints());
 	Point2d p1 = Point2d(other_points[0]);
 	Point2d p2 = Point2d(other_points[1]);
-	if (this->mypoints[0] == p1 || this->mypoints[0] == p2)
+	if(this->mypoints[0] == p1 || this->mypoints[0] == p2)
 	{
 		return true;
 	}
-	else if (this->mypoints[1] == p1 || this->mypoints[1] == p2)
+	else if(this->mypoints[1] == p1 || this->mypoints[1] == p2)
 	{
 		return true;
 	}

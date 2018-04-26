@@ -29,17 +29,17 @@ double Point2d::Distanceof2dPoints(const Point2d p1, const Point2d p2)
 }
 
 
-double Point2d::GetToleranceOfEquality()
-{
-	return TOL_OF_EQUALITY_OF_POINTS2D;
-}
+//double Point2d::GetToleranceOfEquality()
+//{
+//	return TOL_OF_EQUALITY_OF_POINTS2D;
+//}
 
 
-void Point2d::SetToleranceOfEquality(double new_tol)
-{
-	assert( new_tol > 0 );
-	TOL_OF_EQUALITY_OF_POINTS2D = new_tol;		
-}
+//void Point2d::SetToleranceOfEquality(double new_tol)
+//{
+//	assert( new_tol > 0 );
+//	TOL_OF_EQUALITY_OF_POINTS2D = new_tol;		
+//}
 
 
 double Point2d::GetX() const

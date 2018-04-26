@@ -19,7 +19,7 @@
 #include <cmath>
 #include <vector>
 #include "Point2d.hpp"
-#include "Predicates.hpp"
+#include "Pred.hpp"
 
 
 class CH2d_dlclist{
@@ -62,9 +62,9 @@ private:
 	 * the area. In this way the user of this class can handle whether or not to pay this 
 	 * linear time to notify the area.
 	 */
-	void notify_area ()
+	void notify_area()
 	{
-		if(my_size == 0 || my_size == 1 || my_size == 2){
+		if( my_size == 0 || my_size == 1 || my_size == 2 ){
 			my_area = 0;
 		}else 
 		{
@@ -82,7 +82,7 @@ private:
 			double sum = 0;
 			sum += area_of_triangle(*it_clo_back,*it_clo_front,*it_cou_clo);
 			
-			while(++it_clo_front != it_cou_clo)
+			while( ++it_clo_front != it_cou_clo )
 			{
 				it_clo_back++;
 				sum += area_of_triangle(*it_clo_back,*it_clo_front,*it_cou_clo);
@@ -153,9 +153,9 @@ public:
 	
 	
 	/**
-	 *    Copy Constructor
+	 * Copy Constructor
 	 *
-	 *    @returns other_ch is the Convexhull2d that we make a copy of this.
+	 * @returns other_ch is the Convexhull2d that we make a copy of this.
 	 */
 	CH2d_dlclist(const CH2d_dlclist& other_ch)
 	{
@@ -202,13 +202,13 @@ public:
 	CH2d_dlclist(const std::vector<Point2d>& points, std::string algorithm = "Jarvis")
 	{
 		int size_of_vec = points.size();
-		if ( size_of_vec == 0)
+		if( size_of_vec == 0)
 		{
 			head = 0;
 			tail = 0;
 			my_size = 0;
 			my_area = 0;
-		}else if ( size_of_vec == 1)
+		}else if( size_of_vec == 1)
 		{
 			Node* tmp = new Node;
 			tmp->data = points[0];
@@ -218,7 +218,7 @@ public:
 			head->back = head;
 			my_size = 1;
 			my_area = 0;
-		}else if (size_of_vec == 2)
+		}else if(size_of_vec == 2)
 		{
 			//I have to be carefull about whether two points are on the same 
 			//vertical line, whether the two points are different 
@@ -238,16 +238,6 @@ public:
 				}
 			}// end of finding minimum
 		
-			//the minimum is not surely a point of the convex hull 
-			// for example if there is three point with the same minimum x 
-			// then one of them or two of them must be included to the 
-			// convex hull . but we must start from this ?
-			// probably I have to find all the minimum and to place them 
-			// in a vector, and after that i have to find the one with 
-			//the minimum or maximum y. So if we start from the point with
-			// the minimum or maximum y then the others will be rejected 
-			// from the algorithm because it will be colinear.
-			
 			// from all the points with the minimum x we must select the one 
 			// with the minimum y. But you can't avoid that you have to find 
 			// first the minimum x. If you don't find the minimum by x first
@@ -302,7 +292,7 @@ public:
 				{
 					if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
 						// check the angle if one of the point is the same with another
-						if ( Predicates::Orient_Pred(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 )
+						if ( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 )
 						{
 							pos_next_cand = i;
 						}						
@@ -314,13 +304,13 @@ public:
 				// is the best, is colinear with the vector that starts from
 				// the last point of the convex hull and ends to another point
 				// (the last point is the point which is as good as the 
-				// points[pos_next_cand]. From the points[pos_next_cand] and 
+				// points[pos_next_cand]). From the points[pos_next_cand] and 
 				// the other point we have to insert to the convex hull the 
 				// one with the greater distance from the last point of the
 				// convex hull(2d).
 				for( int i = 0; i < size_of_vec ; i++ )
 				{
-					if( Predicates::Orient_Pred(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
+					if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
 						Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
 						Point2d::Distanceof2dPoints(points[last_ch_pos],points[i]) )
 						pos_next_cand = i;
@@ -532,7 +522,7 @@ public:
 			{//if the query point is equal with one of the current points
 				return -1;
 			}
-			if( Predicates::Orient_Pred(query_po,head->data,tail->data == 0) )
+			if( Pred::Orient(query_po,head->data,tail->data == 0) )
 			{//then we have to find the middle one of the three colinear points
 			// in order to find it we can find the three distances of one point
 			// to other
@@ -589,7 +579,7 @@ public:
 					tail = query_nod;
 					query_nod = swap;
 				}
-				if( Predicates::Orient_Pred(tail->data,head->data,query_nod->data)> 0 )
+				if( Pred::Orient(tail->data,head->data,query_nod->data)> 0 )
 				{// then the new point is "upper" than the head-tail edge
 					head->front = query_nod;
 					query_nod->back = head;
@@ -606,8 +596,8 @@ public:
 					query_nod->front = head;
 					head->back = query_nod;
 				}
-				notify_area();
 				my_size++;
+				notify_area();//this function uses the my_size
 				return 1;
 			}
 		}else//in this case we have an at least 3 points current convex hull(2d)
