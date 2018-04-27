@@ -284,8 +284,8 @@ public:
 						     Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
 						     Point2d::Distanceof2dPoints(points[last_ch_pos],points[i])) )
 						{//the best point will change if there is one with better angle, or a collinear
-						//point which is more distant from the last point added than the best point from
-						//the last point added.
+						//point which is more distant from the last point added than the best point is distant
+						//from the last point added.
 							pos_next_cand = i;
 						}						
 					}
@@ -393,12 +393,14 @@ public:
 				}
 				curr->front = head;
 				head->back = curr;
-			
+
+				tail = other_ch.tail;
 				my_size = other_ch.my_size;
 				my_area = other_ch.my_area;
 			}else
 			{
 				head = 0;
+				tail = 0;
 				my_size = 0;
 				my_area = 0;
 			}
@@ -440,58 +442,50 @@ public:
 			return 1;
 		}else if( my_size == 1 )
 		{
-			Node* list_elem ;
-			list_elem = head;
-			Node* new_elem = new Node;
-			new_elem->data = query_po;
-			// we must set as head of the list the point with the 
-			// smallest GetX() and as tail the one with the bigger
-			// x
-			if( new_elem->data.GetX() < list_elem->data.GetX() )
+			Node* current_nod ;
+			current_nod = head;
+			
+			//the current point of the list is represented by the head
+			if( !(query_po == current_nod->data) )//if the points are not equal
 			{
-				head = new_elem;
-				tail = list_elem;
-				my_size ++;
-				my_area = 0;
-				return 1;
-			}else if( new_elem->data.GetX() > list_elem->data.GetX() )
-			{
-				head = list_elem;
-				tail = new_elem;
-				my_size ++;
-				my_area = 0;
-				return 1;
-			}else//if the two points are on the same vertical position
-			{// then we set as head the one  with the smallest y and
-			 // as tail the one with the biggest y 
-				if( list_elem->data.GetY() > new_elem->data.GetY() )
+				Node* new_elem = new Node; // if we construct the new point Node and it will not be added we will have 
+				// a memory leak, so I declare and initialize the node inside the if
+				new_elem->data = query_po;
+					
+				if( query_po.GetX() < current_nod->data.GetX() )
 				{
 					head = new_elem;
-					head->front = tail;
-					head->back = tail;
-					tail = list_elem;
-					tail->front = head;
-					tail->back = head;
-					my_size ++;
-					my_area = 0;
-					return 1;
-				}else if( list_elem->data.GetY() < new_elem->data.GetY() )
-				{
-					head = list_elem;
-					tail = new_elem;
-					head->front = tail;
-					head->back = tail;
-					tail->front = head;
-					tail->back = head;
-					my_size ++;
-					my_area = 0;
-					return 1;
-				}else // here the two points have the same GetX and the 
-				// same GetY, so they are equal. 
-				{
-					return -1;
+					tail = current_nod;
 				}
+				else if( query_po.GetX() > current_nod->data.GetX() )
+				{
+					head = current_nod;
+					tail = new_elem;
+				}else//if the two points are on the same vertical position
+				{
+					if( current_nod->data.GetY() > query_po.GetY() )
+					{
+						head = new_elem;
+						tail = current_nod;
+
+					}else if( current_nod->data.GetY() < query_po.GetY() )
+					{
+						head = current_nod;
+						tail = new_elem;
+					}
+				}
+				head->front = tail;
+				head->back = tail;
+				tail->back = head;
+				tail->front = head;
+				my_size++;
+				my_area = 0;
+				return 1; 
+			}else
+			{
+				return -1;
 			}
+			
 		}else if( my_size == 2 )
 		{
 			if( head->data == query_po || tail->data == query_po )
