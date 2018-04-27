@@ -229,48 +229,35 @@ public:
 		{
 			//firstly we have to find the point with the minimum x  i.e the one we get from
 			// GetX() from Point2d class
-			int pos_min_x = 0; //the position with the minimum x
-			for (int i = 1; i < size_of_vec; i++)
-			{
-				if ( points[i].GetX() < points[pos_min_x].GetX() )
-				{
-					pos_min_x = i;
-				}
-			}// end of finding minimum
-		
+			int pos_head = 0; //the position with the minimum x
 			// from all the points with the minimum x we must select the one 
 			// with the minimum y. But you can't avoid that you have to find 
 			// first the minimum x. If you don't find the minimum by x first
 			// then if the point with the minimum x is only one then the algorithm
 			// will fail.
-			int pos_head = pos_min_x;
-			for(int i = 0; i < size_of_vec; i++ )
+			for (int i = 1; i < size_of_vec; i++)
 			{
-				if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) )
+				if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) ||
+					points[i].GetX() < points[pos_head].GetX() )
 				{
 					pos_head = i;
 				}
-				
-			}// for sure the points[pos_best_x] wil be the first point of the
+			}// end of finding minimum, now we have the position of the head
+			// for sure the points[pos_head] wil be the first point of the
 			// convex hull(2d).
+			
 			int pos_tail = 0; // the position with the maximum x will be 
 			//needed in order to set the tail of the list to this position.
 			//But it will be better if this maximum x has only the minimum y.
 			for( int i = 1; i < size_of_vec; i++ )
 			{
-				if( points[i].GetX() > points[pos_tail].GetX() )
+				if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) ||
+					points[i].GetX() > points[pos_tail].GetX() )
 				{
 					pos_tail = i;
 				}
 			}
-			for( int i = 0 ; i < size_of_vec; i++ )
-			{
-				if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) )
-				{
-					pos_tail = i;
-				}
-			}
-
+		
 			head = new Node;
 			head->data = points[pos_head];
 			my_size =1;
@@ -563,7 +550,7 @@ public:
 			{
 				Node* query_nod = new Node;
 				query_nod->data = query_po;
-				if( (query_nod->data.GetX() <= head->data.GetX() && query_nod->data.GetY()> head->data.GetY()) 
+				if( (query_nod->data.GetX() <= head->data.GetX() && query_nod->data.GetY() > head->data.GetY()) 
 				    || query_nod->data.GetX() < head->data.GetX() )
 				{//if the query_p is better as "head" then we have to assign it as head
 					Node* swap;
