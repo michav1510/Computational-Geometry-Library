@@ -279,29 +279,18 @@ public:
 				{
 					if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
 						// check the angle if one of the point is the same with another
-						if ( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 )
-						{
+						if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 || 
+						    (Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
+						     Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
+						     Point2d::Distanceof2dPoints(points[last_ch_pos],points[i])) )
+						{//the best point will change if there is one with better angle, or a collinear
+						//point which is more distant from the last point added than the best point from
+						//the last point added.
 							pos_next_cand = i;
 						}						
 					}
-				}
-				// if there are more than one points which are good as the 
-				// points[pos_next_cand] i.e, the vector that starts from the
-				// last point of the convex hull and ends to the point that
-				// is the best, is colinear with the vector that starts from
-				// the last point of the convex hull and ends to another point
-				// (the last point is the point which is as good as the 
-				// points[pos_next_cand]). From the points[pos_next_cand] and 
-				// the other point we have to insert to the convex hull the 
-				// one with the greater distance from the last point of the
-				// convex hull(2d).
-				for( int i = 0; i < size_of_vec ; i++ )
-				{
-					if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
-						Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
-						Point2d::Distanceof2dPoints(points[last_ch_pos],points[i]) )
-						pos_next_cand = i;
 				}//with the finish of the for we have the new point of the convex hull in the pos_next_cand
+		
 				if( pos_next_cand != pos_head )
 				{
 					//below we insert the point to the dlc list
