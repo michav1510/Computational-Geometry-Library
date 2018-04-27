@@ -492,6 +492,30 @@ public:
 			{//if the query point is equal with one of the current points
 				return -1;
 			}
+			//ALLLLAAAAGIIII
+			else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
+				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) ||
+				     (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) )  )
+			{// if the query point is collinear with the other two and the query point is between the head
+			// and the tail then it will not be added to the list
+				return -1;
+			}
+			else 
+			{// in this case the query point will be added to the list
+				if( query_po.GetX() < head->data.GetX() ||
+				    (query_po.GetY()== head->data.GetX() && query_po.GetY() < head->data.GetY()) )
+				{// then the head must be substituted by the query point
+					Node* new_elem = new Node;
+					new_elem->data = query_po;
+					if(  )
+					{//it shows us if the front of the new head shows the tail or the old head
+						
+					}
+					
+				}
+			}
+			//ALLLLAAAAGIIII
+			
 			if( Pred::Orient(query_po,head->data,tail->data == 0) )
 			{//then we have to find the middle one of the three colinear points
 			// in order to find it we can find the three distances of one point
