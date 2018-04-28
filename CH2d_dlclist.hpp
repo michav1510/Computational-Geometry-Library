@@ -491,109 +491,90 @@ public:
 			if( head->data == query_po || tail->data == query_po )
 			{//if the query point is equal with one of the current points
 				return -1;
-			}
-			//ALLLLAAAAGIIII
-			else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
+			}else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
 				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) ||
 				     (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) )  )
 			{// if the query point is collinear with the other two and the query point is between the head
 			// and the tail then it will not be added to the list
 				return -1;
+			}else if( Pred::Orient(query_po,head->data,tail->data) == 0 ) 
+			{// the new element is collinear but it will be added to the list
+				Node* new_elem = new Node;
+				new_elem->data = query_po;
+				if( query_po.GetX() < head->data.GetX() )
+				{// the new element must substitute the head and the (old) head must be deleted
+					delete head;//the old head must be deleted 
+					head = new_elem;
+					
+					
+				}else
+				{// the new element must substitute the tail and the (old) head must be deleted
+					delete tail;// the old tail must be deleted
+					tail = new_elem;
+				}
+				head->front = tail;
+				tail->back = head;
+				tail->front = head;
+				head->back = tail;
+				//becareful we added a new element but we deleted also so there is no change in
+				//the size, nor change to the area because is zero again;
+				return 1;
 			}
 			else 
 			{// in this case the query point will be added to the list
+				Node* new_elem = new Node;
+				new_elem->data = query_po;
 				if( query_po.GetX() < head->data.GetX() ||
-				    (query_po.GetY()== head->data.GetX() && query_po.GetY() < head->data.GetY()) )
+				    (query_po.GetX() == head->data.GetX() && query_po.GetY() < head->data.GetY()) )
 				{// then the head must be substituted by the query point
-					Node* new_elem = new Node;
-					new_elem->data = query_po;
-					if(  )
-					{//it shows us if the front of the new head shows the tail or the old head
-						
+				
+					Node* old_head = head;
+					head = new_elem;
+					if( Pred::Orient(query_po,old_head->data,tail->data) < 0 )
+					{// the front of the new head is the tail,
+						head->front = tail;
+						tail->back = head;
+						tail->front = old_head;
+						old_head->back = tail;
+						old_head->front = head;
+						head->back = old_head;
+					}else
+					{// the front of the new head is the old head
+						head->front = old_head;
+						old_head->back = head;
+						old_head->front = tail;
+						tail->back = old_head;
+						tail->front = head;
+						head->back = tail;
 					}
 					
-				}
-			}
-			//ALLLLAAAAGIIII
-			
-			if( Pred::Orient(query_po,head->data,tail->data == 0) )
-			{//then we have to find the middle one of the three colinear points
-			// in order to find it we can find the three distances of one point
-			// to other
-				double d1 = Point2d::Distanceof2dPoints(head->data,tail->data);
-				double d2 = Point2d::Distanceof2dPoints(head->data,query_po);
-				double d3 = Point2d::Distanceof2dPoints(tail->data,query_po);
-				if( (d1 > d2 && d2 >= d3) || (d1 > d3 && d3 >= d2) )
-				{// then d1 is the biggest one, and the query point doesn't
-				// pushed in the list
-					return -1;
-				}else if( (d2 > d1 && d1 >= d3) || (d2 > d3 && d3 >= d1) )
-				{
-					tail = new Node;
-					tail->data = query_po;
-					head->front = tail;
-					head->back = tail;
-					tail->front = head;
-					tail->back = head;
-					//we will return 1 because the query point inserted to the
-					//list, although the size of the list doesn't change
-					return 1;
-				}else
-				{
-					head = new Node;
-					head->data = query_po;
-					head->front = tail;
-					head->back = tail;
-					tail->front = head;
-					tail->back = head;
-					//we will return 1 because the query point inserted to the
-					//list, although the size of the list doesn't change
-					return 1;
-				}
-					
-			}else//in this case we have to find the new head and tail because the 
-			//query point is not collinear with the other two nor the same with 
-			//one of them, so we will have a triangle
-			{
-				Node* query_nod = new Node;
-				query_nod->data = query_po;
-				if( (query_nod->data.GetX() <= head->data.GetX() && query_nod->data.GetY() > head->data.GetY()) 
-				    || query_nod->data.GetX() < head->data.GetX() )
-				{//if the query_p is better as "head" then we have to assign it as head
-					Node* swap;
-					swap = head;
-					head = query_nod;
-					query_nod = swap;
-				}
-				if( (query_nod->data.GetX() >= tail->data.GetX() && query_nod->data.GetY() < tail->data.GetY()) 
-				    || query_nod->data.GetX() > tail->data.GetX() )
-				{//if the query_p is better as "tail" then we have to assign it as tail
-					Node* swap;
-					swap = tail;
-					tail = query_nod;
-					query_nod = swap;
-				}
-				if( Pred::Orient(tail->data,head->data,query_nod->data)> 0 )
-				{// then the new point is "upper" than the head-tail edge
-					head->front = query_nod;
-					query_nod->back = head;
-					query_nod->front = tail;
-					tail->back = query_nod;
-					tail->front = head;
-					head->back = tail;
-				}else // then the query point is "lower" than the head-tail edge
-				{
-					head->front = tail;
-					tail->back = head;
-					tail->front = query_nod;
-					query_nod->back = tail;
-					query_nod->front = head;
-					head->back = query_nod;
+				}else if( query_po.GetX() > tail->data.GetX() ||
+				    (query_po.GetX()== tail->data.GetX() && query_po.GetY() < tail->data.GetY()) )
+				{// the the tail must be substituted 
+					Node* old_tail = tail;
+					tail = new_elem;
+					if( Pred::Orient(head,old_tail->data,query_po) < 0)
+					{// then the front of the head is the new tail 
+						head->front = tail;
+						tail->back = head;
+						tail->front = old_tail;
+						old_tail->back = tail;
+						old_tail->front = head;
+						head->back = old_tail;
+					}else 
+					{// the front of the head is the old tail
+						head->front = old_tail;
+						old_tail->back = head;
+						old_tail->front = tail;
+						tail->back = old_tail;
+						tail->front = head;
+						head->back = tail;
+					}
 				}
 				my_size++;
-				notify_area();//this function uses the my_size
+				notify_area();
 				return 1;
-			}
+			}			
 		}else//in this case we have an at least 3 points current convex hull(2d)
 		{
 			
