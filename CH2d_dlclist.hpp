@@ -577,6 +577,7 @@ public:
 			}			
 		}else//in this case we have an at least 3 points current convex hull(2d)
 		{
+			std::stack<Point2d*> del;// all the points from the list that will be deleted
 			
 		}
 			
