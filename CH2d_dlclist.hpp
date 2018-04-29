@@ -577,7 +577,6 @@ public:
 			}			
 		}else//in this case we have an at least 3 points current convex hull(2d)
 		{
-			std::stack<Point2d*> del;// all the points from the list that will be deleted
 			
 			if( query_po.GetX() < head->data.GetX() )
 			{
@@ -609,19 +608,61 @@ public:
 			
 				my_size++;
 				tail = new_tail;
-				//now we the new point is inserted to the list and the later loop 
+				//now the new point is inserted to the list and the later loop 
 				//will delete some points if it is needed
 			}else
 			{
-				//here i must iterate and put the point to the suitable interval
+				Node* prev = head;
+				Node* after = head->front;
+				
+				Node* query_nod = new Node;
+				query_nod->data = query_po;
+				while( prev != tail )
+				{// upper hull iteration
+					if( query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
+					{
+						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
+						    (Pred::Orient(prev->data,query_po,after->data) == 0 &&
+						      (query_po.GetY() > prev->data.GetY() && query_po.GetY() >= after->data.GetY())) )
+						{
+							prev->front = query_nod;
+							query_nod->back = prev;
+							query_nod->front = after;
+							after->back = query_nod;
+						}
+					}
+					prev = prev->front;
+					after = after->front;
+				}
+				while( prev != head )
+				{// lower hull iteration
+					if( query_po.GetX() >= after->data.GetX() && query_po.GetX() <= prev->data.GetX()  )
+					{
+						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
+						    (Pred::Orient(prev->data,query_po,after->data) == 0 &&
+						      (query_po.GetY() < prev->data.GetY() && query_po.GetY() < after->data.GetY())) )
+						{
+							prev->front = query_nod;
+							query_nod->back = prev;
+							query_nod->front = after;
+							after->back = query_nod;
+						}
+					}	
+					prev = prev->front;
+					after = after->front;
+				}
+				//becareful you can't avoid the first stage which is the necessity to add 
+				//the point to the list and the later loop will delete it if needed. The 
+				//reason is you can't know how many points front or back you have to delete
+				//if the query point will be added to the list.
+			
+				std::stack<Point2d*> del;// all the points from the list that will be deleted
+				//now the deletion of points procedure starts 
+			
+				//now is the time to delete all the unnecessary points
+				//prev already shows to the head
+				
 			}
-			//becareful you can't avoid the first stage which is the necessity to add 
-			//the point to the list and the later loop will delete it if needed. The 
-			//reason is you can't know how many points front or back  you have to delete.
-			
-			
-			 
-			
 			
 		}
 			
