@@ -553,7 +553,7 @@ public:
 				{// the the tail must be substituted 
 					Node* old_tail = tail;
 					tail = new_elem;
-					if( Pred::Orient(head,old_tail->data,query_po) < 0)
+					if( Pred::Orient(head,old_tail->data,query_po) < 0 )
 					{// then the front of the head is the new tail 
 						head->front = tail;
 						tail->back = head;
@@ -578,6 +578,50 @@ public:
 		}else//in this case we have an at least 3 points current convex hull(2d)
 		{
 			std::stack<Point2d*> del;// all the points from the list that will be deleted
+			
+			if( query_po.GetX() < head->data.GetX() )
+			{
+				Node* new_head = new Node;
+				new_head->data = query_po;
+				//creation of the new node
+			
+				Node* bef_head = head->back;
+				bef_head->front = new_head;
+				new_head->back = bef_head;
+				new_head->front = head;
+				head->back = new_head;
+				
+				my_size++;
+				head = new_head;
+				//now we the new point is inserted to the list and the later loop 
+				//will delete some points if it is needed
+			}else if( query_po.GetX() > tail->data.GetX() )
+			{
+				Node* new_tail = new Node;
+				new_tail->data = query_po;
+				//creation of the new node
+			
+				Node* bef_head = tail->back;
+				bef_head->front = new_tail;
+				new_tail->back = bef_head;
+				new_tail->front = tail;
+				tail->back = new_tail;
+			
+				my_size++;
+				tail = new_tail;
+				//now we the new point is inserted to the list and the later loop 
+				//will delete some points if it is needed
+			}else
+			{
+				//here i must iterate and put the point to the suitable interval
+			}
+			//becareful you can't avoid the first stage which is the necessity to add 
+			//the point to the list and the later loop will delete it if needed. The 
+			//reason is you can't know how many points front or back  you have to delete.
+			
+			
+			 
+			
 			
 		}
 			
