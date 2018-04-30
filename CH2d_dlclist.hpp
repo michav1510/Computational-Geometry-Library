@@ -668,12 +668,14 @@ public:
 					if( query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
 					{
 						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
-						    (Pred::Orient(prev->data,query_po,after->data) == 0 &&
-						      (query_po.GetY() > prev->data.GetY() && query_po.GetY() >= after->data.GetY())) )
+						    ( prev->data.GetX() == after->data.GetX() && 
+						         Pred::Orient(prev->data,query_po,after->data) == 0 &&
+						         (query_po.GetY() > prev->data.GetY() && query_po.GetY() >= after->data.GetY())) )
 						{
-						//the second condition after || is for the case that we have three collinear points
-						// and the query point is not between the other two points, thus it should be added
-						// to the list because it is surely in the convex hull(2d)							
+							//the second condition after || is for the case that the previous and the after 
+							//are at the same x coordinate, and we have three collinear points
+							//(with the query point) and the query point is not between the other two points,
+							// thus it should be added to the list because it is surely in the convex hull(2d)							
 							prev->front = query_nod;
 							query_nod->back = prev;
 							query_nod->front = after;
