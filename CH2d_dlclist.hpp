@@ -366,10 +366,10 @@ public:
 				{
 					Node* tmp = curr;
 					curr = curr->front;
-					std::cout << "Deletion of the node with address : " << tmp << "\n";
+					//std::cout << "Deletion of the node with address : " << tmp << "\n";
 					delete tmp;
 				}
-				std::cout << "Deletion of the node with address : " << last << "\n";
+				//std::cout << "Deletion of the node with address : " << last << "\n";
 				delete last;
 			}
 			//the above was the last command of the deletion of the "this" list.
@@ -495,21 +495,22 @@ public:
 			}else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
 				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) ||
 				     (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) )  )
-			{// if the query point is collinear with the other two and the query point is between the head
-			// and the tail then it will not be added to the list
+			{
+				// if the query point is collinear with the other two and the query point is between the head
+				// and the tail then it will not be added to the list
 				return -1;
 			}else if( Pred::Orient(query_po,head->data,tail->data) == 0 ) 
 			{// the new element is collinear but it will be added to the list
 				Node* new_elem = new Node;
 				new_elem->data = query_po;
 				if( query_po.GetX() < head->data.GetX() )
-				{// the new element must substitute the head and the (old) head must be deleted
+				{
+					// the new element must substitute the head and the (old) head must be deleted
 					delete head;//the old head must be deleted 
 					head = new_elem;
-					
-					
 				}else
-				{// the new element must substitute the tail and the (old) head must be deleted
+				{
+					// the new element must substitute the tail and the (old) head must be deleted
 					delete tail;// the old tail must be deleted
 					tail = new_elem;
 				}
@@ -522,7 +523,8 @@ public:
 				return 1;
 			}
 			else 
-			{// in this case the query point will be added to the list
+			{
+				// in this case the query point will be added to the list
 				Node* new_elem = new Node;
 				new_elem->data = query_po;
 				if( query_po.GetX() < head->data.GetX() ||
@@ -583,13 +585,14 @@ public:
 			//reason is you can't know how many points front or back you have to delete
 			//if the query point will be added to the list.
 			
+			Node* query_nod = new Node;//it is helpfull to create the node of the query point
+			query_nod->data = query_po;//because it is very helpfull in the deletion later.
+			
 			//the case where the query point is equal with one of the points of the convex hull(2d)
 			//is checked in the else of the following if-elseif...-else statement
 			if( query_po.GetX() <= head->data.GetX() && query_po.GetY() < head->data.GetY() )
 			{
-				Node* new_head = new Node;//the query point is new head
-				new_head->data = query_po;
-				//creation of the new node
+				Node* new_head = query_nod;//the query point is new head
 			
 				Node* bef_head = head->back;
 				bef_head->front = new_head;
@@ -603,10 +606,8 @@ public:
 				//will delete some points if it is needed
 			}else if( query_po.GetX() < head->data.GetX() && query_po.GetY() >= head->data.GetY() )
 			{
-				Node* new_head = new Node;//the query point is new head
-				new_head->data = query_po;
-				//creation of the new node
-				
+				Node* new_head = query_nod;//the query point is new head
+							
 				Node* after_head = head->front;
 				head->front = new_head;
 				new_head->back = head;
@@ -618,13 +619,12 @@ public:
 				//now we the new point is inserted to the list and the later loop 
 				//will delete some points if it is needed
 			}
-			else if( query_po.GetX() > head->data.GetX() && query_po.GetY() >= head->data.GetY() )
-			{// becareful if the X's are equal and the Y of query point is bigger or equal to Y of tail
-			// then the query point is not new tail
-				Node* new_tail = new Node;//the query point is new tail
-				new_tail->data = query_po;
-				//creation of the new node
-			
+			else if( query_po.GetX() > tail->data.GetX() && query_po.GetY() >= tail->data.GetY() )
+			{
+				// becareful if the X's are equal and the Y of query point is bigger or equal to Y of tail
+				// then the query point is not new tail
+				Node* new_tail = query_nod;//the query point is new tail
+				
 				Node* bef_tail = tail->back;
 				bef_tail->front = new_tail;
 				new_tail->back = bef_tail;
@@ -635,11 +635,9 @@ public:
 				tail = new_tail;
 				//now the new point is inserted to the list and the later loop 
 				//will delete some points if it is needed
-			}else if ( query_po.GetX() >= head->data.GetX() && query_po.GetY() < head->data.GetY()  )
+			}else if ( query_po.GetX() >= tail->data.GetX() && query_po.GetY() < tail->data.GetY()  )
 			{
-				Node* new_tail = new Node;//the query point is new tail
-				new_tail->data = query_po;
-				//creation of the new node
+				Node* new_tail = query_nod;//the query point is new tail
 				
 				Node* after_tail = tail->front;
 				tail->front = new_tail;
@@ -657,14 +655,14 @@ public:
 				Node* prev = head;
 				Node* after = head->front;
 				
-				Node* query_nod = new Node;//the query point is not new head nor new tail
-				query_nod->data = query_po;
+				
 				while( prev != tail )
 				{// upper hull iteration
 					if( query_po == prev->data || query_po == after->data)
 					{
-					// this is the case where the query point is equal to one point of the 
-					// current convex hull
+						// this is the case where the query point is equal to one point of the 
+						// current convex hull
+						delete query_nod;//we must delete the query point that we allocated
 						return -1;
 					}
 					if( query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
@@ -687,12 +685,15 @@ public:
 					prev = prev->front;
 					after = after->front;
 				}
+				prev = tail;
+				after = tail->front;
 				while( prev != head )
 				{// lower hull iteration
 					if( query_po == prev->data || query_po == after->data)
 					{
 					// this is the case where the query point is equal to one point of the 
 					// current convex hull
+						delete query_nod;//we must delete the query point that we allocated
 						return -1;
 					}
 					if( query_po.GetX() >= after->data.GetX() && query_po.GetX() <= prev->data.GetX()  )
@@ -721,7 +722,7 @@ public:
 				
 			std::stack<Node*> del;// all the points from the list that will be deleted
 			//now is the time to delete all the unnecessary points
-			
+
 			// the below three pointers exists and are pointed to different points because the size of 
 			// the current convex hull(2d) is >= 3
 			Node* before = head;
@@ -746,7 +747,7 @@ public:
 			bool flag = false;
 			while( !del.empty() )
 			{
-				if( query_po == del.top()->data)
+				if( query_nod == del.top() )
 				{
 					flag = true;
 				}
@@ -754,15 +755,16 @@ public:
 				del.pop();
 				my_size--;
 			}
-			
+			notify_area();
 			if( flag )
 			{
+				delete query_nod;//we must delete the query point that we allocated
 				return -1;
 			}else
 			{
 				return 1;
 			}
-			notify_area();
+			
 
 		}
 			

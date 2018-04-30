@@ -27,7 +27,7 @@ void test_push()
 	std::cout << "The point " << Point2d(0,0) << " was added " << ch.push(Point2d(0,0)) <<"\n";
 	CH2d_dlclist::ch_iterator it1 = ch.begin();
 	CH2d_dlclist::ch_iterator flag1 = it1;
-	outfile << *it1 << "\n";
+	std::cout << *it1 << "\n";
 	while( ++it1 != flag1 )
 	{
 		std::cout  << *it1 << "\n" ;
@@ -35,12 +35,13 @@ void test_push()
 	std::cout << "The size of the convex hull is " << ch.size() << "\n";
 	std::cout  << "The head is " << *ch.begin() << "\n";
 	std::cout  << "The tail is " << *ch.end() << "\n";
+	
 	
 	std::cout << "-----\n";
 	std::cout << "The point " << Point2d(0,1) << " was added " << ch.push(Point2d(0,1)) <<"\n";
 	it1 = ch.begin();
 	flag1 = it1;
-	outfile << *it1 << "\n";
+	std::cout << *it1 << "\n";
 	while( ++it1 != flag1 )
 	{
 		std::cout  << *it1 << "\n" ;
@@ -48,13 +49,13 @@ void test_push()
 	std::cout << "The size of the convex hull is " << ch.size() << "\n";
 	std::cout  << "The head is " << *ch.begin() << "\n";
 	std::cout  << "The tail is " << *ch.end() << "\n";
+	
+	
 	std::cout << "-----\n";
-	
-	
 	std::cout << "The point " << Point2d(1,1.5) << " was added " << ch.push(Point2d(1,1.5)) <<"\n";
 	it1 = ch.begin();
 	flag1 = it1;
-	outfile << *it1 << "\n";
+	std::cout << *it1 << "\n";
 	while( ++it1 != flag1 )
 	{
 		std::cout  << *it1 << "\n" ;
@@ -62,25 +63,13 @@ void test_push()
 	std::cout << "The size of the convex hull is " << ch.size() << "\n";
 	std::cout  << "The head is " << *ch.begin() << "\n";
 	std::cout  << "The tail is " << *ch.end() << "\n";
-	std::cout << "-----\n";
 	
-	std::cout << "The point " << Point2d(2,1) << " was added " << ch.push(Point2d(2,1)) <<"\n";
-	it1 = ch.begin();
-	flag1 = it1;
-	outfile << *it1 << "\n";
-	while( ++it1 != flag1 )
-	{
-		std::cout  << *it1 << "\n" ;
-	}
-	std::cout << "The size of the convex hull is " << ch.size() << "\n";
-	std::cout  << "The head is " << *ch.begin() << "\n";
-	std::cout  << "The tail is " << *ch.end() << "\n";
-	std::cout << "-----\n";
 	
+	std::cout << "-----\n";
 	std::cout << "The point " << Point2d(2,-1) << " was added " << ch.push(Point2d(2,-1)) <<"\n";
 	it1 = ch.begin();
 	flag1 = it1;
-	outfile << *it1 << "\n";
+	std::cout << *it1 << "\n";
 	while( ++it1 != flag1 )
 	{
 		std::cout  << *it1 << "\n" ;
@@ -88,8 +77,22 @@ void test_push()
 	std::cout << "The size of the convex hull is " << ch.size() << "\n";
 	std::cout  << "The head is " << *ch.begin() << "\n";
 	std::cout  << "The tail is " << *ch.end() << "\n";
-	std::cout << "-----\n";
 		
+	
+	std::cout << "-----\n";
+	std::cout << "The point " << Point2d(1,1) << " was added " << ch.push(Point2d(1,1)) <<"\n";
+	it1 = ch.begin();
+	flag1 = it1;
+	std::cout << *it1 << "\n";
+	while( ++it1 != flag1 )
+	{
+		std::cout  << *it1 << "\n" ;
+	}
+	std::cout << "The size of the convex hull is " << ch.size() << "\n";
+	std::cout  << "The head is " << *ch.begin() << "\n";
+	std::cout  << "The tail is " << *ch.end() << "\n";
+	
+	
 	std::cout << "\n";
 	std::cout << "End-----Testing: void push(T a)----------" << "\n\n";
 }
