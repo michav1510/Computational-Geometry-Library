@@ -18,6 +18,7 @@
 #include <cassert>
 #include <cmath>
 #include <vector>
+#include <stack>
 #include "Point2d.hpp"
 #include "Pred.hpp"
 
@@ -577,10 +578,16 @@ public:
 			}			
 		}else//in this case we have an at least 3 points current convex hull(2d)
 		{
+			//becareful you can't avoid the first stage which is the necessity to add 
+			//the point to the list and the later loop will delete it if needed. The 
+			//reason is you can't know how many points front or back you have to delete
+			//if the query point will be added to the list.
 			
-			if( query_po.GetX() < head->data.GetX() )
+			//the case where the query point is equal with one of the points of the convex hull(2d)
+			//is checked in the else of the following if-elseif...-else statement
+			if( query_po.GetX() <= head->data.GetX() && query_po.GetY() < head->data.GetY() )
 			{
-				Node* new_head = new Node;
+				Node* new_head = new Node;//the query point is new head
 				new_head->data = query_po;
 				//creation of the new node
 			
@@ -594,15 +601,33 @@ public:
 				head = new_head;
 				//now we the new point is inserted to the list and the later loop 
 				//will delete some points if it is needed
-			}else if( query_po.GetX() > tail->data.GetX() )
+			}else if( query_po.GetX() < head->data.GetX() && query_po.GetY() >= head->data.GetY() )
 			{
-				Node* new_tail = new Node;
+				Node* new_head = new Node;//the query point is new head
+				new_head->data = query_po;
+				//creation of the new node
+				
+				Node* after_head = head->front;
+				head->front = new_head;
+				new_head->back = head;
+				new_head->front = after_head;
+				after_head->back = new_head;
+				
+				my_size++;
+				head = new_head;
+				//now we the new point is inserted to the list and the later loop 
+				//will delete some points if it is needed
+			}
+			else if( query_po.GetX() > head->data.GetX() && query_po.GetY() >= head->data.GetY() )
+			{// becareful if the X's are equal and the Y of query point is bigger or equal to Y of tail
+			// then the query point is not new tail
+				Node* new_tail = new Node;//the query point is new tail
 				new_tail->data = query_po;
 				//creation of the new node
 			
-				Node* bef_head = tail->back;
-				bef_head->front = new_tail;
-				new_tail->back = bef_head;
+				Node* bef_tail = tail->back;
+				bef_tail->front = new_tail;
+				new_tail->back = bef_tail;
 				new_tail->front = tail;
 				tail->back = new_tail;
 			
@@ -610,25 +635,53 @@ public:
 				tail = new_tail;
 				//now the new point is inserted to the list and the later loop 
 				//will delete some points if it is needed
-			}else
+			}else if ( query_po.GetX() >= head->data.GetX() && query_po.GetY() < head->data.GetY()  )
+			{
+				Node* new_tail = new Node;//the query point is new tail
+				new_tail->data = query_po;
+				//creation of the new node
+				
+				Node* after_tail = tail->front;
+				tail->front = new_tail;
+				new_tail->back = tail;
+				new_tail->front = after_tail;
+				after_tail->back = new_tail;
+				
+				my_size++;
+				tail = new_tail;
+				//now we the new point is inserted to the list and the later loop 
+				//will delete some points if it is needed
+			}
+			else
 			{
 				Node* prev = head;
 				Node* after = head->front;
 				
-				Node* query_nod = new Node;
+				Node* query_nod = new Node;//the query point is not new head nor new tail
 				query_nod->data = query_po;
 				while( prev != tail )
 				{// upper hull iteration
+					if( query_po == prev->data || query_po == after->data)
+					{
+					// this is the case where the query point is equal to one point of the 
+					// current convex hull
+						return -1;
+					}
 					if( query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
 					{
 						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
 						    (Pred::Orient(prev->data,query_po,after->data) == 0 &&
 						      (query_po.GetY() > prev->data.GetY() && query_po.GetY() >= after->data.GetY())) )
 						{
+						//the second condition after || is for the case that we have three collinear points
+						// and the query point is not between the other two points, thus it should be added
+						// to the list because it is surely in the convex hull(2d)							
 							prev->front = query_nod;
 							query_nod->back = prev;
 							query_nod->front = after;
 							after->back = query_nod;
+							my_size++;//the size must be increased. at the later stage may also be decreased.
+							break;//if we find the position of the query point in the list the we must stop
 						}
 					}
 					prev = prev->front;
@@ -636,37 +689,72 @@ public:
 				}
 				while( prev != head )
 				{// lower hull iteration
+					if( query_po == prev->data || query_po == after->data)
+					{
+					// this is the case where the query point is equal to one point of the 
+					// current convex hull
+						return -1;
+					}
 					if( query_po.GetX() >= after->data.GetX() && query_po.GetX() <= prev->data.GetX()  )
 					{
 						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
 						    (Pred::Orient(prev->data,query_po,after->data) == 0 &&
 						      (query_po.GetY() < prev->data.GetY() && query_po.GetY() < after->data.GetY())) )
 						{
+						//the second condition after || is for the case that we have three collinear points
+						// and the query point is not between the other two points, thus it should be added
+						// to the list because it is surely in the convex hull(2d)
 							prev->front = query_nod;
 							query_nod->back = prev;
 							query_nod->front = after;
 							after->back = query_nod;
+							my_size++;//the size must be increased. at the later stage may also be decreased.
+							break;//if we find the position of the query point in the list the we must stop
 						}
 					}	
 					prev = prev->front;
 					after = after->front;
 				}
-				//becareful you can't avoid the first stage which is the necessity to add 
-				//the point to the list and the later loop will delete it if needed. The 
-				//reason is you can't know how many points front or back you have to delete
-				//if the query point will be added to the list.
-			
-				std::stack<Point2d*> del;// all the points from the list that will be deleted
-				//now the deletion of points procedure starts 
-			
-				//now is the time to delete all the unnecessary points
-				//prev already shows to the head
-				
 			}
+			//at this stage we have added the query point to the list but maybe will deleted and also
+			//some other points maybe will deleted, the head and the tail points to the right nodes 
+				
+			std::stack<Node*> del;// all the points from the list that will be deleted
+			//now is the time to delete all the unnecessary points
+			
+			// the below three pointers exists and are pointed to different points because the size of 
+			// the current convex hull(2d) is >= 3
+			Node* before = head;
+			Node* middle = before->front;
+			Node* after = middle->front;
+			while( after != head->front )
+			{
+				if( Pred::Orient(before,middle,after) <= 0 )
+				{
+					del.push(middle);
+					before->front = after;
+					after->back = before;
+				}
+				before = before->front;
+				middle = before->front;
+				after = middle->front;
+			}
+			//at this point we have disconnected the unnecessary points and we inserted them to the del 
+			//stack , so we have to free the pointers of this points and to reduce the size and to 
+			//notify the area
+			
+			while( !del.empty() )
+			{
+				delete del.top();
+				del.pop();
+				my_size--;
+			}
+			
+			notify_area();
 			
 		}
 			
-
+		
 	}
 	
 	/**
