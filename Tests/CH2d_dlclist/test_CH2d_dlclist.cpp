@@ -6,21 +6,90 @@
 void test_push()
 {
 	std::cout << "Start---Testing: void push(T a)----------" << "\n\n"; 
-	CH2d_dlclist a; 
-	a.push(Point2d(3,3));
-	a.push(Point2d(2,2));
-	a.push(Point2d(1,1));
-	CH2d_dlclist::ch_iterator it = a.begin();
-	CH2d_dlclist::ch_iterator flag = it;
-	std::cout << "---start of list---(a)"<< "\n";
-	std::cout << *it << " ";
-	while(++it != flag)
+	
+	std::ofstream outfile("convex_hull_res.dat");
+	
+	//the below code is for the reading of data from the following file
+	//std::ifstream infile("sets_of_points.dat");
+	//double a;
+	//double b;
+	//std::string tmp;
+	//std::vector<Point2d> vec1;
+	//while (infile >> tmp >> a  >> tmp >>  b >> tmp)
+	//{
+	//	vec1.push_back(Point2d(a,b));
+	//}
+	
+	
+	CH2d_dlclist ch;
+	
+	std::cout << "-----\n";
+	std::cout << "The point " << Point2d(0,0) << " was added " << ch.push(Point2d(0,0)) <<"\n";
+	CH2d_dlclist::ch_iterator it1 = ch.begin();
+	CH2d_dlclist::ch_iterator flag1 = it1;
+	outfile << *it1 << "\n";
+	while( ++it1 != flag1 )
 	{
-		std::cout << *it << " ";
+		std::cout  << *it1 << "\n" ;
 	}
-	std::cout << "\n";
-	std::cout << "The size is " << a.size() << "\n";
-	std::cout << "---end of list---(a)"<< "\n";
+	std::cout << "The size of the convex hull is " << ch.size() << "\n";
+	std::cout  << "The head is " << *ch.begin() << "\n";
+	std::cout  << "The tail is " << *ch.end() << "\n";
+	
+	std::cout << "-----\n";
+	std::cout << "The point " << Point2d(0,1) << " was added " << ch.push(Point2d(0,1)) <<"\n";
+	it1 = ch.begin();
+	flag1 = it1;
+	outfile << *it1 << "\n";
+	while( ++it1 != flag1 )
+	{
+		std::cout  << *it1 << "\n" ;
+	}
+	std::cout << "The size of the convex hull is " << ch.size() << "\n";
+	std::cout  << "The head is " << *ch.begin() << "\n";
+	std::cout  << "The tail is " << *ch.end() << "\n";
+	std::cout << "-----\n";
+	
+	
+	std::cout << "The point " << Point2d(1,1.5) << " was added " << ch.push(Point2d(1,1.5)) <<"\n";
+	it1 = ch.begin();
+	flag1 = it1;
+	outfile << *it1 << "\n";
+	while( ++it1 != flag1 )
+	{
+		std::cout  << *it1 << "\n" ;
+	}
+	std::cout << "The size of the convex hull is " << ch.size() << "\n";
+	std::cout  << "The head is " << *ch.begin() << "\n";
+	std::cout  << "The tail is " << *ch.end() << "\n";
+	std::cout << "-----\n";
+	
+	std::cout << "The point " << Point2d(2,1) << " was added " << ch.push(Point2d(2,1)) <<"\n";
+	it1 = ch.begin();
+	flag1 = it1;
+	outfile << *it1 << "\n";
+	while( ++it1 != flag1 )
+	{
+		std::cout  << *it1 << "\n" ;
+	}
+	std::cout << "The size of the convex hull is " << ch.size() << "\n";
+	std::cout  << "The head is " << *ch.begin() << "\n";
+	std::cout  << "The tail is " << *ch.end() << "\n";
+	std::cout << "-----\n";
+	
+	std::cout << "The point " << Point2d(2,-1) << " was added " << ch.push(Point2d(2,-1)) <<"\n";
+	it1 = ch.begin();
+	flag1 = it1;
+	outfile << *it1 << "\n";
+	while( ++it1 != flag1 )
+	{
+		std::cout  << *it1 << "\n" ;
+	}
+	std::cout << "The size of the convex hull is " << ch.size() << "\n";
+	std::cout  << "The head is " << *ch.begin() << "\n";
+	std::cout  << "The tail is " << *ch.end() << "\n";
+	std::cout << "-----\n";
+		
 	std::cout << "\n";
 	std::cout << "End-----Testing: void push(T a)----------" << "\n\n";
 }
@@ -333,10 +402,12 @@ void test_parameter_constructor()
 
 
 
+
+
 int main(int argc, char* argv[])
 {
 	std::cout << "!!!In order to test what you want, just uncomment the corresponding function call from the main!!! \n\n";
-//	test_push();
+	test_push();
 //	test_copy_constructor();
 //	test_default_constructor();
 //	test_destructor();
@@ -344,7 +415,7 @@ int main(int argc, char* argv[])
 //	test_size();
 //	test_begin();
 //	test_iterators();
-	test_parameter_constructor();
+//	test_parameter_constructor();
 	
 	
 }

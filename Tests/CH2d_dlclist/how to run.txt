@@ -1,3 +1,6 @@
+If you want to run the test_parameter constructor that checks 
+the implementation of the famous Jarvis algorithm. Otherwise run the 
+makefile.
 If you have matlab installed :
 1)run the generate_random_points_for_testing_CH2d_dlclist.m
 2)run the make file 

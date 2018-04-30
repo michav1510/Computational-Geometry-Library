@@ -423,8 +423,8 @@ public:
 	* convex hull(2d), otherwise it will not be added. The complexity of 
 	* the addition of the point to a list, if the list size is >= 3, is
 	* O(n). Because it runs the upper hull and the lower hull to check 
-	* if it is in the convex hull(2d). 
-	* Purpose : to add a point if it is not in the convex hull(2d) 
+	* if there are not anti clockwise turns in the convex hull(2d). 
+	* Purpose : to add a point if it is not interval to the convex hull(2d) 
 	* @param point Is the point that will be add to the head of the list.
 	* @returns -1 if the point wasn't added to the list, 1 if the point
 	* was added to the list.
@@ -554,7 +554,7 @@ public:
 				{// the the tail must be substituted 
 					Node* old_tail = tail;
 					tail = new_elem;
-					if( Pred::Orient(head,old_tail->data,query_po) < 0 )
+					if( Pred::Orient(head->data,old_tail->data,query_po) < 0 )
 					{// then the front of the head is the new tail 
 						head->front = tail;
 						tail->back = head;
@@ -729,7 +729,7 @@ public:
 			Node* after = middle->front;
 			while( after != head->front )
 			{
-				if( Pred::Orient(before,middle,after) <= 0 )
+				if( Pred::Orient(before->data,middle->data,after->data) <= 0 )
 				{
 					del.push(middle);
 					before->front = after;
@@ -741,24 +741,36 @@ public:
 			}
 			//at this point we have disconnected the unnecessary points and we inserted them to the del 
 			//stack , so we have to free the pointers of this points and to reduce the size and to 
-			//notify the area
-			
+			//notify the area. of course we have to check if the query point deleted from the list 
+			//thus we have the below flag
+			bool flag = false;
 			while( !del.empty() )
 			{
+				if( query_po == del.top()->data)
+				{
+					flag = true;
+				}
 				delete del.top();
 				del.pop();
 				my_size--;
 			}
 			
+			if( flag )
+			{
+				return -1;
+			}else
+			{
+				return 1;
+			}
 			notify_area();
-			
+
 		}
 			
 		
 	}
 	
 	/**
-	* @returns an iterator at the head of the list.
+	* @returns the point with the minimum x and the minimum y
 	*/
 	ch_iterator begin() const
 	{
