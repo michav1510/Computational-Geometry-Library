@@ -7,91 +7,39 @@ void test_push()
 {
 	std::cout << "Start---Testing: void push(T a)----------" << "\n\n"; 
 	
+	
+	std::ifstream infile("sets_of_points.dat");
 	std::ofstream outfile("convex_hull_res.dat");
+	double a;
+	double b;
+	std::string tmp;
+	std::vector<Point2d> vec1;
+	while (infile >> tmp >> a  >> tmp >>  b >> tmp)
+	{
+		vec1.push_back(Point2d(a,b));
+	}
+	CH2d_dlclist a1;
 	
-	//the below code is for the reading of data from the following file
-	//std::ifstream infile("sets_of_points.dat");
-	//double a;
-	//double b;
-	//std::string tmp;
-	//std::vector<Point2d> vec1;
-	//while (infile >> tmp >> a  >> tmp >>  b >> tmp)
-	//{
-	//	vec1.push_back(Point2d(a,b));
-	//}
+	int size = vec1.size();
+	for( int i = 0 ; i < size; i++ )
+	{
+		a1.push(vec1[i]);
+	}
 	
-	
-	CH2d_dlclist ch;
-	
-	std::cout << "-----\n";
-	std::cout << "The point " << Point2d(0,0) << " was added " << ch.push(Point2d(0,0)) <<"\n";
-	CH2d_dlclist::ch_iterator it1 = ch.begin();
+	CH2d_dlclist::ch_iterator it1 = a1.begin();
 	CH2d_dlclist::ch_iterator flag1 = it1;
-	std::cout << *it1 << "\n";
-	while( ++it1 != flag1 )
+	outfile << *it1 << "\n";
+	while(++it1 != flag1)
 	{
-		std::cout  << *it1 << "\n" ;
+		outfile << *it1 << "\n" ;
 	}
-	std::cout << "The size of the convex hull is " << ch.size() << "\n";
-	std::cout  << "The head is " << *ch.begin() << "\n";
-	std::cout  << "The tail is " << *ch.end() << "\n";
-	
-	
-	std::cout << "-----\n";
-	std::cout << "The point " << Point2d(0,1) << " was added " << ch.push(Point2d(0,1)) <<"\n";
-	it1 = ch.begin();
-	flag1 = it1;
-	std::cout << *it1 << "\n";
-	while( ++it1 != flag1 )
-	{
-		std::cout  << *it1 << "\n" ;
-	}
-	std::cout << "The size of the convex hull is " << ch.size() << "\n";
-	std::cout  << "The head is " << *ch.begin() << "\n";
-	std::cout  << "The tail is " << *ch.end() << "\n";
-	
-	
-	std::cout << "-----\n";
-	std::cout << "The point " << Point2d(1,1.5) << " was added " << ch.push(Point2d(1,1.5)) <<"\n";
-	it1 = ch.begin();
-	flag1 = it1;
-	std::cout << *it1 << "\n";
-	while( ++it1 != flag1 )
-	{
-		std::cout  << *it1 << "\n" ;
-	}
-	std::cout << "The size of the convex hull is " << ch.size() << "\n";
-	std::cout  << "The head is " << *ch.begin() << "\n";
-	std::cout  << "The tail is " << *ch.end() << "\n";
-	
-	
-	std::cout << "-----\n";
-	std::cout << "The point " << Point2d(2,-1) << " was added " << ch.push(Point2d(2,-1)) <<"\n";
-	it1 = ch.begin();
-	flag1 = it1;
-	std::cout << *it1 << "\n";
-	while( ++it1 != flag1 )
-	{
-		std::cout  << *it1 << "\n" ;
-	}
-	std::cout << "The size of the convex hull is " << ch.size() << "\n";
-	std::cout  << "The head is " << *ch.begin() << "\n";
-	std::cout  << "The tail is " << *ch.end() << "\n";
+	outfile << "The size of the convex hull is " << a1.size() << "\n";
+	outfile << "The head is " << *a1.begin() << "\n";
+	outfile << "The tail is " << *a1.end() << "\n";
+	outfile << "\n";
 		
-	
-	std::cout << "-----\n";
-	std::cout << "The point " << Point2d(1,1) << " was added " << ch.push(Point2d(1,1)) <<"\n";
-	it1 = ch.begin();
-	flag1 = it1;
-	std::cout << *it1 << "\n";
-	while( ++it1 != flag1 )
-	{
-		std::cout  << *it1 << "\n" ;
-	}
-	std::cout << "The size of the convex hull is " << ch.size() << "\n";
-	std::cout  << "The head is " << *ch.begin() << "\n";
-	std::cout  << "The tail is " << *ch.end() << "\n";
-	
+	outfile.close();
+
 	
 	std::cout << "\n";
 	std::cout << "End-----Testing: void push(T a)----------" << "\n\n";
