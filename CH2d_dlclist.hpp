@@ -588,6 +588,11 @@ public:
 			Node* query_nod = new Node;//it is helpfull to create the node of the query point
 			query_nod->data = query_po;//because it is very helpfull in the deletion later.
 			
+			bool quer_po_added = false;// it is very usefull to see
+			//if the query point added to the list, if it is not added
+			//you haven't to run the last while which deletes the unnecessary 
+			//points.
+			
 			//the case where the query point is equal with one of the points of the convex hull(2d)
 			//is checked in the else of the following if-elseif...-else statement
 			if( query_po.GetX() <= head->data.GetX() && query_po.GetY() < head->data.GetY() )
@@ -600,6 +605,7 @@ public:
 				new_head->front = head;
 				head->back = new_head;
 				
+				quer_po_added = true;
 				my_size++;
 				head = new_head;
 				//now we the new point is inserted to the list and the later loop 
@@ -614,6 +620,8 @@ public:
 				new_head->front = after_head;
 				after_head->back = new_head;
 				
+
+				quer_po_added = true;
 				my_size++;
 				head = new_head;
 				//now we the new point is inserted to the list and the later loop 
@@ -631,6 +639,7 @@ public:
 				new_tail->front = tail;
 				tail->back = new_tail;
 			
+				quer_po_added = true;
 				my_size++;
 				tail = new_tail;
 				//now the new point is inserted to the list and the later loop 
@@ -645,6 +654,7 @@ public:
 				new_tail->front = after_tail;
 				after_tail->back = new_tail;
 				
+				quer_po_added = true;
 				my_size++;
 				tail = new_tail;
 				//now we the new point is inserted to the list and the later loop 
@@ -652,12 +662,13 @@ public:
 			}
 			else
 			{
+				//the query point lies above or below the convex hull(2d)
 				Node* prev = head;
 				Node* after = head->front;
-				
-				
+			
 				while( prev != tail )
-				{// upper hull iteration
+				{
+					// upper hull iteration
 					if( query_po == prev->data || query_po == after->data)
 					{
 						// this is the case where the query point is equal to one point of the 
@@ -665,12 +676,12 @@ public:
 						delete query_nod;//we must delete the query point that we allocated
 						return -1;
 					}
-					if( query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
+					if( prev->data.GetX() != after->data.GetX() && 
+					    query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
 					{
-						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
-						    ( prev->data.GetX() == after->data.GetX() && 
-						         Pred::Orient(prev->data,query_po,after->data) == 0 &&
-						         (query_po.GetY() > prev->data.GetY() && query_po.GetY() >= after->data.GetY())) )
+						//if after and prev are on the same vertical line then we don't want to add the 
+						//query point here because it will be added to the next iteration
+						if( Pred::Orient(prev->data,query_po,after->data) > 0 )
 						{
 							//the second condition after || is for the case that the previous and the after 
 							//are at the same x coordinate, and we have three collinear points
@@ -680,6 +691,7 @@ public:
 							query_nod->back = prev;
 							query_nod->front = after;
 							after->back = query_nod;
+							quer_po_added = true;
 							my_size++;//the size must be increased. at the later stage may also be decreased.
 							break;//if we find the position of the query point in the list the we must stop
 						}
@@ -689,8 +701,9 @@ public:
 				}
 				prev = tail;
 				after = tail->front;
-				while( prev != head )
-				{// lower hull iteration
+				while( prev != head && !quer_po_added )
+				{
+					// lower hull iteration
 					if( query_po == prev->data || query_po == after->data)
 					{
 					// this is the case where the query point is equal to one point of the 
@@ -698,11 +711,10 @@ public:
 						delete query_nod;//we must delete the query point that we allocated
 						return -1;
 					}
-					if( query_po.GetX() >= after->data.GetX() && query_po.GetX() <= prev->data.GetX()  )
+					if( prev->data.GetX() != after->data.GetX() && 
+					    query_po.GetX() >= after->data.GetX() && query_po.GetX() <= prev->data.GetX() )
 					{
-						if( Pred::Orient(prev->data,query_po,after->data) > 0 ||
-						    (Pred::Orient(prev->data,query_po,after->data) == 0 &&
-						      (query_po.GetY() < prev->data.GetY() && query_po.GetY() < after->data.GetY())) )
+						if( Pred::Orient(prev->data,query_po,after->data) > 0 )
 						{
 						//the second condition after || is for the case that we have three collinear points
 						// and the query point is not between the other two points, thus it should be added
@@ -711,6 +723,7 @@ public:
 							query_nod->back = prev;
 							query_nod->front = after;
 							after->back = query_nod;
+							quer_po_added = true;
 							my_size++;//the size must be increased. at the later stage may also be decreased.
 							break;//if we find the position of the query point in the list the we must stop
 						}
@@ -721,6 +734,14 @@ public:
 			}
 			//at this stage we have added the query point to the list but maybe will deleted and also
 			//some other points maybe will deleted, the head and the tail points to the right nodes 
+				
+			if ( !quer_po_added )
+			{
+				//if the query point have not been added to the list then we don't have 
+				//to proceed any further because there is no change in the list. 
+				delete query_nod;
+				return -1;
+			}
 				
 			std::stack<Node*> del;// all the points from the list that will be deleted
 			//now is the time to delete all the unnecessary points
@@ -760,6 +781,7 @@ public:
 			notify_area();
 			if( flag )
 			{
+				//at the previous stage was checked if the point added to the list
 				delete query_nod;//we must delete the query point that we allocated
 				return -1;
 			}else
