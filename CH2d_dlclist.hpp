@@ -203,117 +203,164 @@ public:
 	CH2d_dlclist(const std::vector<Point2d>& points, std::string algorithm = "Jarvis")
 	{
 		int size_of_vec = points.size();
-		if( size_of_vec == 0)
+		if( size_of_vec == 0 )
 		{
 			head = 0;
 			tail = 0;
 			my_size = 0;
 			my_area = 0;
-		}else if( size_of_vec == 1)
+		}else if( size_of_vec == 1 )
 		{
-			Node* tmp = new Node;
-			tmp->data = points[0];
-			head = tmp;
-			tail = tmp;
+			head = new Node;
+			head->data = points[0];
 			head->front = head;
 			head->back = head;
+			tail = head;
 			my_size = 1;
 			my_area = 0;
 		}else if(size_of_vec == 2)
 		{
-			//I have to be carefull about whether two points are on the same 
-			//vertical line, whether the two points are different 
-			my_size = 2;
-			my_area = 0;
-		}
-		if( algorithm.compare("Jarvis") == 0 )
-		{
-			//firstly we have to find the point with the minimum x  i.e the one we get from
-			// GetX() from Point2d class
-			int pos_head = 0; //the position with the minimum x
-			// from all the points with the minimum x we must select the one 
-			// with the minimum y. But you can't avoid that you have to find 
-			// first the minimum x. If you don't find the minimum by x first
-			// then if the point with the minimum x is only one then the algorithm
-			// will fail.
-			for (int i = 1; i < size_of_vec; i++)
+			if( points[0] == points[1] )
 			{
-				if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) ||
-					points[i].GetX() < points[pos_head].GetX() )
-				{
-					pos_head = i;
-				}
-			}// end of finding minimum, now we have the position of the head
-			// for sure the points[pos_head] wil be the first point of the
-			// convex hull(2d).
-			
-			int pos_tail = 0; // the position with the maximum x will be 
-			//needed in order to set the tail of the list to this position.
-			//But it will be better if this maximum x has only the minimum y.
-			for( int i = 1; i < size_of_vec; i++ )
+				head = new Node;
+				head->data = points[0];
+				head->front = head;
+				head->back = head;
+				tail = head;
+				my_size = 1;
+				my_area = 0;
+			}else if( points[0].GetX() == points[1].GetX() )
 			{
-				if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) ||
-					points[i].GetX() > points[pos_tail].GetX() )
+				head = new Node;
+				tail = new Node;
+				if( points[0].GetY() < points[1].GetY() )
 				{
-					pos_tail = i;
+					head->data = points[0];
+					tail->data = points[1];
+					
+				}else if( points[0].GetY() > points[1].GetY() )
+				{
+					head->data = points[1];
+					tail->data = points[0];
 				}
+				head->front = tail;
+				tail->back = head;
+				tail->front = head;
+				head->back = tail;
+				my_size = 2;
+				my_area = 0;
+			}else 
+			{
+				head = new Node;
+				tail = new Node;
+				if( points[0].GetX() < points[1].GetX() )
+				{
+					head->data = points[0];
+					tail->data = points[1];
+				}else
+				{
+					head->data = points[1];
+					tail->data = points[0];
+				}
+				head->front = tail;
+				tail->back = head;
+				tail->front = head;
+				head->back = tail;
+				my_size = 2;
+				my_area = 0;
 			}
-		
-			head = new Node;
-			head->data = points[pos_head];
-			my_size =1;
-			Node* last_node = head;//we have to hold also the last node added to the list
-			int last_ch_pos = pos_head;// the position of the last point added to the convex
-			//hull (2d).
-			int pos_next_cand = (pos_head+1)%size_of_vec; // with this we can guarantee
-			//that we start from a "random" candidate different than the pos_head
-			while( pos_next_cand != pos_head )
+		}else
+		{
+			
+			if( algorithm.compare("Jarvis") == 0 )
 			{
-				pos_next_cand = (pos_head+1)%size_of_vec;// there is no problem if we 
-				//assign a standard possible next candidate, I added this line because
-				//from the end of the while if we come here the pos_next_cand doesn't
-				//change and at this run of the while you will have the pos_next_cand
-				// and the last_ch_pos equals. So the first if in the for will not be 
-				// true never.
-				
-				for( int i = 0; i < size_of_vec; i++ )
+				//firstly we have to find the point with the minimum x  i.e the one we get from
+				// GetX() from Point2d class
+				int pos_head = 0; //the position with the minimum x
+				// from all the points with the minimum x we must select the one 
+				// with the minimum y. But you can't avoid that you have to find 
+				// first the minimum x. If you don't find the minimum by x first
+				// then if the point with the minimum x is only one then the algorithm
+				// will fail.
+				for (int i = 1; i < size_of_vec; i++)
 				{
-					if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
-						// check the angle if one of the point is the same with another
-						if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 || 
-						    (Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
-						     Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
-						     Point2d::Distanceof2dPoints(points[last_ch_pos],points[i])) )
-						{//the best point will change if there is one with better angle, or a collinear
-						//point which is more distant from the last point added than the best point is distant
-						//from the last point added.
-							pos_next_cand = i;
-						}						
-					}
-				}//with the finish of the for we have the new point of the convex hull in the pos_next_cand
-		
-				if( pos_next_cand != pos_head )
-				{
-					//below we insert the point to the dlc list
-					Node* tmp = new Node;
-					tmp->data = points[pos_next_cand];
-					last_node->front = tmp;
-					tmp->back = last_node;
-					if( pos_next_cand == pos_tail )
+					if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) ||
+						points[i].GetX() < points[pos_head].GetX() )
 					{
-						tail = tmp;
+						pos_head = i;
 					}
-					//below we have to update the indexes and the pointers to node
-					last_node = tmp;
-					last_ch_pos = pos_next_cand;
-					my_size++;
-					//becareful don't updathe pos_next_cand because it is checked in the 
-					//condition of the while
+				}// end of finding minimum, now we have the position of the head
+				// for sure the points[pos_head] wil be the first point of the
+				// convex hull(2d).
+			
+				int pos_tail = 0; // the position with the maximum x will be 
+				//needed in order to set the tail of the list to this position.
+				//But it will be better if this maximum x has only the minimum y.
+				for( int i = 1; i < size_of_vec; i++ )
+				{
+					if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) ||
+						points[i].GetX() > points[pos_tail].GetX() )
+					{
+						pos_tail = i;
+					}
+				}
+		
+				head = new Node;
+				head->data = points[pos_head];
+				my_size =1;
+				Node* last_node = head;//we have to hold also the last node added to the list
+				int last_ch_pos = pos_head;// the position of the last point added to the convex
+				//hull (2d).
+				int pos_next_cand = (pos_head+1)%size_of_vec; // with this we can guarantee
+				//that we start from a "random" candidate different than the pos_head
+				while( pos_next_cand != pos_head )
+				{
+					pos_next_cand = (pos_head+1)%size_of_vec;// there is no problem if we 
+					//assign a standard possible next candidate, I added this line because
+					//from the end of the while if we come here the pos_next_cand doesn't
+					//change and at this run of the while you will have the pos_next_cand
+					// and the last_ch_pos equals. So the first if in the for will not be 
+					// true never.
 				
-				}else //if the next point of the ch(2d) is the head then 
-				{	//we don't have to allocate memory it is already allocated
-					last_node->front = head;
-					head->back = last_node;
+					for( int i = 0; i < size_of_vec; i++ )
+					{
+						if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
+						// check the angle if one of the point is the same with another
+							if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 || 
+							(Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
+							Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
+							Point2d::Distanceof2dPoints(points[last_ch_pos],points[i])) )
+							{//the best point will change if there is one with better angle, or a collinear
+							//point which is more distant from the last point added than the best point is distant
+							//from the last point added.
+								pos_next_cand = i;
+							}						
+						}
+					}//with the finish of the for we have the new point of the convex hull in the pos_next_cand
+		
+					if( pos_next_cand != pos_head )
+					{
+						//below we insert the point to the dlc list
+						Node* tmp = new Node;
+						tmp->data = points[pos_next_cand];
+						last_node->front = tmp;
+						tmp->back = last_node;
+						if( pos_next_cand == pos_tail )
+						{
+							tail = tmp;
+						}
+						//below we have to update the indexes and the pointers to node
+						last_node = tmp;
+						last_ch_pos = pos_next_cand;
+						my_size++;
+						//becareful don't updathe pos_next_cand because it is checked in the 
+						//condition of the while
+				
+					}else //if the next point of the ch(2d) is the head then 
+					{	//we don't have to allocate memory it is already allocated
+						last_node->front = head;
+						head->back = last_node;
+					}
 				}
 			}
 		}
@@ -410,14 +457,7 @@ public:
 	}
 	
 
-	/**
-	 * @returns the number of the points consistute the convex hull
-	 */
-	unsigned int size() const
-	{
-		return my_size;
-	}
-
+	
 	/**
 	* This function will push a point to the dlc list if it is not in the
 	* convex hull(2d), otherwise it will not be added. The complexity of 
@@ -795,12 +835,22 @@ public:
 		
 	}
 	
+	
+	/**
+	 * @returns the number of the points consistute the convex hull
+	 */
+	unsigned int size() const
+	{
+		return my_size;
+	}
+
+	
 	/**
 	* @returns the point with the minimum x and the minimum y
 	*/
 	ch_iterator begin() const
 	{
-		assert(my_size > 0);
+		assert( my_size > 0 );
 		return ch_iterator(head);
 	}
 
@@ -814,7 +864,13 @@ public:
 		return ch_iterator(tail);
 	}
 	
-	
+	/**
+	 * @returns the area of the convex hull(2d)
+	 */
+	double area() const
+	{
+		return my_area;
+	}
 	
 };
 

@@ -5,9 +5,83 @@
 
 void test_push()
 {
-	std::cout << "Start---Testing: void push(T a)----------" << "\n\n"; 
+	std::cout << "Start---Testing: void push(Point2d )----------" << "\n\n"; 
 	
 	
+	/*With the below code we will execute all the cases in the
+	 * push(Point2d) as they formed by the if else cases
+	 */
+	std::ofstream outfile("ch_push_res_of_all_cases.dat");
+	int cas = 3;
+	if( cas == 1 )
+	{
+		outfile << "-------------------------------\n";
+		outfile << "This is the first case where we have an empty convex hull(2d) and";
+		outfile << "we add a single point.\n";
+		CH2d_dlclist a;
+		a.push(Point2d(1,1));
+		CH2d_dlclist::ch_iterator it = a.begin();
+		CH2d_dlclist::ch_iterator it1 = a.end();
+		outfile << "The head is " << *it << "\n";
+		outfile << "The tail is " << *it1 << "\n";
+		outfile << "The head->front is " <<  *(it+1) << "\n";
+		outfile << "The head->back is " << *(it-1) << "\n";
+		outfile << "The tail->front is " << *(it1 + 1) << "\n";
+		outfile << "The tail->back is " << *(it1 - 1 ) << "\n";
+		outfile << "The size is " << a.size()  << "\n";
+		outfile << "The area is " << a.area() << "\n";
+		outfile << "-------------------------------"; 
+	}else if( cas == 2 )
+	{
+		outfile << "-------------------------------\n";
+		outfile << "This is the second case where we have a convex hull(2d) with one ";
+		outfile << "point and we will add another one\n";
+		std::vector<Point2d> vec;
+		vec.push_back(Point2d(10,10));
+		CH2d_dlclist a(vec,"Jarvis");
+		CH2d_dlclist::ch_iterator it = a.begin();
+		CH2d_dlclist::ch_iterator it1 = a.end();
+		outfile << "The head is " << *it << "\n";
+		outfile << "The tail is " << *it1 << "\n";
+		outfile << "The head->front is " << *(it+1) << "\n";
+		outfile << "The head->back is " << *(it-1) << "\n";
+		outfile << "The tail->front is " << *(it1+1) << "\n";
+		outfile << "The tail->back is " << *(it1-1) << "\n";
+		outfile << "The size is " << a.size()  << "\n";
+		outfile << "The area is " << a.area() << "\n";
+		outfile << "-------------------------------"; 
+		
+	}else if( cas == 3 )
+	{
+		outfile << "-------------------------------\n";
+		outfile << "This is the third case where we have a convex hull(2d) with two ";
+		outfile << "points and we will add another one\n";
+		std::vector<Point2d> vec;
+		vec.push_back(Point2d(1,1));
+		vec.push_back(Point2d(0,1));
+		CH2d_dlclist a(vec,"Jarvis");
+		a.push(Point2d(2,1));
+		CH2d_dlclist::ch_iterator it = a.begin();
+		CH2d_dlclist::ch_iterator flag = it;
+		CH2d_dlclist::ch_iterator it1 = a.end();
+		outfile << "The head is " << *it << "\n";
+		outfile << "The tail is " << *it1 << "\n";
+		outfile << "Below we will see the clockwise iteration\n";
+		outfile << *(it++) << "\n";
+		while( it++ != flag )
+		{
+			outfile << *(it) << "\n";
+		}
+		outfile << "-------------------------------"; 
+	}
+	outfile.close();
+	
+	/*
+	 *  end of the cases
+	 */
+	
+	/* The below is using a random generator of points in (0,1) 
+	 * and pushes all of the point in the convex hull
 	std::ifstream infile("sets_of_points.dat");
 	std::ofstream outfile("convex_hull_res.dat");
 	double a;
@@ -39,10 +113,12 @@ void test_push()
 	outfile << "\n";
 		
 	outfile.close();
-
+	/* /*end of one of the debugging code*/
+	
+	
 	
 	std::cout << "\n";
-	std::cout << "End-----Testing: void push(T a)----------" << "\n\n";
+	std::cout << "End-----Testing: void push(Point2d )----------" << "\n\n";
 }
 
 void test_default_constructor()

@@ -1,0 +1,8 @@
+-------------------------------
+This is the third case where we have a convex hull(2d) with two points and we will add another one
+The head is ( 0 , 1 ) 
+The tail is ( 1 , 1 ) 
+Below we will see the clockwise iteration
+( 0 , 1 ) 
+( 0 , 1 ) 
+-------------------------------
