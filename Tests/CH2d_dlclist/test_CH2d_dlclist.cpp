@@ -3,6 +3,47 @@
 #include "../../CH2d_dlclist.hpp"
 #include "../../Point2d.hpp"
 
+/*
+ * An auxiliary function to print the state of the list 
+ */
+void print_state_ch2d(std::ostream& wri, CH2d_dlclist a)
+{
+	wri << "The head is " << *(a.begin()) << "\n";
+	wri << "The tail is " << *(a.end()) << "\n";
+	wri << "The size is " << a.size() << "\n";
+	wri << "The area is " << a.area() << "\n";
+	wri << "The clockwise iteration is :" << "\n";
+	CH2d_dlclist::ch_iterator it = a.begin();
+	CH2d_dlclist::ch_iterator flag = it;
+	int size = a.size();
+	wri << *it;
+	int count = 1;
+	while( ++it != flag )
+	{
+		if( count% 10 == 0 ) 
+		{
+			wri<< "\n";
+		}
+		wri << *it << " "; 
+	}
+	wri << "\n";
+	wri << "The counter clockwise iteration is :" << "\n";
+	it = a.begin();
+	size = a.size();
+	wri << *it;
+	count = 1;
+	while( --it != flag )
+	{
+		if( count% 10 == 0 ) 
+		{
+			wri<< "\n";
+		}
+		wri << *it << " "; 
+	}
+	wri << "\n";
+}
+
+
 void test_push()
 {
 	std::cout << "Start---Testing: void push(Point2d )----------" << "\n\n"; 
@@ -12,67 +53,76 @@ void test_push()
 	 * push(Point2d) as they formed by the if else cases
 	 */
 	std::ofstream outfile("ch_push_res_of_all_cases.dat");
-	int cas = 3;
-	if( cas == 1 )
+	int cas = 1;
+	while( cas < 10 )
 	{
-		outfile << "-------------------------------\n";
-		outfile << "This is the first case where we have an empty convex hull(2d) and";
-		outfile << "we add a single point.\n";
-		CH2d_dlclist a;
-		a.push(Point2d(1,1));
-		CH2d_dlclist::ch_iterator it = a.begin();
-		CH2d_dlclist::ch_iterator it1 = a.end();
-		outfile << "The head is " << *it << "\n";
-		outfile << "The tail is " << *it1 << "\n";
-		outfile << "The head->front is " <<  *(it+1) << "\n";
-		outfile << "The head->back is " << *(it-1) << "\n";
-		outfile << "The tail->front is " << *(it1 + 1) << "\n";
-		outfile << "The tail->back is " << *(it1 - 1 ) << "\n";
-		outfile << "The size is " << a.size()  << "\n";
-		outfile << "The area is " << a.area() << "\n";
-		outfile << "-------------------------------"; 
-	}else if( cas == 2 )
-	{
-		outfile << "-------------------------------\n";
-		outfile << "This is the second case where we have a convex hull(2d) with one ";
-		outfile << "point and we will add another one\n";
-		std::vector<Point2d> vec;
-		vec.push_back(Point2d(10,10));
-		CH2d_dlclist a(vec,"Jarvis");
-		CH2d_dlclist::ch_iterator it = a.begin();
-		CH2d_dlclist::ch_iterator it1 = a.end();
-		outfile << "The head is " << *it << "\n";
-		outfile << "The tail is " << *it1 << "\n";
-		outfile << "The head->front is " << *(it+1) << "\n";
-		outfile << "The head->back is " << *(it-1) << "\n";
-		outfile << "The tail->front is " << *(it1+1) << "\n";
-		outfile << "The tail->back is " << *(it1-1) << "\n";
-		outfile << "The size is " << a.size()  << "\n";
-		outfile << "The area is " << a.area() << "\n";
-		outfile << "-------------------------------"; 
-		
-	}else if( cas == 3 )
-	{
-		outfile << "-------------------------------\n";
-		outfile << "This is the third case where we have a convex hull(2d) with two ";
-		outfile << "points and we will add another one\n";
-		std::vector<Point2d> vec;
-		vec.push_back(Point2d(1,1));
-		vec.push_back(Point2d(0,1));
-		CH2d_dlclist a(vec,"Jarvis");
-		a.push(Point2d(2,1));
-		CH2d_dlclist::ch_iterator it = a.begin();
-		CH2d_dlclist::ch_iterator flag = it;
-		CH2d_dlclist::ch_iterator it1 = a.end();
-		outfile << "The head is " << *it << "\n";
-		outfile << "The tail is " << *it1 << "\n";
-		outfile << "Below we will see the clockwise iteration\n";
-		outfile << *(it++) << "\n";
-		while( it++ != flag )
+		if( cas == 1 )
 		{
-			outfile << *(it) << "\n";
+			outfile << "-------------------------------\n";
+			CH2d_dlclist a;
+			outfile << "The list is empty" << "\n";
+			outfile << "Addition of the point " << Point2d(1,10) << " : " << a.push(Point2d(-1,10))  << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 2 )
+		{
+			outfile << "-------------------------------\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,2) << " : " << a.push(Point2d(-1,2)) << "\n";
+			a.push(Point2d(-1,2));
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 3 )
+		{
+			outfile << "-------------------------------\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,3) << " : " << a.push(Point2d(-1,3)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 4 )
+		{
+			outfile << "-------------------------------\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,-4) << " : " << a.push(Point2d(-1,-4)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 5 )
+		{
+			outfile << "-------------------------------\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(1,2) << " : " << a.push(Point2d(1,2)) << "\n";
+			a.push(Point2d(-1,2));
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 6 )
+		{
+			outfile << "-------------------------------\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-3,2) << " : " << a.push(Point2d(-3,2)) << "\n";
+			a.push(Point2d(-1,2));
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+			//this is the last case with one point before the addition
+		}else if( cas == 7 )
+		{
+			
 		}
-		outfile << "-------------------------------"; 
+		cas++;
 	}
 	outfile.close();
 	
