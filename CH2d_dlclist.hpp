@@ -292,7 +292,6 @@ public:
 				}// end of finding minimum, now we have the position of the head
 				// for sure the points[pos_head] wil be the first point of the
 				// convex hull(2d).
-			
 				int pos_tail = 0; // the position with the maximum x will be 
 				//needed in order to set the tail of the list to this position.
 				//But it will be better if this maximum x has only the minimum y.
@@ -304,7 +303,6 @@ public:
 						pos_tail = i;
 					}
 				}
-		
 				head = new Node;
 				head->data = points[pos_head];
 				my_size =1;
@@ -315,29 +313,31 @@ public:
 				//that we start from a "random" candidate different than the pos_head
 				while( pos_next_cand != pos_head )
 				{
-					pos_next_cand = (pos_head+1)%size_of_vec;// there is no problem if we 
-					//assign a standard possible next candidate, I added this line because
-					//from the end of the while if we come here the pos_next_cand doesn't
-					//change and at this run of the while you will have the pos_next_cand
-					// and the last_ch_pos equals. So the first if in the for will not be 
-					// true never.
+					pos_next_cand = (last_ch_pos+1)%size_of_vec;// we change the pos_next_cand
+					//after the while because we don't want to the end of the while because
+					//at the start of the while we remain the pos_next_cand to be checked.
+					// the last_ch_pos changes in every iteration so there is no problem this
+					// assignment.
 				
 					for( int i = 0; i < size_of_vec; i++ )
 					{
-						if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand ){//doesn't have a sense to 
-						// check the angle if one of the point is the same with another
+						if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand )
+						{
+							//doesn't have a sense to  check the angle if one of the point is the
+							//same with another
 							if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 || 
-							(Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
-							Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
-							Point2d::Distanceof2dPoints(points[last_ch_pos],points[i])) )
-							{//the best point will change if there is one with better angle, or a collinear
+							       (Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
+							       Point2d::Distanceof2dPoints(points[last_ch_pos],points[pos_next_cand]) < 
+							       Point2d::Distanceof2dPoints(points[last_ch_pos],points[i])) )
+							{
+							//the best point will change if there is one with better angle, or a collinear
 							//point which is more distant from the last point added than the best point is distant
 							//from the last point added.
 								pos_next_cand = i;
 							}						
 						}
-					}//with the finish of the for we have the new point of the convex hull in the pos_next_cand
-		
+					}
+					//with the finish of the for we have the new point of the convex hull in the pos_next_cand
 					if( pos_next_cand != pos_head )
 					{
 						//below we insert the point to the dlc list
