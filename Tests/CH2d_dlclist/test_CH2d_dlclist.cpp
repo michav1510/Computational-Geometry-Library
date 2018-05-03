@@ -53,8 +53,8 @@ void test_push()
 	 * push(Point2d) as they formed by the if else cases
 	 */
 	std::ofstream outfile("ch_push_res_of_all_cases.dat");
-	int cas = 12;
-	while( cas <= 12 )
+	int cas = 1;
+	while( cas <= 15 )
 	{
 		if( cas == 1 )
 		{	
@@ -165,7 +165,6 @@ void test_push()
 		}else if( cas == 11 )
 		{
 			outfile << "-------------------------------\n";
-			outfile << "case 11 (THERE IS A BUG) \n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			vec.push_back(Point2d(-1,5));
@@ -177,7 +176,6 @@ void test_push()
 		}else if( cas == 12 )
 		{
 			outfile << "-------------------------------\n";
-			outfile << "case 12 (THERE IS A BUG) \n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			vec.push_back(Point2d(-1,5));
