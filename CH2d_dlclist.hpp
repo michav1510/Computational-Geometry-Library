@@ -533,7 +533,7 @@ public:
 			{//if the query point is equal with one of the current points
 				return -1;
 			}else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
-				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) ||
+				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) &&
 				     (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) )  )
 			{
 				// if the query point is collinear with the other two and the query point is between the head

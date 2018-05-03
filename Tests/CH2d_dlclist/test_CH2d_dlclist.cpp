@@ -49,35 +49,41 @@ void test_push()
 	std::cout << "Start---Testing: void push(Point2d )----------" << "\n\n"; 
 	
 	
-	/*With the below code we will execute all the cases in the
+	/* With the below code we will execute all the cases in the
 	 * push(Point2d) as they formed by the if else cases
 	 */
 	std::ofstream outfile("ch_push_res_of_all_cases.dat");
-	int cas = 1;
-	while( cas < 10 )
+	int cas = 12;
+	while( cas <= 12 )
 	{
 		if( cas == 1 )
-		{
+		{	
+			//this is the case where we have an empty list and we add 
+			//a point
 			outfile << "-------------------------------\n";
+			outfile << "case 1\n";
 			CH2d_dlclist a;
 			outfile << "The list is empty" << "\n";
-			outfile << "Addition of the point " << Point2d(1,10) << " : " << a.push(Point2d(-1,10))  << "\n";
+			outfile << "Addition of the point " << Point2d(1,10) << " : " << a.push(Point2d(1,10))  << "\n";
 			print_state_ch2d(outfile,a);
 			outfile << "-------------------------------\n";
-		}else if( cas == 2 )
+			
+		}else if( cas == 3 )
 		{
 			outfile << "-------------------------------\n";
+			outfile << "case 3\n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			CH2d_dlclist a(vec,"Jarvis");
 			print_state_ch2d(outfile,a);
 			outfile << "Addition of the point " << Point2d(-1,2) << " : " << a.push(Point2d(-1,2)) << "\n";
-			a.push(Point2d(-1,2));
 			print_state_ch2d(outfile,a);
 			outfile << "-------------------------------\n";
-		}else if( cas == 3 )
+		}else if( cas == 4 )
 		{
+			//below we have cases where we have a list with one point and we add another one
 			outfile << "-------------------------------\n";
+			outfile << "case 4\n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			CH2d_dlclist a(vec,"Jarvis");
@@ -85,9 +91,10 @@ void test_push()
 			outfile << "Addition of the point " << Point2d(-1,3) << " : " << a.push(Point2d(-1,3)) << "\n";
 			print_state_ch2d(outfile,a);
 			outfile << "-------------------------------\n";
-		}else if( cas == 4 )
+		}else if( cas == 5 )
 		{
 			outfile << "-------------------------------\n";
+			outfile << "case 5\n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			CH2d_dlclist a(vec,"Jarvis");
@@ -95,32 +102,245 @@ void test_push()
 			outfile << "Addition of the point " << Point2d(-1,-4) << " : " << a.push(Point2d(-1,-4)) << "\n";
 			print_state_ch2d(outfile,a);
 			outfile << "-------------------------------\n";
-		}else if( cas == 5 )
+		}else if( cas == 6 )
 		{
 			outfile << "-------------------------------\n";
+			outfile << "case 6\n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			CH2d_dlclist a(vec,"Jarvis");
 			print_state_ch2d(outfile,a);
 			outfile << "Addition of the point " << Point2d(1,2) << " : " << a.push(Point2d(1,2)) << "\n";
-			a.push(Point2d(-1,2));
 			print_state_ch2d(outfile,a);
 			outfile << "-------------------------------\n";
-		}else if( cas == 6 )
+		}else if( cas == 7 )
 		{
 			outfile << "-------------------------------\n";
+			outfile << "case 7\n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(-1,2));
 			CH2d_dlclist a(vec,"Jarvis");
 			print_state_ch2d(outfile,a);
 			outfile << "Addition of the point " << Point2d(-3,2) << " : " << a.push(Point2d(-3,2)) << "\n";
-			a.push(Point2d(-1,2));
 			print_state_ch2d(outfile,a);
 			outfile << "-------------------------------\n";
 			//this is the last case with one point before the addition
-		}else if( cas == 7 )
+		}else if( cas == 8 )
 		{
-			
+			//this is the case where we have two points in the list and we add another one
+			outfile << "-------------------------------\n";
+			outfile << "case 8\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,3) << " : " << a.push(Point2d(-1,3)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 9 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 9\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,2) << " : " << a.push(Point2d(-1,2)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 10 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 10\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,5) << " : " << a.push(Point2d(-1,5)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 11 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 11 (THERE IS A BUG) \n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,6) << " : " << a.push(Point2d(-1,6)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 12 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 12 (THERE IS A BUG) \n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,-1) << " : " << a.push(Point2d(-1,-1)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 13 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 13\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(10,5) << " : " << a.push(Point2d(10,5)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 14 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 14\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(-1,5));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-4,5) << " : " << a.push(Point2d(-4,5)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 15 )
+		{
+			//in this case we have three points to the list and we add another one
+			outfile << "-------------------------------\n";
+			outfile << "case 15\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(0,0) << " : " << a.push(Point2d(0,0)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 16 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 16\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(1,0) << " : " << a.push(Point2d(1,0)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 17 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 17\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(1,1) << " : " << a.push(Point2d(1,1)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 18 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 18\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(0.5,0.5) << " : " << a.push(Point2d(0.5,0.5)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 19 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 19\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(1,0.5) << " : " << a.push(Point2d(1,0.5)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 20 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 20\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(0.5,0) << " : " << a.push(Point2d(0.5,0)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 21 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 21\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(0.5,0.25) << " : " << a.push(Point2d(0.5,0.25)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 22 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 22\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(1,3) << " : " << a.push(Point2d(1,3)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 23 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 23\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(1,-0.5) << " : " << a.push(Point2d(1,-0.5)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
+		}else if( cas == 24 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 24\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(1,1));
+			CH2d_dlclist a(vec,"Jarvis");
+			print_state_ch2d(outfile,a);
+			outfile << "Addition of the point " << Point2d(-1,1) << " : " << a.push(Point2d(-1,1)) << "\n";
+			print_state_ch2d(outfile,a);
+			outfile << "-------------------------------\n";
 		}
 		cas++;
 	}
