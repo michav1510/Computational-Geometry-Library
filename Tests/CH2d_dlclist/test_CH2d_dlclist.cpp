@@ -54,7 +54,7 @@ void test_push()
 	 */
 	std::ofstream outfile("ch_push_res_of_all_cases.dat");
 	int cas = 1;
-	while( cas <= 15 )
+	while( cas <= 30 )
 	{
 		if( cas == 1 )
 		{	
@@ -212,7 +212,7 @@ void test_push()
 		{
 			//in this case we have three points to the list and we add another one
 			outfile << "-------------------------------\n";
-			outfile << "case 15\n";
+			outfile << "case 15(THERE IS A BUG)\n";
 			std::vector<Point2d> vec;
 			vec.push_back(Point2d(0,0));
 			vec.push_back(Point2d(1,0));

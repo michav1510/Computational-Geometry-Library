@@ -271,7 +271,6 @@ public:
 			}
 		}else
 		{
-			
 			if( algorithm.compare("Jarvis") == 0 )
 			{
 				//firstly we have to find the point with the minimum x  i.e the one we get from
@@ -363,6 +362,7 @@ public:
 					}
 				}
 			}
+			notify_area();
 		}
 	};
 
@@ -560,8 +560,7 @@ public:
 						delete tail;// the old tail must be deleted
 						tail = new_elem;
 					}
-				}
-				else if( query_po.GetX() < head->data.GetX() )
+				}else if( query_po.GetX() < head->data.GetX() )
 				{
 					// the new element must substitute the head and the (old) head must be deleted
 					delete head;//the old head must be deleted 
@@ -579,28 +578,36 @@ public:
 				//becareful we added a new element but we deleted also so there is no change in
 				//the size, nor change to the area because is zero again;
 				return 1;
-			}
-			else 
+			}else 
 			{
 				// in this case the query point will be added to the list
 				Node* new_elem = new Node;
 				new_elem->data = query_po;
 				if( query_po.GetX() < head->data.GetX() ||
 				    (query_po.GetX() == head->data.GetX() && query_po.GetY() < head->data.GetY()) )
-				{// then the head must be substituted by the query point
-				
+				{
+					// then the head must be substituted by the query point
 					Node* old_head = head;
 					head = new_elem;
 					if( Pred::Orient(query_po,old_head->data,tail->data) < 0 )
-					{// the front of the new head is the tail,
+					{
+						// the front of the new head is the tail,
 						head->front = tail;
 						tail->back = head;
 						tail->front = old_head;
 						old_head->back = tail;
 						old_head->front = head;
 						head->back = old_head;
+						if( old_head->data.GetX() == tail->data.GetX() )
+						{
+							//if the old head lie on the same vertical
+							// line with the tail then the tail also must change
+							tail = old_head;						
+						}
+							
 					}else
-					{// the front of the new head is the old head
+					{
+						// the front of the new head is the old head
 						head->front = old_head;
 						old_head->back = head;
 						old_head->front = tail;
@@ -615,7 +622,8 @@ public:
 					Node* old_tail = tail;
 					tail = new_elem;
 					if( Pred::Orient(head->data,old_tail->data,query_po) < 0 )
-					{// then the front of the head is the new tail 
+					{
+						// then the front of the head is the new tail 
 						head->front = tail;
 						tail->back = head;
 						tail->front = old_tail;
@@ -623,7 +631,8 @@ public:
 						old_tail->front = head;
 						head->back = old_tail;
 					}else 
-					{// the front of the head is the old tail
+					{
+						// the front of the head is the old tail
 						head->front = old_tail;
 						old_tail->back = head;
 						old_tail->front = tail;
