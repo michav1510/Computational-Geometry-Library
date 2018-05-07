@@ -4,7 +4,7 @@ makefile.
 If you have matlab installed :
 1)run the generate_random_points_for_testing_CH2d_dlclist.m
 2)run the make file 
-3)run the sets_os_points.dat
+3)run the plot_data.m
 You will see points with blue and the convex hull with red 
 lines.
 The "sets_of_points.dat" is the file that the test_CH2d_dlclist.cpp

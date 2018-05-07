@@ -473,6 +473,7 @@ public:
 	{
 		if( my_size == 0 )
 		{
+			//std::cout << "(DEBUGGING) : case 1\n";
 			head = new Node;
 			head->data = query_po;
 			head->front = head;
@@ -483,38 +484,46 @@ public:
 			return 1;
 		}else if( my_size == 1 )
 		{
+			//std::cout << "(DEBUGGING) : case 2\n";
 			Node* current_nod ;
 			current_nod = head;
-			
+
 			//the current point of the list is represented by the head
 			if( !(query_po == current_nod->data) )//if the points are not equal
 			{
+				//std::cout << "(DEBUGGING) : case 3\n";
 				Node* new_elem = new Node; // if we construct the new point Node and it will not be added we will have 
 				// a memory leak, so I declare and initialize the node inside the if
 				new_elem->data = query_po;
 					
 				if( query_po.GetX() < current_nod->data.GetX() )
 				{
+					//std::cout << "(DEBUGGING) : case 4\n";
 					head = new_elem;
 					tail = current_nod;
 				}
 				else if( query_po.GetX() > current_nod->data.GetX() )
 				{
+					//std::cout << "(DEBUGGING) : case 5\n";
 					head = current_nod;
 					tail = new_elem;
 				}else//if the two points are on the same vertical position
 				{
+					//std::cout << "(DEBUGGING) : case 6\n";
 					if( current_nod->data.GetY() > query_po.GetY() )
 					{
+						//std::cout << "(DEBUGGING) : case 7\n";
 						head = new_elem;
 						tail = current_nod;
 
 					}else if( current_nod->data.GetY() < query_po.GetY() )
 					{
+						//std::cout << "(DEBUGGING) : case 8\n";
 						head = current_nod;
 						tail = new_elem;
 					}
 				}
+				//std::cout << "(DEBUGGING) : case 9\n";
 				head->front = tail;
 				head->back = tail;
 				tail->back = head;
@@ -524,53 +533,64 @@ public:
 				return 1; 
 			}else
 			{
+				//std::cout << "(DEBUGGING) : case 10\n";
 				return -1;
 			}
 			
 		}else if( my_size == 2 )
 		{
+			//std::cout << "(DEBUGGING) : case 11\n";
 			if( head->data == query_po || tail->data == query_po )
 			{
+				//std::cout << "(DEBUGGING) : case 12\n";
 				//if the query point is equal with one of the current points
 				return -1;
 			}else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
 				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) &&
 				     (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) )  )
 			{
+				//std::cout << "(DEBUGGING) : case 13\n";
 				// if the query point is collinear with the other two and the query point is between the head
 				// and the tail then it will not be added to the list
 				return -1;
 			}else if( Pred::Orient(query_po,head->data,tail->data) == 0 ) 
 			{
+				//std::cout << "(DEBUGGING) : case 14\n";
 				// the new element is collinear but it will be added to the list
 				Node* new_elem = new Node;
 				new_elem->data = query_po;
 				if( head->data.GetX() == tail->data.GetX() )
 				{
+					//std::cout << "(DEBUGGING) : case 15\n";
 					// if the head and the tail lie on the same vertical line
 					//then we check the y coordinates
 					if( query_po.GetY() < head->data.GetY() )
 					{
+						//std::cout << "(DEBUGGING) : case 16\n";
 						// the new element must substitute the head and the (old) head must be deleted
 						delete head;//the old head must be deleted 
 						head = new_elem;
 					}else
 					{
+						//std::cout << "(DEBUGGING) : case 17\n";
 						// the new element must substitute the tail and the (old) head must be deleted
 						delete tail;// the old tail must be deleted
 						tail = new_elem;
 					}
 				}else if( query_po.GetX() < head->data.GetX() )
 				{
+					//std::cout << "(DEBUGGING) : case 18\n";
 					// the new element must substitute the head and the (old) head must be deleted
 					delete head;//the old head must be deleted 
 					head = new_elem;
 				}else
 				{
+					//std::cout << "(DEBUGGING) : case 19\n";
 					// the new element must substitute the tail and the (old) head must be deleted
 					delete tail;// the old tail must be deleted
 					tail = new_elem;
 				}
+				//std::cout << "(DEBUGGING) : case 20\n";
 				head->front = tail;
 				tail->back = head;
 				tail->front = head;
@@ -580,17 +600,20 @@ public:
 				return 1;
 			}else 
 			{
+				//std::cout << "(DEBUGGING) : case 21\n";
 				// in this case the query point will be added to the list
 				Node* new_elem = new Node;
 				new_elem->data = query_po;
 				if( query_po.GetX() < head->data.GetX() ||
 				    (query_po.GetX() == head->data.GetX() && query_po.GetY() < head->data.GetY()) )
 				{
+					//std::cout << "(DEBUGGING) : case 22\n";
 					// then the head must be substituted by the query point
 					Node* old_head = head;
 					head = new_elem;
 					if( Pred::Orient(query_po,old_head->data,tail->data) < 0 )
 					{
+						//std::cout << "(DEBUGGING) : case 23\n";
 						// the front of the new head is the tail,
 						head->front = tail;
 						tail->back = head;
@@ -600,13 +623,14 @@ public:
 						head->back = old_head;
 						if( old_head->data.GetX() == tail->data.GetX() )
 						{
+							//std::cout << "(DEBUGGING) : case 24\n";
 							//if the old head lie on the same vertical
 							// line with the tail then the tail also must change
 							tail = old_head;						
 						}
-							
 					}else
 					{
+						//std::cout << "(DEBUGGING) : case 25\n";
 						// the front of the new head is the old head
 						head->front = old_head;
 						old_head->back = head;
@@ -615,14 +639,16 @@ public:
 						tail->front = head;
 						head->back = tail;
 					}
-					
 				}else if( query_po.GetX() > tail->data.GetX() ||
-				    (query_po.GetX()== tail->data.GetX() && query_po.GetY() < tail->data.GetY()) )
-				{// the the tail must be substituted 
+				        (query_po.GetX()== tail->data.GetX() && query_po.GetY() < tail->data.GetY()) )
+				{
+					//std::cout << "(DEBUGGING) : case 26\n";
+					// the the tail must be substituted 
 					Node* old_tail = tail;
 					tail = new_elem;
 					if( Pred::Orient(head->data,old_tail->data,query_po) < 0 )
 					{
+						//std::cout << "(DEBUGGING) : case 27\n";
 						// then the front of the head is the new tail 
 						head->front = tail;
 						tail->back = head;
@@ -632,6 +658,7 @@ public:
 						head->back = old_tail;
 					}else 
 					{
+						//std::cout << "(DEBUGGING) : case 28\n";
 						// the front of the head is the old tail
 						head->front = old_tail;
 						old_tail->back = head;
@@ -640,13 +667,39 @@ public:
 						tail->front = head;
 						head->back = tail;
 					}
+				}else
+				{
+					//std::cout << "(DEBUGGING) : case 29\n";
+					// then the nor the head nor the tail must be substituted
+					if( Pred::Orient(tail->data,head->data,query_po) > 0 )
+					{
+						//std::cout << "(DEBUGGING) : case 30\n";
+						head->front = new_elem;
+						new_elem->back = head;
+						new_elem->front = tail;
+						tail->back = new_elem;
+						tail->front = head;
+						head->back = tail;
+					}else 
+					{
+						//std::cout << "(DEBUGGING) : case 31\n";
+						head->front = tail;
+						tail->back = head;
+						tail->front = new_elem;
+						new_elem->back = tail;
+						new_elem->front = head;
+						head->back = new_elem;
+					}
+					
 				}
+				//std::cout << "(DEBUGGING) : case 31\n";
 				my_size++;
 				notify_area();
 				return 1;
 			}			
 		}else//in this case we have an at least 3 points current convex hull(2d)
 		{
+			//std::cout << "(DEBUGGING) : case 33\n";
 			//becareful you can't avoid the first stage which is the necessity to add 
 			//the point to the list and the later loop will delete it if needed. The 
 			//reason is you can't know how many points front or back you have to delete
@@ -664,6 +717,7 @@ public:
 			//is checked in the else of the following if-elseif...-else statement
 			if( query_po.GetX() <= head->data.GetX() && query_po.GetY() < head->data.GetY() )
 			{
+				//std::cout << "(DEBUGGING) : case 34\n";
 				Node* new_head = query_nod;//the query point is new head
 			
 				Node* bef_head = head->back;
@@ -679,6 +733,7 @@ public:
 				//will delete some points if it is needed
 			}else if( query_po.GetX() < head->data.GetX() && query_po.GetY() >= head->data.GetY() )
 			{
+				//std::cout << "(DEBUGGING) : case 35\n";
 				Node* new_head = query_nod;//the query point is new head
 							
 				Node* after_head = head->front;
@@ -687,7 +742,6 @@ public:
 				new_head->front = after_head;
 				after_head->back = new_head;
 				
-
 				quer_po_added = true;
 				my_size++;
 				head = new_head;
@@ -696,15 +750,16 @@ public:
 			}
 			else if( query_po.GetX() > tail->data.GetX() && query_po.GetY() >= tail->data.GetY() )
 			{
+				//std::cout << "(DEBUGGING) : case 36\n";
 				// becareful if the X's are equal and the Y of query point is bigger or equal to Y of tail
 				// then the query point is not new tail
 				Node* new_tail = query_nod;//the query point is new tail
 				
-				Node* bef_tail = tail->back;
-				bef_tail->front = new_tail;
-				new_tail->back = bef_tail;
-				new_tail->front = tail;
-				tail->back = new_tail;
+				Node* after_tail = tail->front;
+				tail->front = new_tail;
+				new_tail->back = tail;
+				new_tail->front = after_tail;
+				after_tail->back = new_tail;
 			
 				quer_po_added = true;
 				my_size++;
@@ -713,6 +768,7 @@ public:
 				//will delete some points if it is needed
 			}else if ( query_po.GetX() >= tail->data.GetX() && query_po.GetY() < tail->data.GetY()  )
 			{
+				//std::cout << "(DEBUGGING) : case 37\n";
 				Node* new_tail = query_nod;//the query point is new tail
 				
 				Node* after_tail = tail->front;
@@ -729,15 +785,17 @@ public:
 			}
 			else
 			{
+				//std::cout << "(DEBUGGING) : case 38\n";
 				//the query point lies above or below the convex hull(2d)
 				Node* prev = head;
 				Node* after = head->front;
-			
 				while( prev != tail )
 				{
+					//std::cout << "(DEBUGGING) : case 39\n";
 					// upper hull iteration
 					if( query_po == prev->data || query_po == after->data)
 					{
+						//std::cout << "(DEBUGGING) : case 40\n";
 						// this is the case where the query point is equal to one point of the 
 						// current convex hull
 						delete query_nod;//we must delete the query point that we allocated
@@ -746,10 +804,12 @@ public:
 					if( prev->data.GetX() != after->data.GetX() && 
 					    query_po.GetX() >= prev->data.GetX() && query_po.GetX() <= after->data.GetX() )
 					{
+						//std::cout << "(DEBUGGING) : case 41\n";
 						//if after and prev are on the same vertical line then we don't want to add the 
 						//query point here because it will be added to the next iteration
 						if( Pred::Orient(prev->data,query_po,after->data) > 0 )
 						{
+							//std::cout << "(DEBUGGING) : case 42\n";
 							//the second condition after || is for the case that the previous and the after 
 							//are at the same x coordinate, and we have three collinear points
 							//(with the query point) and the query point is not between the other two points,
@@ -763,29 +823,35 @@ public:
 							break;//if we find the position of the query point in the list the we must stop
 						}
 					}
+					//std::cout << "(DEBUGGING) : case 43\n";
 					prev = prev->front;
 					after = after->front;
 				}
+				//std::cout << "(DEBUGGING) : case 44\n";
 				prev = tail;
 				after = tail->front;
 				while( prev != head && !quer_po_added )
 				{
+					//std::cout << "(DEBUGGING) : case 45\n";
 					// lower hull iteration
 					if( query_po == prev->data || query_po == after->data)
 					{
-					// this is the case where the query point is equal to one point of the 
-					// current convex hull
+						//std::cout << "(DEBUGGING) : case 46\n";
+						// this is the case where the query point is equal to one point of the 
+						// current convex hull
 						delete query_nod;//we must delete the query point that we allocated
 						return -1;
 					}
 					if( prev->data.GetX() != after->data.GetX() && 
 					    query_po.GetX() >= after->data.GetX() && query_po.GetX() <= prev->data.GetX() )
 					{
+						//std::cout << "(DEBUGGING) : case 47\n";
 						if( Pred::Orient(prev->data,query_po,after->data) > 0 )
 						{
-						//the second condition after || is for the case that we have three collinear points
-						// and the query point is not between the other two points, thus it should be added
-						// to the list because it is surely in the convex hull(2d)
+							//std::cout << "(DEBUGGING) : case 48\n";
+							//the second condition after || is for the case that we have three collinear points
+							// and the query point is not between the other two points, thus it should be added
+							// to the list because it is surely in the convex hull(2d)
 							prev->front = query_nod;
 							query_nod->back = prev;
 							query_nod->front = after;
@@ -795,15 +861,17 @@ public:
 							break;//if we find the position of the query point in the list the we must stop
 						}
 					}	
+					//std::cout << "(DEBUGGING) : case 49\n";
 					prev = prev->front;
 					after = after->front;
 				}
 			}
 			//at this stage we have added the query point to the list but maybe will deleted and also
 			//some other points maybe will deleted, the head and the tail points to the right nodes 
-				
+			//std::cout << "(DEBUGGING) : case 50\n";
 			if ( !quer_po_added )
 			{
+				//std::cout << "(DEBUGGING) : case 51\n";
 				//if the query point have not been added to the list then we don't have 
 				//to proceed any further because there is no change in the list. 
 				delete query_nod;
@@ -813,23 +881,44 @@ public:
 			std::stack<Node*> del;// all the points from the list that will be deleted
 			//now is the time to delete all the unnecessary points
 
-			// the below three pointers exists and are pointed to different points because the size of 
-			// the current convex hull(2d) is >= 3
-			Node* before = head;
-			Node* middle = before->front;
-			Node* after = middle->front;
-			while( after != head->front )
+			std::cout << "(DEBUGGING)1 \n";
+			//the upper hull iteration
+			std::vector<Node *> upp;
+			upp.push_back(head);
+			upp.push_back(head->front);
+			Node* curr = head->front;
+			while( curr != tail )
 			{
-				if( Pred::Orient(before->data,middle->data,after->data) <= 0 )
+				curr = curr->front;
+				upp.push_back(curr);
+				std::cout << "(DEBUGGING)2 \n";
+				while( int siz = upp.size() > 2 && Pred::Orient(upp[siz-3]->data,upp[siz-2]->data,upp[siz-1]->data) <= 0 )
 				{
-					del.push(middle);
-					before->front = after;
-					after->back = before;
+					std::cout << "(DEBUGGING)3 \n";
+					upp[siz-3]->front = upp[siz-1];
+					upp[siz-1]->back = upp[siz-3];
+					upp.erase(upp.end()-2);
+					del.push(upp[siz-2]);
 				}
-				before = before->front;
-				middle = before->front;
-				after = middle->front;
 			}
+			//lower hull iteration
+			std::vector<Node*> low;
+			low.push_back(tail);
+			low.push_back(tail->front);
+			curr = tail->front;
+			while( curr != tail)
+			{
+				curr = curr->front;
+				low.push_back(curr);
+				while( int size = low.size() && Pred::Orient(low[size-3]->data,low[size-2]->data,low[size-1]->data) <= 0 )
+				{
+					low[size-3]->front = low[size-1];
+					low[size-1]->back = low[size-1];
+					del.push(low[size-2]);
+				}
+			}
+				
+			
 			//at this point we have disconnected the unnecessary points and we inserted them to the del 
 			//stack , so we have to free the pointers of this points and to reduce the size and to 
 			//notify the area. of course we have to check if the query point deleted from the list 
@@ -837,28 +926,31 @@ public:
 			bool flag = false;
 			while( !del.empty() )
 			{
+				//std::cout << "(DEBUGGING) : case 54\n";
 				if( query_nod == del.top() )
 				{
+					//std::cout << "(DEBUGGING) : case 55\n";
 					flag = true;
 				}
 				delete del.top();
 				del.pop();
 				my_size--;
 			}
+			//std::cout << "(DEBUGGING) : case 56\n";
 			notify_area();
 			if( flag )
 			{
-				//at the previous stage was checked if the point added to the list
-				delete query_nod;//we must delete the query point that we allocated
+				//std::cout << "(DEBUGGING) : case 57\n";
 				return -1;
 			}else
 			{
+				//std::cout << "(DEBUGGING) : case 58\n";
 				return 1;
 			}
-			
+			//std::cout << "(DEBUGGING) : case 59\n";
 
 		}
-			
+		//std::cout << "(DEBUGGING) : case 60\n";	
 		
 	}
 	

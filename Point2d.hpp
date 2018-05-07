@@ -97,6 +97,13 @@ public:
 	 */
 	Point2d operator-(const Point2d& p1) const; // binary -
 	
+	/**
+	 * It is the assignment operator that helps us to assign a "value" of 
+	 * Point2d to another Point2d.
+	 * @param p the point that the *(this) will be equals to
+	 * @returns the reference to the new Point2d after the assignment.
+	 */
+	Point2d& operator=(const Point2d& p);
 	
 	
 	/**

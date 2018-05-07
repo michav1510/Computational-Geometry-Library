@@ -8,39 +8,43 @@
  */
 void print_state_ch2d(std::ostream& wri, CH2d_dlclist a)
 {
-	wri << "The head is " << *(a.begin()) << "\n";
-	wri << "The tail is " << *(a.end()) << "\n";
-	wri << "The size is " << a.size() << "\n";
-	wri << "The area is " << a.area() << "\n";
-	wri << "The clockwise iteration is :" << "\n";
+	//wri << "The head is " << *(a.begin()) << "\n";
+	//wri << "The tail is " << *(a.end()) << "\n";
+	//wri << "The size is " << a.size() << "\n";
+	//wri << "The area is " << a.area() << "\n";
+	//wri << "The clockwise iteration is :" << "\n";
 	CH2d_dlclist::ch_iterator it = a.begin();
 	CH2d_dlclist::ch_iterator flag = it;
 	int size = a.size();
-	wri << *it;
+	//wri << *it; auto i to apo kato
+	wri << *it << "\n";
 	int count = 1;
 	while( ++it != flag )
 	{
-		if( count% 10 == 0 ) 
-		{
-			wri<< "\n";
-		}
-		wri << *it << " "; 
+		//if( count% 10 == 0 ) 
+		//{
+		//	wri<< "\n";
+		//}
+		//wri << *it << " "; 
+		// auto i to apo kato
+		wri << *it << "\n";
+		
 	}
-	wri << "\n";
-	wri << "The counter clockwise iteration is :" << "\n";
-	it = a.begin();
-	size = a.size();
-	wri << *it;
-	count = 1;
-	while( --it != flag )
-	{
-		if( count% 10 == 0 ) 
-		{
-			wri<< "\n";
-		}
-		wri << *it << " "; 
-	}
-	wri << "\n";
+	//wri << "\n";
+	//wri << "The counter clockwise iteration is :" << "\n";
+	//it = a.begin();
+	//size = a.size();
+	//wri << *it;
+	//count = 1;
+	//while( --it != flag )
+	//{
+	//	if( count% 10 == 0 ) 
+	//	{
+	//		wri<< "\n";
+	//	}
+	//	wri << *it << " "; 
+	//}
+	//wri << "\n";
 }
 
 
@@ -53,8 +57,8 @@ void test_push()
 	 * push(Point2d) as they formed by the if else cases
 	 */
 	std::ofstream outfile("ch_push_res_of_all_cases.dat");
-	int cas = 1;
-	while( cas <= 30 )
+	int cas = 25;
+	while( cas <= 25 )
 	{
 		if( cas == 1 )
 		{	
@@ -321,10 +325,10 @@ void test_push()
 			vec.push_back(Point2d(0,0));
 			vec.push_back(Point2d(1,0));
 			vec.push_back(Point2d(1,1));
-			CH2d_dlclist a(vec,"Jarvis");
-			print_state_ch2d(outfile,a);
-			outfile << "Addition of the point " << Point2d(1,-0.5) << " : " << a.push(Point2d(1,-0.5)) << "\n";
-			print_state_ch2d(outfile,a);
+			CH2d_dlclist ch(vec,"Jarvis");
+			print_state_ch2d(outfile,ch);
+			outfile << "Addition of the point " << Point2d(1,-0.5) << " : " << ch.push(Point2d(1,-0.5)) << "\n";
+			print_state_ch2d(outfile,ch);
 			outfile << "-------------------------------\n";
 		}else if( cas == 24 )
 		{
@@ -334,10 +338,43 @@ void test_push()
 			vec.push_back(Point2d(0,0));
 			vec.push_back(Point2d(1,0));
 			vec.push_back(Point2d(1,1));
-			CH2d_dlclist a(vec,"Jarvis");
-			print_state_ch2d(outfile,a);
-			outfile << "Addition of the point " << Point2d(-1,1) << " : " << a.push(Point2d(-1,1)) << "\n";
-			print_state_ch2d(outfile,a);
+			CH2d_dlclist ch(vec,"Jarvis");
+			print_state_ch2d(outfile,ch);
+			outfile << "Addition of the point " << Point2d(-1,1) << " : " << ch.push(Point2d(-1,1)) << "\n";
+			print_state_ch2d(outfile,ch);
+			outfile << "-------------------------------\n";
+		}else if( cas == 25 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 25\n";
+			std::ifstream infile("sets_of_points.dat");
+			double a;
+			double b;
+			std::string tmp;
+			std::vector<Point2d> vec;
+			while( infile >> tmp >> a >> tmp >> b >> tmp)
+			{
+				vec.push_back(Point2d(a,b));
+			}
+			CH2d_dlclist ch;
+			int count_added = 0;
+			int size_vec = vec.size();
+			for(int i = 0; i < size_vec; i++)
+			{
+				//std::cout << "---------------\n";
+				//std::cout << " Addition of the point " << vec[i] << " or not : ";
+				int resul_of_add = ch.push(vec[i]);
+				//std::cout << resul_of_add << "\n\n";
+				if( resul_of_add )
+				{
+					count_added++;
+				}
+				//std::cout << "---------------\n";
+				//print_state_ch2d(std::cout,ch);
+				//std::cout << "---------------\n";
+			}
+			std::cout << "Number of points added : " << count_added << "\n";
+			print_state_ch2d(outfile,ch);
 			outfile << "-------------------------------\n";
 		}
 		cas++;

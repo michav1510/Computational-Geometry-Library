@@ -7,7 +7,9 @@ si = size(C{2},1);
 X = C{2};
 Y = C{4};
 for i = 1 : si
-   plot(X(i),Y(i),'*')
+   plot(X(i),Y(i),'*');
+%   num = num2str(i);
+%    text(X(i)-X(i)/20,Y(i)+Y(i)/20,num,'HorizontalAlignment','right');
    hold on
 end
 fclose(fileID);

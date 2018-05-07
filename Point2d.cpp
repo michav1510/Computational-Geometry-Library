@@ -1,4 +1,5 @@
 #include "Point2d.hpp"
+#include <iostream>
 #include <cmath>
 
 
@@ -94,6 +95,17 @@ Point2d Point2d::operator-(const Point2d& p1) const
 {
 	Point2d subtract_point(myx - p1.myx, myy - p1.myy);
 	return subtract_point;
+}
+
+
+Point2d& Point2d::operator=(const Point2d& p)
+{
+	if( this!= &p )
+	{
+		myx = p.myx;
+		myy = p.myy;
+	}
+	return *this;
 }
 
 
