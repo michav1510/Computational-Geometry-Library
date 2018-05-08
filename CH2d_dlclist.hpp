@@ -881,24 +881,27 @@ public:
 			std::stack<Node*> del;// all the points from the list that will be deleted
 			//now is the time to delete all the unnecessary points
 
-			std::cout << "(DEBUGGING)1 \n";
-			//the upper hull iteration
-			std::vector<Node *> upp;
+			//the upper hull iteration to remove unnecessary points
+			std::vector<Node*> upp;
 			upp.push_back(head);
 			upp.push_back(head->front);
 			Node* curr = head->front;
+			std::cout << "(DEBUGGING)-------------------------------\n";
+			std::cout << "(DEBUGGING) 1\n";
 			while( curr != tail )
 			{
+				std::cout << "(DEBUGGING) 2\n";
 				curr = curr->front;
 				upp.push_back(curr);
-				std::cout << "(DEBUGGING)2 \n";
-				while( int siz = upp.size() > 2 && Pred::Orient(upp[siz-3]->data,upp[siz-2]->data,upp[siz-1]->data) <= 0 )
+				int siz = upp.size();
+				while( siz > 2 && Pred::Orient(upp[siz-3]->data,upp[siz-2]->data,upp[siz-1]->data) <= 0 )
 				{
-					std::cout << "(DEBUGGING)3 \n";
+					std::cout << "(DEBUGGING) 3\n";
 					upp[siz-3]->front = upp[siz-1];
 					upp[siz-1]->back = upp[siz-3];
-					upp.erase(upp.end()-2);
 					del.push(upp[siz-2]);
+					upp.erase(upp.end()-2);
+					siz = upp.size();
 				}
 			}
 			//lower hull iteration
@@ -906,18 +909,25 @@ public:
 			low.push_back(tail);
 			low.push_back(tail->front);
 			curr = tail->front;
-			while( curr != tail)
+			std::cout << "(DEBUGGING) 4\n";
+			while( curr != head )
 			{
+				std::cout << "(DEBUGGING) 5\n";
 				curr = curr->front;
 				low.push_back(curr);
-				while( int size = low.size() && Pred::Orient(low[size-3]->data,low[size-2]->data,low[size-1]->data) <= 0 )
+				int siz = low.size();
+				while( siz > 2 && Pred::Orient(low[siz-3]->data,low[siz-2]->data,low[siz-1]->data) <= 0 )
 				{
-					low[size-3]->front = low[size-1];
-					low[size-1]->back = low[size-1];
-					del.push(low[size-2]);
+					std::cout << "(DEBUGGING) 6\n";
+					low[siz-3]->front = low[siz-1];
+					low[siz-1]->back = low[siz-3];
+					del.push(low[siz-2]);
+					low.erase(low.end()-2);
+					siz = low.size();
 				}
+				std::cout << "(DEBUGGING) 7\n";
 			}
-				
+			std::cout << "(DEBUGGING) 8\n";
 			
 			//at this point we have disconnected the unnecessary points and we inserted them to the del 
 			//stack , so we have to free the pointers of this points and to reduce the size and to 
@@ -926,9 +936,11 @@ public:
 			bool flag = false;
 			while( !del.empty() )
 			{
+				std::cout << "(DEBUGGING) 9\n";
 				//std::cout << "(DEBUGGING) : case 54\n";
 				if( query_nod == del.top() )
 				{
+					std::cout << "(DEBUGGING) 10\n";
 					//std::cout << "(DEBUGGING) : case 55\n";
 					flag = true;
 				}
@@ -936,6 +948,7 @@ public:
 				del.pop();
 				my_size--;
 			}
+			std::cout << "(DEBUGGING)-------------------------------\n\n\n";
 			//std::cout << "(DEBUGGING) : case 56\n";
 			notify_area();
 			if( flag )
