@@ -1,6 +1,6 @@
-clear all;
-close all;
-
+%clear all;
+%close all;
+figure(4)
 fileID = fopen('sets_of_points.dat');
 C = textscan(fileID,'%s %f %s %f %s');
 si = size(C{2},1);

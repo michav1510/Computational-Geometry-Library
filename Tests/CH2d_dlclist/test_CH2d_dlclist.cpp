@@ -361,17 +361,13 @@ void test_push()
 			int size_vec = vec.size();
 			for(int i = 0; i < size_vec; i++)
 			{
-				//std::cout << "---------------\n";
-				//std::cout << " Addition of the point " << vec[i] << " or not : ";
-				int resul_of_add = ch.push(vec[i]);
-				//std::cout << resul_of_add << "\n\n";
-				if( resul_of_add )
+				int resul_of_add ; 
+				std::cout << "--------------------------------------\n";
+				std::cout << "Addition of the point " << vec[i] << " : " <<  (resul_of_add = ch.push(vec[i]))  << "\n";
+				if( resul_of_add == 1 )
 				{
 					count_added++;
 				}
-				//std::cout << "---------------\n";
-				//print_state_ch2d(std::cout,ch);
-				//std::cout << "---------------\n";
 			}
 			std::cout << "Number of points added : " << count_added << "\n";
 			print_state_ch2d(outfile,ch);
