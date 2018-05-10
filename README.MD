@@ -14,5 +14,7 @@ you decrease it you are moving counter clockwise at the convex hull.
 
 
 This version is a beta version in future there will be much more functionality and of
-course a Makefile and few examples that will show how my implementations work. My ambitions is to make also
-the 3d case where we must construct a convex hull given a set of 3d point.
+course a Makefile and few examples that will show how my implementations work. At this time you can see the Tests
+I have developed and they can shed light on what I have implemented. 
+
+My ambitions is to make also the 3d case where we must construct a convex hull given a set of 3d point.
