@@ -8,43 +8,40 @@
  */
 void print_state_ch2d(std::ostream& wri, CH2d_dlclist a)
 {
-	//wri << "The head is " << *(a.begin()) << "\n";
-	//wri << "The tail is " << *(a.end()) << "\n";
-	//wri << "The size is " << a.size() << "\n";
-	//wri << "The area is " << a.area() << "\n";
-	//wri << "The clockwise iteration is :" << "\n";
+	wri << "The head is " << *(a.begin()) << "\n";
+	wri << "The tail is " << *(a.end()) << "\n";
+	wri << "The size is " << a.size() << "\n";
+	wri << "The area is " << a.area() << "\n";
+	wri << "The clockwise iteration is :" << "\n";
 	CH2d_dlclist::ch_iterator it = a.begin();
 	CH2d_dlclist::ch_iterator flag = it;
 	int size = a.size();
-	//wri << *it; auto i to apo kato
-	wri << *it << "\n";
+	wri << *it ;
 	int count = 1;
 	while( ++it != flag )
 	{
-		//if( count% 10 == 0 ) 
-		//{
-		//	wri<< "\n";
-		//}
-		//wri << *it << " "; 
-		// auto i to apo kato
-		wri << *it << "\n";
-		
+		if( count% 10 == 0 ) 
+		{
+			wri<< "\n";
+		}
+		wri << *it << " "; 
+			
 	}
-	//wri << "\n";
-	//wri << "The counter clockwise iteration is :" << "\n";
-	//it = a.begin();
-	//size = a.size();
-	//wri << *it;
-	//count = 1;
-	//while( --it != flag )
-	//{
-	//	if( count% 10 == 0 ) 
-	//	{
-	//		wri<< "\n";
-	//	}
-	//	wri << *it << " "; 
-	//}
-	//wri << "\n";
+	wri << "\n";
+	wri << "The counter clockwise iteration is :" << "\n";
+	it = a.begin();
+	size = a.size();
+	wri << *it;
+	count = 1;
+	while( --it != flag )
+	{
+		if( count% 10 == 0 ) 
+		{
+			wri<< "\n";
+		}
+		wri << *it << " "; 
+	}
+	wri << "\n";
 }
 
 
@@ -56,9 +53,9 @@ void test_push()
 	/* With the below code we will execute all the cases in the
 	 * push(Point2d) as they formed by the if else cases
 	 */
-	std::ofstream outfile("ch_push_res_of_all_cases.dat");
-	int cas = 25;
-	while( cas <= 25 )
+	std::ofstream outfile("ch_push_res_of_all_cases.txt");
+	int cas = 26;
+	while( cas <= 35 )
 	{
 		if( cas == 1 )
 		{	
@@ -347,7 +344,7 @@ void test_push()
 		{
 			outfile << "-------------------------------\n";
 			outfile << "case 25\n";
-			std::ifstream infile("sets_of_points.dat");
+			std::ifstream infile("sets_of_points.txt");
 			double a;
 			double b;
 			std::string tmp;
@@ -362,17 +359,36 @@ void test_push()
 			for(int i = 0; i < size_vec; i++)
 			{
 				int resul_of_add ; 
-				std::cout << "--------------------------------------\n";
-				std::cout << "Addition of the point " << vec[i] << " : " <<  (resul_of_add = ch.push(vec[i]))  << "\n";
-				if( resul_of_add == 1 )
+				if ( i < -1 )
 				{
-					count_added++;
+					//std::cout << "--------------------------------------\n";
+					std::cout << "Addition of the point " << vec[i] << " : " <<  (resul_of_add = ch.push(vec[i]))  << "\n";
+					if( resul_of_add == 1 )
+					{
+						count_added++;
+					}
+				}else
+				{
+					ch.push(vec[i]);
 				}
 			}
 			std::cout << "Number of points added : " << count_added << "\n";
 			print_state_ch2d(outfile,ch);
 			outfile << "-------------------------------\n";
+		}else if ( cas == 26 )
+		{
+			outfile << "-------------------------------\n";
+			outfile << "case 26\n";
+			CH2d_dlclist ch;
+			ch.push(Point2d(0,0));
+			ch.push(Point2d(1,1));
+			ch.push(Point2d(0,1));
+			ch.push(Point2d(1,0));
+			ch.push(Point2d(-1,0.5));
+			print_state_ch2d(std::cout,ch);
+			outfile << "-------------------------------\n";
 		}
+			
 		cas++;
 	}
 	outfile.close();
@@ -383,8 +399,8 @@ void test_push()
 	
 	/* The below is using a random generator of points in (0,1) 
 	 * and pushes all of the point in the convex hull
-	std::ifstream infile("sets_of_points.dat");
-	std::ofstream outfile("convex_hull_res.dat");
+	std::ifstream infile("sets_of_points.txt");
+	std::ofstream outfile("convex_hull_res.txt");
 	double a;
 	double b;
 	std::string tmp;
@@ -698,10 +714,10 @@ void test_iterators()
 
 void test_parameter_constructor()
 {
-	// this test reads from the file "sets_of_points.dat"
-	// and write the resulted convex hull to "convex_hull_res.dat"
-	std::ifstream infile("sets_of_points.dat");
-	std::ofstream outfile("convex_hull_res.dat");
+	// this test reads from the file "sets_of_points.txt"
+	// and write the resulted convex hull to "convex_hull_res.txt"
+	std::ifstream infile("sets_of_points.txt");
+	std::ofstream outfile("convex_hull_res.txt");
 	double a;
 	double b;
 	std::string tmp;

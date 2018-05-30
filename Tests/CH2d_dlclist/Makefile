@@ -13,4 +13,4 @@ Edge2d.o : Edge2d.cpp
 	g++ -c ../../Edge2d.cpp
 	
 clean : 
-	rm test_CH2d_dlclist ch_push_res_of_all_cases.dat Point2d.o Pred.o Edge2d.o 
+	rm test_CH2d_dlclist ch_push_res_of_all_cases.txt Point2d.o Pred.o Edge2d.o 

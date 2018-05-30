@@ -1,7 +1,7 @@
 %clear all;
 %close all;
 figure(4)
-fileID = fopen('sets_of_points.dat');
+fileID = fopen('sets_of_points.txt');
 C = textscan(fileID,'%s %f %s %f %s');
 si = size(C{2},1);
 X = C{2};
@@ -15,7 +15,7 @@ end
 fclose(fileID);
 
 
-fileID = fopen('convex_hull_res.dat');
+fileID = fopen('convex_hull_res.txt');
 C = textscan(fileID,'%s %f %s %f %s');
 si = size(C{2},1);
 X = C{2};
@@ -25,3 +25,5 @@ Y = [Y; Y(1)];
 plot(X,Y,'r')
 hold on
 fclose(fileID);
+
+area = polyarea(X,Y)
