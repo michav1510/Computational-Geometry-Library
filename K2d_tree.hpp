@@ -17,7 +17,7 @@
 #include "Point2d.hpp"
 
 /**
- *  An auxiliary function that is used for sorting
+ *   auxiliary functions that are used for sorting
  */
 bool comp_func_by_x(Point2d a, Point2d b) { return a.GetX() < b.GetX(); }
 bool comp_func_by_y(Point2d a, Point2d b) { return a.GetY() < b.GetY(); }
@@ -28,48 +28,43 @@ class K2d_tree{
 	struct Node{
 		Node* left;
 		Node* right;
-		int split_coord; // 1 for x coordinate , 2 for y coordinate
+		int split_coord; // 1 for x coordinate , 2 for y coordinate, 0if it is a leaf
 		double split_val;
 		bool is_leaf;
 		Point2d data_leaf;
 	};
 private:	
 	Node* root;
+	std::vector<Point2d> sort_by_x;// the points of the tree sorted by x
+	std::vector<Point2d> sort_by_y;// the points of the tree sorted by y
+
 	
-	
-	Node* BuildTree(int split, std::vector<Point2d> points, std::vector<Point2d> by_x, std::vector<Point2d> by_y)
+	Node* BuildTree(int split, std::vector<Point2d> points)
 	{
-		//DEBUGGING code starts
-		std::cout << "(DEBUGGING):-------------------\n";
-		for(std::vector<Point2d>::iterator it = points.begin(); it != points.end(); it++)
-		{
-			std::cout << "(DEBUGGING): " << *it << "\n";
-		}
-		//DEBUGGING code ends
-		
+			
 		Node* nod = new Node;
 		if( points.size() == 0)
 		{
 			delete nod;
 			return 0;
-		}else if( points.size() == 1 )
+		}else if(points.size() == 1)
 		{
 			nod->left = 0;
 			nod->right = 0;
+			nod->split_coord = 0;
 			nod->split_val = 0;
 			nod->is_leaf = true;
 			nod->data_leaf = points[0];
-			std::cout << "(DEBUGGING):-------------------\n\n";
 			return nod;
 		}else
 		{
-			if( split%2 == 1)
+			if(split%2 == 1)
 			{
 				//we split vector "points" by x
 				
 				std::vector<Point2d> temp;
 				//temp should have the "points" in increasing order
-				for( std::vector<Point2d>::iterator it1 = by_x.begin(); it1 != by_x.end(); it1++)
+				for( std::vector<Point2d>::iterator it1 = sort_by_x.begin(); it1 != sort_by_x.end(); it1++)
 				{
 					for( std::vector<Point2d>::iterator it = points.begin(); it != points.end(); it++)
 					{
@@ -83,8 +78,6 @@ private:
 				std::vector<Point2d> right;
 				int size_temp = temp.size();
 				int index_median = ceil(size_temp/2.0)-1;
-				std::cout << "(DEBUGGING): index = " << index_median << "\n";
-				std::cout << "(DEBUGGING):-------------------\n\n";
 				for(int i = 0; i < size_temp; i++)
 				{
 					if(i <= index_median)
@@ -95,8 +88,8 @@ private:
 						right.push_back(temp[i]);
 					}
 				}
-				nod->left = BuildTree(split+1,left,by_x,by_y);
-				nod->right = BuildTree(split+1,right,by_x,by_y);
+				nod->left = BuildTree(split+1,left);
+				nod->right = BuildTree(split+1,right);
 				nod->split_coord = 1;
 				nod->split_val = temp[index_median].GetX();
 				nod->is_leaf = false;
@@ -107,7 +100,7 @@ private:
 				
 				std::vector<Point2d> temp;
 				//temp should have the "points" in increasing order
-				for( std::vector<Point2d>::iterator it1 = by_y.begin(); it1 != by_y.end(); it1++)
+				for( std::vector<Point2d>::iterator it1 = sort_by_x.begin(); it1 != sort_by_x.end(); it1++)
 				{
 					for( std::vector<Point2d>::iterator it = points.begin(); it != points.end(); it++)
 					{
@@ -121,8 +114,6 @@ private:
 				std::vector<Point2d> right;
 				int size_temp = temp.size();
 				int index_median = ceil(size_temp/2.0)-1;
-				std::cout << "(DEBUGGING): index = " << index_median << "\n";
-				std::cout << "(DEBUGGING):-------------------\n\n";
 				for(int i = 0; i < size_temp; i++)
 				{
 					if(i <= index_median)
@@ -133,8 +124,8 @@ private:
 						right.push_back(temp[i]);
 					}
 				}
-				nod->left = BuildTree(split+1,left,by_x,by_y);
-				nod->right = BuildTree(split+1,right,by_x,by_y);
+				nod->left = BuildTree(split+1,left);
+				nod->right = BuildTree(split+1,right);
 				nod->split_coord = 2;
 				nod->split_val = temp[index_median].GetY();
 				nod->is_leaf = false;
@@ -161,9 +152,12 @@ public:
 			bool hasRightChild(){return p->right != 0;}
 			bool hasLeftChild(){return p->left != 0;}
 			bool hasChildren(){return (p->right != 0) || (p->left != 0);}
+			tree_iterator getLeftChild(){return tree_iterator(p->left);}
+			tree_iterator getRightChild(){return tree_iterator(p->right);}
 			void goRightChild() {p = p->right;} 
 			void goLeftChild() {p = p->left;}
 			bool isInternalNode(){return !(p->is_leaf);}
+			Point2d getLeafPoint(){return p->data_leaf;}
 	};
 	
 	
@@ -172,10 +166,10 @@ public:
 	{
 		// here must do the sort of points and call the Buildtree 
 		std::sort (points.begin(), points.end(), comp_func_by_x);
-		std::vector<Point2d> sort_by_x(points);
+		sort_by_x(points);
 		std::sort (points.begin(), points.end(), comp_func_by_y);
-		std::vector<Point2d> sort_by_y(points);
-		root = BuildTree(1,points,sort_by_x,sort_by_y);
+		sort_by_y(points);
+		root = BuildTree(1,points);
 	}
 	
 	

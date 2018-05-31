@@ -6,42 +6,188 @@
 
 int main(int argc, char* argv[])
 {
-	std::vector<Point2d> vec;
-	vec.push_back(Point2d(2,1));
-	vec.push_back(Point2d(1,0));
-	vec.push_back(Point2d(3,-5));
-	vec.push_back(Point2d(-1,2));
-	vec.push_back(Point2d(4,-3));
-	K2d_tree tree(vec);
-	K2d_tree::tree_iterator it = tree.begin();
+	int cas = 1;
+	while( cas <= 10)
+	{
+		if( cas == 1 )
+		{
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(2,1));
+			vec.push_back(Point2d(1,0));
+			vec.push_back(Point2d(3,-5));
+			vec.push_back(Point2d(-1,2));
+			vec.push_back(Point2d(4,-3));
+			K2d_tree tree(vec);
+			K2d_tree::tree_iterator it = tree.begin();
+			
+			std::cout << " left child : " << it.hasLeftChild() << "\n";
+			std::cout << " right child : " << it.hasRightChild() << "\n";
+			std::cout << " split value : " << it.getSplitValue() << "\n";
+			if( it.getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getLeftChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getLeftChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getLeftChild().getSplitValue() << "\n";
+			if( it.getLeftChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getLeftChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getLeftChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getLeftChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getRightChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getRightChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getRightChild().getSplitValue() << "\n";
+			if( it.getRightChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getRightChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getRightChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getRightChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getLeftChild().getLeftChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getLeftChild().getLeftChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getLeftChild().getLeftChild().getSplitValue() << "\n";
+			if( it.getLeftChild().getLeftChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getLeftChild().getLeftChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getLeftChild().getLeftChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getLeftChild().getLeftChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getLeftChild().getRightChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getLeftChild().getRightChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getLeftChild().getRightChild().getSplitValue() << "\n";
+			if( it.getLeftChild().getRightChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getLeftChild().getRightChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getLeftChild().getRightChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getLeftChild().getRightChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getRightChild().getLeftChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getRightChild().getLeftChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getRightChild().getLeftChild().getSplitValue() << "\n";
+			if( it.getRightChild().getLeftChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getRightChild().getLeftChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getRightChild().getLeftChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getRightChild().getLeftChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getRightChild().getRightChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getRightChild().getRightChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getRightChild().getRightChild().getSplitValue() << "\n";
+			if( it.getRightChild().getRightChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getRightChild().getRightChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getRightChild().getRightChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getRightChild().getRightChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+			
+			
+			std::cout << " left child : " << it.getLeftChild().getLeftChild().getLeftChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getLeftChild().getLeftChild().getLeftChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getLeftChild().getLeftChild().getLeftChild().getSplitValue() << "\n";
+			if( it.getLeftChild().getLeftChild().getLeftChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getLeftChild().getLeftChild().getLeftChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getLeftChild().getLeftChild().getLeftChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getLeftChild().getLeftChild().getLeftChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
 
-	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
-	std::cout << "root : value :  " << it.getSplitValue() << "\n";
-	std::cout << "root : coord :  " << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
-	
-	it.goLeftChild();
-	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
-	std::cout << " value :  " << it.getSplitValue() << "\n";
-	std::cout << " coord :  " << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
-	
-	it.goLeftChild();
-	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
-	std::cout << " value :  " << it.getSplitValue() << "\n";
-	std::cout << " coord :  " << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
-	
-	it.goLeftChild();
-	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
-	std::cout << " value :  " << it.getSplitValue() << "\n";
-	std::cout << " coord :  " << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
+			
+			std::cout << " left child : " << it.getLeftChild().getLeftChild().getRightChild().hasLeftChild() << "\n";
+			std::cout << " right child : " << it.getLeftChild().getLeftChild().getRightChild().hasRightChild() << "\n";
+			std::cout << " split value : " << it.getLeftChild().getLeftChild().getRightChild().getSplitValue() << "\n";
+			if( it.getLeftChild().getLeftChild().getRightChild().getSplitCoord() == 1 )
+			{
+				std::cout << " split coord : x\n"; 
+			}else if( it.getLeftChild().getLeftChild().getRightChild().getSplitCoord() == 2 )
+			{
+				std::cout << " split coord : y\n"; 
+			}else 
+			{
+				std::cout << " split coord : 0\n"; 
+			}
+			std::cout << " is leaf : " << !it.getLeftChild().getLeftChild().getRightChild().isInternalNode() << "\n";
+			std::cout << " Point2d : " << it.getLeftChild().getLeftChild().getRightChild().getLeafPoint() << "\n"; 
+			std::cout << "------------------------\n";
+		}else if( cas == 2 )
+		{
+			
+		}
+		
+		
+		
+		cas++;
+	}
 
-	bool dslf;
-	std::cout << "\n" << dslf << "\n";
 }
