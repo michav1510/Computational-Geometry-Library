@@ -39,20 +39,33 @@ private:
 	
 	Node* BuildTree(int split, std::vector<Point2d> points, std::vector<Point2d> by_x, std::vector<Point2d> by_y)
 	{
+		//DEBUGGING code starts
+		std::cout << "(DEBUGGING):-------------------\n";
+		for(std::vector<Point2d>::iterator it = points.begin(); it != points.end(); it++)
+		{
+			std::cout << "(DEBUGGING): " << *it << "\n";
+		}
+		//DEBUGGING code ends
+		
 		Node* nod = new Node;
-		if( points.size() == 1 )
+		if( points.size() == 0)
+		{
+			delete nod;
+			return 0;
+		}else if( points.size() == 1 )
 		{
 			nod->left = 0;
 			nod->right = 0;
 			nod->split_val = 0;
 			nod->is_leaf = true;
 			nod->data_leaf = points[0];
+			std::cout << "(DEBUGGING):-------------------\n\n";
 			return nod;
 		}else
 		{
 			if( split%2 == 1)
 			{
-				// then we split vector "points" by x
+				//we split vector "points" by x
 				
 				std::vector<Point2d> temp;
 				//temp should have the "points" in increasing order
@@ -70,6 +83,8 @@ private:
 				std::vector<Point2d> right;
 				int size_temp = temp.size();
 				int index_median = ceil(size_temp/2.0)-1;
+				std::cout << "(DEBUGGING): index = " << index_median << "\n";
+				std::cout << "(DEBUGGING):-------------------\n\n";
 				for(int i = 0; i < size_temp; i++)
 				{
 					if(i <= index_median)
@@ -88,7 +103,7 @@ private:
 				return nod;
 			}else
 			{
-				// then we split vector "points" by y
+				//we split vector "points" by y
 				
 				std::vector<Point2d> temp;
 				//temp should have the "points" in increasing order
@@ -106,6 +121,8 @@ private:
 				std::vector<Point2d> right;
 				int size_temp = temp.size();
 				int index_median = ceil(size_temp/2.0)-1;
+				std::cout << "(DEBUGGING): index = " << index_median << "\n";
+				std::cout << "(DEBUGGING):-------------------\n\n";
 				for(int i = 0; i < size_temp; i++)
 				{
 					if(i <= index_median)
@@ -146,7 +163,7 @@ public:
 			bool hasChildren(){return (p->right != 0) || (p->left != 0);}
 			void goRightChild() {p = p->right;} 
 			void goLeftChild() {p = p->left;}
-			bool isInternalNode(){!p->is_leaf;}
+			bool isInternalNode(){return !(p->is_leaf);}
 	};
 	
 	

@@ -14,29 +14,34 @@ int main(int argc, char* argv[])
 	vec.push_back(Point2d(4,-3));
 	K2d_tree tree(vec);
 	K2d_tree::tree_iterator it = tree.begin();
-	std::cout << "root : value :" << it.getSplitValue() << "\n";
-	std::cout << "root : coord :" << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ? " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
-	
-	it.goLeftChild();
-	std::cout << "Is it an internal node? " << it.isInternalNode() << "\n"; 
-	std::cout << " value :" << it.getSplitValue() << "\n";
-	std::cout << " coord :" << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ? " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
-	
-	it.goLeftChild();
-	std::cout << "Is it an internal node?" << it.isInternalNode() << "\n";
-	std::cout << " value :" << it.getSplitValue() << "\n";
-	std::cout << " coord :" << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ? " << it.hasLeftChild() <<"\n"; 
-	std::cout << "---------------------\n";
-	
-	it.goLeftChild();
-	std::cout << "Is it an internal node?" << it.isInternalNode() << "\n";	
-	std::cout << " value :" << it.getSplitValue() << "\n";
-	std::cout << " coord :" << it.getSplitCoord() << "\n";
-	std::cout << "Has left child ? " << it.hasLeftChild() <<"\n"; 
 
+	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
+	std::cout << "root : value :  " << it.getSplitValue() << "\n";
+	std::cout << "root : coord :  " << it.getSplitCoord() << "\n";
+	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
+	std::cout << "---------------------\n";
+	
+	it.goLeftChild();
+	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
+	std::cout << " value :  " << it.getSplitValue() << "\n";
+	std::cout << " coord :  " << it.getSplitCoord() << "\n";
+	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
+	std::cout << "---------------------\n";
+	
+	it.goLeftChild();
+	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
+	std::cout << " value :  " << it.getSplitValue() << "\n";
+	std::cout << " coord :  " << it.getSplitCoord() << "\n";
+	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
+	std::cout << "---------------------\n";
+	
+	it.goLeftChild();
+	std::cout << "Is it an internal node ?  " << it.isInternalNode() << "\n"; 
+	std::cout << " value :  " << it.getSplitValue() << "\n";
+	std::cout << " coord :  " << it.getSplitCoord() << "\n";
+	std::cout << "Has left child ?  " << it.hasLeftChild() <<"\n"; 
+	std::cout << "---------------------\n";
+
+	bool dslf;
+	std::cout << "\n" << dslf << "\n";
 }
