@@ -171,6 +171,45 @@ public:
 	}
 	
 	
+	void addPoint(const Point2d& poi) 
+	{
+          /**
+	     * First we have to add the point to the vectors of points i.e sort_by_x and sort_by_y
+	     * and then we have to add it into the tree
+	     */ 
+	    
+		/*		
+		int siz = sort_by_x.size();
+		int i;
+		while(i < siz)
+		{
+			if(poi.GetX() < sort_by_x[i].GetX())
+			{
+				sort_by_x.insert(sort_by_x.begin()+i,poi);
+				break;
+			}
+			i++;
+		}
+		i = 0;
+		while(i < siz)
+		{
+			if(poi.GetY() < sort_by_y[i].GetY())
+			{
+				sort_by_y.insert(sort_by_y.begin()+i,poi);
+				break;
+			}
+			i++;
+		}
+*/
+
+	}
+	
+	void reBuildTree()
+	{
+		// firstly we have to destroy all the old nodes and rebuild the tree with the 
+		// calling of the BuildTree
+	}
+	
 	
 };
 
