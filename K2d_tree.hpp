@@ -39,95 +39,86 @@ private:
 	std::vector<Point2d> sort_by_y;// the points of the tree sorted by y
 
 	
-	Node* BuildTree(int split, std::vector<Point2d> points)
+	Node* BuildTree(int split, std::vector<Point2d> points_by_x, std::vector<Point2d> points_by_y)
 	{
-			
+		assert(points_by_x.size() == points_by_y.size());
+		int siz = points_by_x.size();
+		std::vector<Point2d> left_by_x;
+		std::vector<Point2d> left_by_y;
+		std::vector<Point2d> right_by_x;
+		std::vector<Point2d> right_by_y;
 		Node* nod = new Node;
-		if( points.size() == 0)
+		if( points_by_x.size() == 0)
 		{
 			delete nod;
 			return 0;
-		}else if(points.size() == 1)
+		}else if(points_by_x.size() == 1)
 		{
 			nod->left = 0;
 			nod->right = 0;
 			nod->split_coord = 0;
 			nod->split_val = 0;
 			nod->is_leaf = true;
-			nod->data_leaf = points[0];
+			nod->data_leaf = points_by_x[0];
 			return nod;
 		}else
 		{
 			if(split%2 == 1)
 			{
-				//we split vector "points" by x
+				//then we split by x coordinate
 				
-				std::vector<Point2d> temp;
-				//temp should have the "points" in increasing order
-				for( std::vector<Point2d>::iterator it1 = sort_by_x.begin(); it1 != sort_by_x.end(); it1++)
+				int index_median = ceil(siz/2.0)-1;
+				for(int i = 0; i < siz; i++)
 				{
-					for( std::vector<Point2d>::iterator it = points.begin(); it != points.end(); it++)
+					if( i <= index_median )
 					{
-						if( *it == *it1 )
-						{
-							temp.push_back(*it);
-						}
-					}
-				}
-				std::vector<Point2d> left;
-				std::vector<Point2d> right;
-				int size_temp = temp.size();
-				int index_median = ceil(size_temp/2.0)-1;
-				for(int i = 0; i < size_temp; i++)
-				{
-					if(i <= index_median)
-					{
-						left.push_back(temp[i]);
+						left_by_x.push_back(points_by_x[i]);
 					}else
 					{
-						right.push_back(temp[i]);
+						right_by_x.push_back(points_by_x[i]);
+					}
+					if( points_by_y[i].GetX() <= points_by_x[index_median].GetX() )
+					{
+						left_by_y.push_back(points_by_y[i]);
+					}else
+					{
+						right_by_y.push_back(points_by_y[i]);
 					}
 				}
-				nod->left = BuildTree(split+1,left);
-				nod->right = BuildTree(split+1,right);
+				
+				nod->left = BuildTree(split+1,left_by_x,left_by_y);
+				nod->right = BuildTree(split+1,right_by_x,right_by_y);
 				nod->split_coord = 1;
-				nod->split_val = temp[index_median].GetX();
+				nod->split_val = points_by_x[index_median].GetX();
 				nod->is_leaf = false;
 				return nod;
 			}else
 			{
-				//we split vector "points" by y
+				//then we split by y coordinate
 				
-				std::vector<Point2d> temp;
-				//temp should have the "points" in increasing order
-				for( std::vector<Point2d>::iterator it1 = sort_by_x.begin(); it1 != sort_by_x.end(); it1++)
+				int index_median = ceil(siz/2.0)-1;
+				for(int i = 0; i < siz; i++)
 				{
-					for( std::vector<Point2d>::iterator it = points.begin(); it != points.end(); it++)
+					if( i <= index_median )
 					{
-						if( *it == *it1 )
-						{
-							temp.push_back(*it);
-						}
-					}
-				}
-				std::vector<Point2d> left;
-				std::vector<Point2d> right;
-				int size_temp = temp.size();
-				int index_median = ceil(size_temp/2.0)-1;
-				for(int i = 0; i < size_temp; i++)
-				{
-					if(i <= index_median)
-					{
-						left.push_back(temp[i]);
+						left_by_y.push_back(points_by_y[i]);
 					}else
 					{
-						right.push_back(temp[i]);
+						right_by_y.push_back(points_by_y[i]);
+					}
+					if( points_by_x[i].GetY() <= points_by_y[index_median].GetY() )
+					{
+						left_by_x.push_back(points_by_x[i]);
+					}else
+					{
+						right_by_x.push_back(points_by_x[i]);
 					}
 				}
-				nod->left = BuildTree(split+1,left);
-				nod->right = BuildTree(split+1,right);
-				nod->split_coord = 2;
-				nod->split_val = temp[index_median].GetY();
+				
+				nod->left = BuildTree(split+1,left_by_x,left_by_y);
+				nod->right = BuildTree(split+1,right_by_x,right_by_y);
+				nod->split_coord = 1;
+				nod->split_val = points_by_y[index_median].GetY();
 				nod->is_leaf = false;
 				return nod;
 			}
@@ -169,7 +160,7 @@ public:
 		sort_by_x(points);
 		std::sort (points.begin(), points.end(), comp_func_by_y);
 		sort_by_y(points);
-		root = BuildTree(1,points);
+		root = BuildTree(1,sort_by_x,sort_by_y);
 	}
 	
 	
