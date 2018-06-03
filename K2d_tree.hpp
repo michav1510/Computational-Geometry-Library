@@ -117,7 +117,7 @@ private:
 				
 				nod->left = BuildTree(split+1,left_by_x,left_by_y);
 				nod->right = BuildTree(split+1,right_by_x,right_by_y);
-				nod->split_coord = 1;
+				nod->split_coord = 2;
 				nod->split_val = points_by_y[index_median].GetY();
 				nod->is_leaf = false;
 				return nod;
@@ -149,6 +149,35 @@ public:
 			void goLeftChild() {p = p->left;}
 			bool isInternalNode(){return !(p->is_leaf);}
 			Point2d getLeafPoint(){return p->data_leaf;}
+			
+			
+			/**
+			 *  This method returns all the leaf via transverse all the nodes 
+			 *  and get the leaves.
+			 * 
+			 */
+			static std::vector<Point2d> getAllPoints(tree_iterator it_node)
+			{
+				std::vector<Point2d> leaves;
+				if(!tree_iterator().isInternalNode())
+				{
+					leaves.push_back(it_node.getLeafPoint());
+					return leaves;
+				}
+				std::vector<Point2d> left = getAllPoints(it_node.getLeftChild());
+				std::vector<Point2d> right = getAllPoints(it_node.getRightChild());
+				for(std::vector<Point2d> it = left.begin(); it != left.end(); it++)
+				{
+					leaves.push_back(*it);
+				}
+				for(std::vector<Point2d> it = right.begin(); it != right.end(); it++)
+				{
+					leaves.push_back(*it);
+				}
+				return leaves;
+			}
+	
+		
 	};
 	
 	
@@ -157,9 +186,9 @@ public:
 	{
 		// here must do the sort of points and call the Buildtree 
 		std::sort (points.begin(), points.end(), comp_func_by_x);
-		sort_by_x(points);
+		sort_by_x = points;
 		std::sort (points.begin(), points.end(), comp_func_by_y);
-		sort_by_y(points);
+		sort_by_y= points;
 		root = BuildTree(1,sort_by_x,sort_by_y);
 	}
 	
