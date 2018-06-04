@@ -4,8 +4,11 @@
 #include "../../Point2d.hpp"
 
 
-int main(int argc, char* argv[])
+
+void testing_constructor()
 {
+	std::cout << "Start---Testing: (constructor) K2d_tree(std::vector<Point2d> )----------" << "\n\n";
+
 	int cas = 1;
 	while( cas <= 10)
 	{
@@ -184,10 +187,126 @@ int main(int argc, char* argv[])
 		{
 			
 		}
-		
-		
-		
 		cas++;
 	}
+	
+	std::cout << "End---Testing: (constructor) K2d_tree(std::vector<Point2d> )-----------" << "\n\n";
+}
 
+
+
+void testing_getAllPoints()
+{
+	std::cout << "Start---Testing: static std::vector<Point2d> getAllPoints(tree_iterator )----------" << "\n\n";
+	std::vector<Point2d> vec;
+	vec.push_back(Point2d(2,1));
+	vec.push_back(Point2d(1,0));
+	vec.push_back(Point2d(3,-5));
+	vec.push_back(Point2d(-1,2));
+	vec.push_back(Point2d(4,-3));
+	K2d_tree tree(vec);
+	
+	K2d_tree::tree_iterator it = tree.begin();
+	std::vector<Point2d> vec_leaves = K2d_tree::getAllPoints(it);
+	std::cout << "Below we see the leaves of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getLeftChild());
+	std::cout << "Below we see the leaves of the left child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	
+		it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getLeftChild().getLeftChild());
+	std::cout << "Below we see the leaves of the left-left child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getLeftChild().getLeftChild().getLeftChild());
+	std::cout << "Below we see the leaves of the left-left-left child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getLeftChild().getLeftChild().getRightChild());
+	std::cout << "Below we see the leaves of the left-left-right child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getLeftChild().getRightChild());
+	std::cout << "Below we see the leaves of the left-right of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getRightChild());
+	std::cout << "Below we see the leaves of the right child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getRightChild().getLeftChild());
+	std::cout << "Below we see the leaves of the right-left child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	
+	it = tree.begin();
+	vec_leaves = K2d_tree::getAllPoints(it.getRightChild().getRightChild());
+	std::cout << "Below we see the leaves of the right-right child of the root\n";
+	for(int i = 0; i < vec_leaves.size(); i++)
+	{
+		std::cout << " " << vec_leaves[i] << "\n" ;
+	}
+	
+	std::cout << "End---Testing: static std::vector<Point2d> getAllPoints(tree_iterator )----------" << "\n\n";
+
+}
+
+
+void testing_addPoint()
+{
+	std::cout << "Start---Testing: getAllNodes----------" << "\n\n";
+	std::vector<Point2d> vec;
+	vec.push_back(Point2d(2,1));
+	vec.push_back(Point2d(1,0));
+	vec.push_back(Point2d(3,-5));
+	vec.push_back(Point2d(-1,2));
+	vec.push_back(Point2d(4,-3));
+	K2d_tree tree(vec);
+
+	
+	std::cout << "Start---Testing: getAllNodes----------" << "\n\n";
+}
+
+int main(int argc, char* argv[])
+{
+//	testing_constructor();
+//	testing_getAllPoints();
+	testing_getAllNodes();
 }

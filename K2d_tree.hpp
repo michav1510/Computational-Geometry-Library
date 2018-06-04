@@ -125,6 +125,34 @@ private:
 		}
 	}
 	
+	/**
+	 *  The below is a auxiliary function for the deletion of all the nodes 
+	 *  of the  tree
+	 */
+	std::vector<Node*> getAllNodes(Node* node)
+	{
+		std::vector<Node*> vec;
+		vec.push_back(node);
+		if( node->left != 0 )
+		{
+			std::vector<Node*> vec_left = getAllNodes(node->left);
+			for(std::vector<Node*>::iterator it = vec_left.begin(); it != vec_left.end(); it++)
+			{
+				vec.push_back(*it);
+			}
+		}
+		if( node->right != 0 )
+		{
+			std::vector<Node*> vec_right = getAllNodes(node->right);
+			for(std::vector<Node*>::iterator it = vec_right.begin(); it != vec_right.end(); it++)
+			{
+				vec.push_back(*it);
+			}
+		}
+		return vec;
+	}
+	
+	
 public:
 	
 	class tree_iterator{
@@ -136,7 +164,7 @@ public:
 			tree_iterator(const tree_iterator& other_it) {p = other_it.p;}
 			
 			bool operator==(const tree_iterator& other_it) const {return p == other_it.p ;}
-			bool operator!=(const tree_iterator& other_it) const {return p!= other_it.p;}
+			bool operator!=(const tree_iterator& other_it) const {return p != other_it.p;}
 			tree_iterator& operator=(const tree_iterator& other_ch_it){p = other_ch_it.p; return *this;}
 			double getSplitValue(){return p->split_val;}// the median of the set by x or y, it depends on the split_val
 			int getSplitCoord(){return p->split_coord;}//returns 1 for x coordinate and 2 for y coordinate
@@ -151,35 +179,37 @@ public:
 			Point2d getLeafPoint(){return p->data_leaf;}
 			
 			
-			/**
-			 *  This method returns all the leaf via transverse all the nodes 
-			 *  and get the leaves.
-			 * 
-			 */
-			static std::vector<Point2d> getAllPoints(tree_iterator it_node)
-			{
-				std::vector<Point2d> leaves;
-				if(!tree_iterator().isInternalNode())
-				{
-					leaves.push_back(it_node.getLeafPoint());
-					return leaves;
-				}
-				std::vector<Point2d> left = getAllPoints(it_node.getLeftChild());
-				std::vector<Point2d> right = getAllPoints(it_node.getRightChild());
-				for(std::vector<Point2d> it = left.begin(); it != left.end(); it++)
-				{
-					leaves.push_back(*it);
-				}
-				for(std::vector<Point2d> it = right.begin(); it != right.end(); it++)
-				{
-					leaves.push_back(*it);
-				}
-				return leaves;
-			}
+
 	
 		
 	};
 	
+	
+	/**
+	 *  This method returns all the leaf via transverse all the nodes 
+	 *  and get the leaves.
+	 * 
+	 */
+	static std::vector<Point2d> getAllPoints(tree_iterator it_node)
+	{
+		std::vector<Point2d> leaves;
+		if(!it_node.isInternalNode())
+		{
+			leaves.push_back(it_node.getLeafPoint());
+			return leaves;
+		}
+		std::vector<Point2d> left = getAllPoints(it_node.getLeftChild());
+		std::vector<Point2d> right = getAllPoints(it_node.getRightChild());
+		for(std::vector<Point2d>::iterator it = left.begin(); it != left.end(); it++)
+		{
+			leaves.push_back(*it);
+		}
+		for(std::vector<Point2d>::iterator it = right.begin(); it != right.end(); it++)
+		{
+			leaves.push_back(*it);
+		}
+		return leaves;
+	}
 	
 	
 	K2d_tree(std::vector<Point2d> points)
@@ -200,47 +230,38 @@ public:
 	}
 	
 	
-	void addPoint(const Point2d& poi) 
+	void addPoint(const Point2d poi) 
 	{
-          /**
-	     * First we have to add the point to the vectors of points i.e sort_by_x and sort_by_y
-	     * and then we have to add it into the tree
-	     */ 
-	    
-		/*		
-		int siz = sort_by_x.size();
-		int i;
-		while(i < siz)
+		//firtst step we have to destroy all the old nodes
+		std::vector<Node*> nodes = getAllNodes(root);
+		for(std::vector<Node*>::iterator it = nodes.begin(); it != nodes.end(); it++)
 		{
-			if(poi.GetX() < sort_by_x[i].GetX())
-			{
-				sort_by_x.insert(sort_by_x.begin()+i,poi);
-				break;
-			}
-			i++;
+			delete *it;
 		}
-		i = 0;
-		while(i < siz)
+		
+		//second step : we have to add to the sort_by_x and sort_by_y the new point 
+		for(std::vector<Point2d>::iterator it = sort_by_x.begin(); it != sort_by_x.end(); it++)
 		{
-			if(poi.GetY() < sort_by_y[i].GetY())
+			if( poi.GetX() <= (*it).GetX() )
 			{
-				sort_by_y.insert(sort_by_y.begin()+i,poi);
-				break;
+				sort_by_x.insert(it,poi);
 			}
-			i++;
 		}
-*/
-
-	}
-	
-	void reBuildTree()
-	{
-		// firstly we have to destroy all the old nodes and rebuild the tree with the 
-		// calling of the BuildTree
+		for(std::vector<Point2d>::iterator it = sort_by_y.begin(); it != sort_by_y.end(); it++)
+		{
+			if( poi.GetY() <= (*it).GetY() )
+			{
+				sort_by_y.insert(it,poi);
+			}
+		}
+		
+		//third step rebuild the tree with the calling of the BuildTree
+		root = BuildTree(1,sort_by_x,sort_by_y);
 	}
 	
 	
 };
 
+	
 
 #endif
