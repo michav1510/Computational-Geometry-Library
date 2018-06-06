@@ -41,6 +41,15 @@ private:
 	
 	Node* BuildTree(int split, std::vector<Point2d> points_by_x, std::vector<Point2d> points_by_y)
 	{
+		//DEBUGGING code starts
+		std::cout << "(DEBUGGING)----------\n";
+		for(std::vector<Point2d>::iterator it = points_by_x.begin(); it != points_by_x.end(); it++)
+		{
+			std::cout<< "(DEBUGGING) : " << *it << "\n";
+		}
+		std::cout << "(DEBUGGING)----------\n\n";
+		//DEBUGGING code end
+		
 		assert(points_by_x.size() == points_by_y.size());
 		int siz = points_by_x.size();
 		std::vector<Point2d> left_by_x;
@@ -238,23 +247,27 @@ public:
 		{
 			delete *it;
 		}
-		
 		//second step : we have to add to the sort_by_x and sort_by_y the new point 
-		for(std::vector<Point2d>::iterator it = sort_by_x.begin(); it != sort_by_x.end(); it++)
+		std::vector<Point2d>::iterator it = sort_by_x.begin();
+		while( it != sort_by_x.end() )
 		{
 			if( poi.GetX() <= (*it).GetX() )
 			{
 				sort_by_x.insert(it,poi);
+				break;
 			}
+			it++;
 		}
-		for(std::vector<Point2d>::iterator it = sort_by_y.begin(); it != sort_by_y.end(); it++)
+		it = sort_by_y.begin();
+		while( it != sort_by_y.end() )
 		{
 			if( poi.GetY() <= (*it).GetY() )
 			{
 				sort_by_y.insert(it,poi);
+				break;
 			}
+			it++;
 		}
-		
 		//third step rebuild the tree with the calling of the BuildTree
 		root = BuildTree(1,sort_by_x,sort_by_y);
 	}

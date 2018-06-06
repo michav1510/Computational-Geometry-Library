@@ -299,7 +299,7 @@ void testing_addPoint()
 	vec.push_back(Point2d(-1,2));
 	vec.push_back(Point2d(4,-3));
 	K2d_tree tree(vec);
-
+	tree.addPoint(Point2d(-2,-2));
 	
 	std::cout << "Start---Testing: getAllNodes----------" << "\n\n";
 }
@@ -308,5 +308,5 @@ int main(int argc, char* argv[])
 {
 //	testing_constructor();
 //	testing_getAllPoints();
-	testing_getAllNodes();
+	testing_addPoint();
 }
