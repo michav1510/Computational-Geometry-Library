@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cassert>
+#include <stdexcept>   // for exception, runtime_error, out_of_range
 #include "Point2d.hpp"
 
 /**
@@ -182,8 +183,9 @@ private:
 public:
 	
 	/**
-	 *  This class 
-	 * 
+	 *  Purpose : This class created for the accessing of the tree without knowing 
+	 *  the implementation details of the class K2d_tree. Provides the ordinary functions
+	 *  to get access of the tree data.
 	 */
 	class tree_iterator{
 		private:
@@ -211,9 +213,10 @@ public:
 	
 	
 	/**
-	 *  This method returns all the leaf via transverse all the nodes 
-	 *  and get the leaves.
-	 * 
+	 *  @returns a vector with all the Point2d data from leaves that are descendants 
+	 *  of the node that corresponds to the tree_iterator it_node.
+	 *  @param it_node the tree_iterator whose the Point2d of the descendants leaves
+	 *  are returned. 
 	 */
 	static std::vector<Point2d> getAllPoints(tree_iterator it_node)
 	{
@@ -237,6 +240,16 @@ public:
 	}
 	
 	
+	
+	/**
+	 *  This constructor is the basic constructor. 
+	 *  First of all we sort the vector with respect to x and y coordinate.
+	 *  If there are points with equal with equal x coordinate or y coordinate 
+	 *  then it throws exception because this case is unsupported yet.
+	 *  @param points the vector with the points to which the construction of the 
+	 *  K2d_tree is based.
+	 *  
+	 */
 	K2d_tree(std::vector<Point2d> points)
 	{
 		// here must do the sort of points and call the Buildtree 
@@ -244,10 +257,35 @@ public:
 		sort_by_x = points;
 		std::sort (points.begin(), points.end(), comp_func_by_y);
 		sort_by_y= points;
-		root = BuildTree(1,sort_by_x,sort_by_y);
+		
+		bool two_same = false;
+		int siz = sort_by_x.size();
+		for(int i = 0; i < siz-1; i++)
+		{
+			if( sort_by_x[i].GetX() == sort_by_x[i+1].GetX() )
+			{
+				two_same = true;
+			}
+			if( sort_by_y[i].GetY() == sort_by_y[i+1].GetY() )
+			{
+				two_same = true;
+			}
+		}
+		if( two_same )
+		{
+			throw std::runtime_error( "The K2d_tree construction is unsupported for sets where exists points \
+			that have equal x coordinate or y coordinate" );
+		}else
+		{
+			root = BuildTree(1,sort_by_x,sort_by_y);
+		}
 	}
 	
 	
+	/**
+	 *  The destructor is necessary to destruct all the nodes which was constructed
+	 *  by using the command "new".
+	 */
 	~K2d_tree()
 	{
 		//we have to get all the nodes that were created and delete them
@@ -259,7 +297,9 @@ public:
 	}
 	
 	
-	
+	/**
+	 * @returns a tree_iterator which points to the root of the tree
+	 */
 	tree_iterator begin() const
 	{
 		assert(root!=0);
@@ -267,6 +307,13 @@ public:
 	}
 	
 	
+	/**
+	 *  This method adding a point to the tree. The function first of all 
+	 *  deletes the current whole tree and then adds to the vectors points_by_x and points_by_y
+	 *  the new point. After it calls the BuildTree function as the K2d_tree(std::vector<Point2d> points)
+	 *  does.
+	 *  @param poi the point that will be added to the tree.
+	 */
 	void addPoint(const Point2d poi) 
 	{
 		//firtst step we have to destroy all the old nodes
