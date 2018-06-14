@@ -1,3 +1,12 @@
+/**
+ *  Purpose : To implement predicates that we meet in computational geometry
+ * 
+ *  @author Chaviaras Michalis
+ *  @version 1.1  2/2018
+ * 
+ */
+
+
 #ifndef PREDDEF
 #define PREDDEF
 

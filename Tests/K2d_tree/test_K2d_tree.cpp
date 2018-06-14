@@ -1,8 +1,79 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "../../K2d_tree.hpp"
 #include "../../Point2d.hpp"
 
+
+void print_tree(K2d_tree::tree_iterator it,std::ostream& wri)
+{
+	wri << "--------------------------------\n";
+	wri << "has left child ? : ";
+	if( it.hasLeftChild() == true )
+	{
+		wri << "Yes" << "\n";
+	}else 
+	{
+		wri << "No" << "\n";
+	}
+	wri << "has right child ? : ";
+	if( it.hasRightChild() == true )
+	{
+		wri << "Yes" << "\n";
+	}else 
+	{
+		wri << "No" << "\n";
+	}
+	wri << "split coordinate is : ";
+	if( it.getSplitCoord() == 1 )
+	{
+		wri << "x" << "\n";
+	}else if (it.getSplitCoord() == 2)
+	{
+		wri << "y" << "\n";
+	} else
+	{
+		wri << "\n";
+	}
+	wri << "split value is :" << it.getSplitValue() << "\n";
+	wri << "it is a leaf ? : ";
+	if( !it.isInternalNode() == true )
+	{
+		wri << "Yes" << "\n";
+	}else 
+	{
+		wri << "No" << "\n";
+	}
+	wri << "Point : " << it.getLeafPoint() << "\n";
+	wri << "--------------------------------\n\n";
+	if( it.hasLeftChild() == true )
+	{
+		print_tree(it.getLeftChild(), wri);
+	}
+	if( it.hasRightChild() == true )
+	{
+		print_tree(it.getRightChild(), wri);
+	}
+}
+
+
+void print_for_plot_in_matlab(K2d_tree::tree_iterator it, std::ostream& wri)
+{
+	wri << it.getLeafPoint();
+	wri << "  ";
+	wri << it.getSplitValue() ;
+	wri << "  ";
+	wri << it.getSplitCoord() ;
+	wri << "\n";
+	if( it.hasLeftChild() )
+	{
+		print_for_plot_in_matlab(it.getLeftChild(),wri);
+	}
+	if( it.hasRightChild() )
+	{
+		print_for_plot_in_matlab(it.getRightChild(),wri);
+	}
+}
 
 
 void testing_constructor()
@@ -299,8 +370,11 @@ void testing_addPoint()
 	vec.push_back(Point2d(-1,2));
 	vec.push_back(Point2d(4,-3));
 	K2d_tree tree(vec);
+	std::ofstream outfile("plotting_for_matlab.txt");
+	print_tree(tree.begin(),std::cout);
 	tree.addPoint(Point2d(-2,-2));
-	
+	std::cout << "Addition of the point " << Point2d(-2,-2) << "\n\n";
+	print_tree(tree.begin(),std::cout);
 	std::cout << "Start---Testing: getAllNodes----------" << "\n\n";
 }
 

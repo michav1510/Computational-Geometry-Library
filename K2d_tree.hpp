@@ -2,7 +2,8 @@
  *   Purpose: To implement algorithms that are using this class. It is a balanced binary search tree with the 
  *   data on the leaves. 
  * 
- * 
+ *   @author Chaviaras Michalis
+ *   @version 1.1  6/2018
  * 
  */
 
@@ -26,30 +27,40 @@ bool comp_func_by_y(Point2d a, Point2d b) { return a.GetY() < b.GetY(); }
 
 class K2d_tree{
 	struct Node{
-		Node* left;
-		Node* right;
-		int split_coord; // 1 for x coordinate , 2 for y coordinate, 0if it is a leaf
-		double split_val;
-		bool is_leaf;
-		Point2d data_leaf;
+		Node* left;         // points to the left child, otherwise is equal to 0.
+		Node* right;        // points to the right child, otherwise is equal to 0.
+		int split_coord;    // 1 for x coordinate , 2 for y coordinate, 0 if it is a leaf.
+		double split_val;   // contains the split value of the node, if it is a leaf is equal to 0.
+		bool is_leaf;       // answer to question if the node is a leaf.
+		Point2d data_leaf;  // if the node is a leaf contains the Point2d, otherwise contains the Point2d : (0,0).
 	};
 private:	
 	Node* root;
 	std::vector<Point2d> sort_by_x;// the points of the tree sorted by x
 	std::vector<Point2d> sort_by_y;// the points of the tree sorted by y
 
-	
+	/**
+	 *  Here is practically the construction of the tree. 
+	 *  The parameter constructor call this function after the sorting of the points 
+	 *  with respect to x coordinate and y coordinate.
+	 *  @returns a node pointer to the root of the tree
+	 *  @param split is used to determine whether to split the current set with respect 
+	 *  to x or y coordinate, if split is an even number then we split by x coordinate otherwise
+	 *  we split by y coordinate.
+	 *  @param points_by_x is the current set of the points sorted with respect to x coordinate
+	 *  @param points_by_y is the current set of the points sorted with respect to y coordinate
+	 *  points_by_x and points_by_y are referred to the same current set but to different sortings.
+	 *  If the current set contains one point then we have to make a leaf node.
+	 *  Else we have to split the current set and sort the resulted 2 sets with respect to x and y
+	 *  coordinate. So the vectors left_by_x, left_by_y, right_by_x, right_by_y keep the 2 set, the left one and
+	 *  the right one and the two sortings of them. We can create the last four vectors given the
+	 *  points_by_x and points_by_y are sorted. 
+	 *  
+	 * 
+	 */
 	Node* BuildTree(int split, std::vector<Point2d> points_by_x, std::vector<Point2d> points_by_y)
 	{
-		//DEBUGGING code starts
-		std::cout << "(DEBUGGING)----------\n";
-		for(std::vector<Point2d>::iterator it = points_by_x.begin(); it != points_by_x.end(); it++)
-		{
-			std::cout<< "(DEBUGGING) : " << *it << "\n";
-		}
-		std::cout << "(DEBUGGING)----------\n\n";
-		//DEBUGGING code end
-		
+		//points_by_x and points_by_y are referred to the same set but to different sorting
 		assert(points_by_x.size() == points_by_y.size());
 		int siz = points_by_x.size();
 		std::vector<Point2d> left_by_x;
@@ -77,6 +88,7 @@ private:
 				//then we split by x coordinate
 				
 				int index_median = ceil(siz/2.0)-1;
+				Point2d split_point = points_by_x[index_median];
 				for(int i = 0; i < siz; i++)
 				{
 					if( i <= index_median )
@@ -86,7 +98,7 @@ private:
 					{
 						right_by_x.push_back(points_by_x[i]);
 					}
-					if( points_by_y[i].GetX() <= points_by_x[index_median].GetX() )
+					if( points_by_y[i].GetX() <= split_point.GetX() )
 					{
 						left_by_y.push_back(points_by_y[i]);
 					}else
@@ -98,7 +110,7 @@ private:
 				nod->left = BuildTree(split+1,left_by_x,left_by_y);
 				nod->right = BuildTree(split+1,right_by_x,right_by_y);
 				nod->split_coord = 1;
-				nod->split_val = points_by_x[index_median].GetX();
+				nod->split_val = split_point.GetX();
 				nod->is_leaf = false;
 				return nod;
 			}else
@@ -106,6 +118,7 @@ private:
 				//then we split by y coordinate
 				
 				int index_median = ceil(siz/2.0)-1;
+				Point2d split_point = points_by_y[index_median];
 				for(int i = 0; i < siz; i++)
 				{
 					if( i <= index_median )
@@ -115,7 +128,7 @@ private:
 					{
 						right_by_y.push_back(points_by_y[i]);
 					}
-					if( points_by_x[i].GetY() <= points_by_y[index_median].GetY() )
+					if( points_by_x[i].GetY() <= split_point.GetY() )
 					{
 						left_by_x.push_back(points_by_x[i]);
 					}else
@@ -127,7 +140,7 @@ private:
 				nod->left = BuildTree(split+1,left_by_x,left_by_y);
 				nod->right = BuildTree(split+1,right_by_x,right_by_y);
 				nod->split_coord = 2;
-				nod->split_val = points_by_y[index_median].GetY();
+				nod->split_val = split_point.GetY();
 				nod->is_leaf = false;
 				return nod;
 			}
@@ -135,8 +148,12 @@ private:
 	}
 	
 	/**
-	 *  The below is a auxiliary function for the deletion of all the nodes 
-	 *  of the  tree
+	 *  The below is an auxiliary function for the deletion of all the nodes 
+	 *  of the  tree. Starting from the "node" returns all the node that 
+	 *  are descendants of the "node"
+	 *  @returns a vector that contains the "node" and all of its descendants
+	 *  @param node the pointer to the node of the tree that we start to 
+	 *  find the descendants
 	 */
 	std::vector<Node*> getAllNodes(Node* node)
 	{
@@ -164,6 +181,10 @@ private:
 	
 public:
 	
+	/**
+	 *  This class 
+	 * 
+	 */
 	class tree_iterator{
 		private:
 			Node* p;
@@ -186,11 +207,6 @@ public:
 			void goLeftChild() {p = p->left;}
 			bool isInternalNode(){return !(p->is_leaf);}
 			Point2d getLeafPoint(){return p->data_leaf;}
-			
-			
-
-	
-		
 	};
 	
 	
@@ -230,6 +246,18 @@ public:
 		sort_by_y= points;
 		root = BuildTree(1,sort_by_x,sort_by_y);
 	}
+	
+	
+	~K2d_tree()
+	{
+		//we have to get all the nodes that were created and delete them
+		std::vector<Node*> nodes = getAllNodes(root);
+		for(std::vector<Node*>::iterator it = nodes.begin(); it != nodes.end(); it++)
+		{
+			delete *it;
+		}
+	}
+	
 	
 	
 	tree_iterator begin() const
