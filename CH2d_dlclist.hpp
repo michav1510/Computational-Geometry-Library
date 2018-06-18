@@ -275,12 +275,8 @@ public:
 			{
 				//firstly we have to find the point with the minimum x  i.e the one we get from
 				// GetX() from Point2d class
-				int pos_head = 0; //the position with the minimum x
-				// from all the points with the minimum x we must select the one 
-				// with the minimum y. But you can't avoid that you have to find 
-				// first the minimum x. If you don't find the minimum by x first
-				// then if the point with the minimum x is only one then the algorithm
-				// will fail.
+				
+				int pos_head = 0; //we will find the position of the head and this is the initialization
 				for (int i = 1; i < size_of_vec; i++)
 				{
 					if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) ||
@@ -288,12 +284,10 @@ public:
 					{
 						pos_head = i;
 					}
-				}// end of finding minimum, now we have the position of the head
-				// for sure the points[pos_head] wil be the first point of the
-				// convex hull(2d).
-				int pos_tail = 0; // the position with the maximum x will be 
-				//needed in order to set the tail of the list to this position.
-				//But it will be better if this maximum x has only the minimum y.
+				}// now we have the position of the head for sure the "points[pos_head]" wil be, certainly, 
+				// the first point of the convex hull(2d).
+
+				int pos_tail = 0; //we will find the position of the tail and this is the initialization
 				for( int i = 1; i < size_of_vec; i++ )
 				{
 					if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) ||
@@ -301,7 +295,9 @@ public:
 					{
 						pos_tail = i;
 					}
-				}
+				}// now we have the position of the tail for sure the "points[pos_tail]" wil be, certainly, 
+				// a point of the convex hull(2d).
+				
 				head = new Node;
 				head->data = points[pos_head];
 				my_size =1;
@@ -315,14 +311,14 @@ public:
 					pos_next_cand = (last_ch_pos+1)%size_of_vec;// we change the pos_next_cand
 					//after the while because we don't want to the end of the while because
 					//at the start of the while we remain the pos_next_cand to be checked.
-					// the last_ch_pos changes in every iteration so there is no problem this
+					// the last_ch_pos changes in every iteration so there is no problem with this
 					// assignment.
 				
 					for( int i = 0; i < size_of_vec; i++ )
 					{
 						if( i != last_ch_pos && i != pos_next_cand && last_ch_pos != pos_next_cand )
 						{
-							//doesn't have a sense to  check the angle if one of the point is the
+							//doesn't have a sense to  check the angle if one of the points is the
 							//same with another
 							if( Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) > 0 || 
 							       (Pred::Orient(points[pos_next_cand],points[last_ch_pos],points[i]) == 0 &&
@@ -396,13 +392,16 @@ public:
 	
 	/**
 	 *    Assignment Operator
+	 *    @param other_ch the other CH2d_dlclist of which the "this" list will 
+	 *    be a copy of.
+	 *    @returns a refernce of a CH2d_dlclist that is a copy of "other_ch"
 	 */
 	CH2d_dlclist& operator=(const CH2d_dlclist& other_ch)
 	{
 		if (this != &other_ch)
 		{
-			//firstly we have to delete the list that "this" holds, if "this" is 
-			//nonotherwise will have a memory leak 
+			//firstly we have to delete the list that "this" holds, otherwise we
+			//will have a memory leak 
 			if ( head!= 0 ) 
 			{
 				Node* curr;
@@ -419,13 +418,12 @@ public:
 				//std::cout << "Deletion of the node with address : " << last << "\n";
 				delete last;
 			}
-			//the above was the last command of the deletion of the "this" list.
+			//the above was the last command of the deletion of "this" list.
 				
-			//now we have the same list as the other_ch 
 			if( other_ch.my_size > 0 )
 			{
-			// we can't iterate through the iterator we made because with this we can only access the 
-			// list not to modify. Here we make modification in order the nodes point where we want !!
+			//we are iterating the "other_ch" through the iterator we made for safety, we don't want 
+			//to handle directly the list from pointers to Node. Even if the "other_ch" is const 
 				CH2d_dlclist::ch_iterator curr_it(other_ch.begin());
 				Node* curr = new Node;
 				curr->data = *curr_it;

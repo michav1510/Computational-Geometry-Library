@@ -36,10 +36,12 @@ class K2d_tree{
 		Point2d data_leaf;  // if the node is a leaf contains the Point2d, otherwise contains the Point2d : (0,0).
 	};
 private:	
-	Node* root;
-	std::vector<Point2d> sort_by_x;// the points of the tree sorted by x
-	std::vector<Point2d> sort_by_y;// the points of the tree sorted by y
+	Node* root;                     // pointer to the root of the tree
+	std::vector<Point2d> sort_by_x; // the points of the tree sorted by x
+	std::vector<Point2d> sort_by_y; // the points of the tree sorted by y
 
+	
+	
 	/**
 	 *  Here is practically the construction of the tree. 
 	 *  The parameter constructor call this function after the sorting of the points 
