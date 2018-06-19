@@ -681,11 +681,13 @@ public:
 			// the unnecessary points.
 			
 			
+			//the case where the query point is equal with one of the points of the convex hull(2d)
+			//is checked in the else of this if-else-if...-else statement
 			if( query_po.GetX() <= head->data.GetX() && query_po.GetY() < head->data.GetY() ||
 			    query_po.GetX() < head->data.GetX() && query_po.GetY() >= head->data.GetY())
 			{
-				//the case where the query point is equal with one of the points of the convex hull(2d)
-				//is checked in the else of this if-else-if...-else statement
+				//this is the case where the query point becomes head
+				
 				Node* new_head = query_nod;//the query point is new head
 				Node* bef = head->back;
 				Node* aft = head->front;
@@ -712,8 +714,8 @@ public:
 			}else if( (query_po.GetX() > tail->data.GetX() && query_po.GetY() >= tail->data.GetY()) || 
 				    (query_po.GetX() >= tail->data.GetX() && query_po.GetY() < tail->data.GetY()) )
 			{
-				// becareful if the X's are equal and the Y of query point is bigger or equal to Y of tail
-				// then the query point is not new tail
+				//this is the case where the query point becomes tail
+				
 				Node* new_tail = query_nod;//the query point is new tail
 				Node* bef = tail->back;
 				Node* aft = tail->front;
