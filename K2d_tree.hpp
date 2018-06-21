@@ -153,8 +153,8 @@ private:
 	/**
 	 *  The below is an auxiliary function for the deletion of all the nodes 
 	 *  of the  tree. Starting from the "node" returns all the node that 
-	 *  are descendants of the "node"
-	 *  @returns a vector that contains the "node" and all of its descendants
+	 *  are descendants of the "node" and the "node" itself.
+	 *  @returns a vector that contains the "node" and all of its descendants.
 	 *  @param node the pointer to the node of the tree that we start to 
 	 *  find the descendants
 	 */
@@ -200,17 +200,17 @@ public:
 			bool operator==(const tree_iterator& other_it) const {return p == other_it.p ;}
 			bool operator!=(const tree_iterator& other_it) const {return p != other_it.p;}
 			tree_iterator& operator=(const tree_iterator& other_ch_it){p = other_ch_it.p; return *this;}
-			double getSplitValue(){return p->split_val;}// the median of the set by x or y, it depends on the split_val
-			int getSplitCoord(){return p->split_coord;}//returns 1 for x coordinate and 2 for y coordinate
-			bool hasRightChild(){return p->right != 0;}
-			bool hasLeftChild(){return p->left != 0;}
-			bool hasChildren(){return (p->right != 0) || (p->left != 0);}
-			tree_iterator getLeftChild(){return tree_iterator(p->left);}
-			tree_iterator getRightChild(){return tree_iterator(p->right);}
+			double getSplitValue() const {return p->split_val;}// the median of the set by x or y, it depends on the split_val
+			int getSplitCoord() const {return p->split_coord;}//returns 1 for x coordinate and 2 for y coordinate
+			bool hasRightChild() const {return p->right != 0;}
+			bool hasLeftChild() const {return p->left != 0;}
+			bool hasChildren() const {return (p->right != 0) || (p->left != 0);}
+			tree_iterator getLeftChild() const {return tree_iterator(p->left);}
+			tree_iterator getRightChild() const {return tree_iterator(p->right);}
 			void goRightChild() {p = p->right;} 
 			void goLeftChild() {p = p->left;}
-			bool isInternalNode(){return !(p->is_leaf);}
-			Point2d getLeafPoint(){return p->data_leaf;}
+			bool isInternalNode() const {return !(p->is_leaf);}
+			Point2d getLeafPoint() const {return p->data_leaf;}
 	};
 	
 	
