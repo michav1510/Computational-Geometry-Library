@@ -771,7 +771,7 @@ public:
 							after->back = query_nod;
 							quer_po_added = true;
 							my_size++;//the size must be increased. at the later stage may also be decreased.
-							break;//if we find the position of the query point in the list the we must stop
+							break;//if we find the position of the query point in the list then we must stop
 						}
 					}
 					prev = prev->front;
@@ -825,6 +825,8 @@ public:
 
 			//the below upper hull and lower hull iteration is from the "Andrew's algorithm" or "monotone chain"
 			//the upper hull iteration to remove unnecessary points
+			
+			//upper hull iteration starts
 			std::vector<Node*> upp;
 			upp.push_back(head);
 			upp.push_back(head->front);
@@ -836,6 +838,8 @@ public:
 				int siz = upp.size();
 				while( siz > 2 && Pred::Orient(upp[siz-3]->data,upp[siz-2]->data,upp[siz-1]->data) <= 0 )
 				{
+					//while the last three do not make a counter clockwise turn delete the middle
+					
 					//std::cout << "(DEBUGGING) : " << upp[siz-3]->data << " " << upp[siz-2]->data << " " << upp[siz-1]->data << "\n";
 					upp[siz-3]->front = upp[siz-1];
 					upp[siz-1]->back = upp[siz-3];
@@ -844,7 +848,8 @@ public:
 					siz = upp.size();
 				}
 			}
-			//lower hull iteration
+			
+			//lower hull iteration starts
 			std::vector<Node*> low;
 			low.push_back(tail);
 			low.push_back(tail->front);
@@ -856,6 +861,8 @@ public:
 				int siz = low.size();
 				while( siz > 2 && Pred::Orient(low[siz-3]->data,low[siz-2]->data,low[siz-1]->data) <= 0 )
 				{
+					//while the last three do not make a counter clockwise turn delete the middle
+					
 					//std::cout << "(DEBUGGING) : " << low[siz-3]->data << " " << low[siz-2]->data << " " << low[siz-1]->data << "\n";
 					low[siz-3]->front = low[siz-1];
 					low[siz-1]->back = low[siz-3];

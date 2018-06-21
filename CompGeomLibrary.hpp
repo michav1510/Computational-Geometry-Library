@@ -14,6 +14,7 @@
 #include <vector>
 #include "Point2d.hpp"
 #include "Edge2d.hpp"
+#include "CH2d_dlclist.hpp"
 
 class CompGeomLibrary
 {
@@ -27,6 +28,15 @@ public:
 */
 static std::list<Point2d> Compose_ch2d(const std::list<Edge2d> list_of_edges);
 	
+
+/**
+ * The following function will search inside the convex hull "ch" which points from the 
+ * vector "points" lies inside the "ch".
+ *  
+ */
+std::vector<Point2d> PointsThatFoundInTheCHfromtheVector(CH2d_dlclist ch, std::vector<Point2d> points );	
+
+
 };
 
 

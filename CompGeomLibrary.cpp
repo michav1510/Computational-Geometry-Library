@@ -5,8 +5,10 @@
     @version 1.1  2/2018 
 */
 
+
 #include "CompGeomLibrary.hpp"
 #include <algorithm>
+
 
 
 /**
@@ -44,6 +46,8 @@ bool comp_edges_by_min_x(const Edge2d& e_1, const Edge2d& e_2) {
 }
 
 	
+
+	
 	
 	
 std::list<Point2d> CompGeomLibrary::Compose_ch2d(const std::list< Edge2d > list_of_edges)
@@ -57,6 +61,7 @@ std::list<Point2d> CompGeomLibrary::Compose_ch2d(const std::list< Edge2d > list_
       
 //at this level I have sorted the input list by the rule I wanted to
 }
+
 
 
 
