@@ -463,7 +463,7 @@ public:
 	* O(n). Because it runs the upper hull and the lower hull to check 
 	* if there are not anti clockwise turns in the convex hull(2d). 
 	* Purpose : to add a point if it is not interval to the convex hull(2d) 
-	* @param point Is the point that will be add to the head of the list.
+	* @param query_po Is the point that maybe added to the list.
 	* @returns -1 if the point wasn't added to the list, 1 if the point
 	* was added to the list.
 	*/
@@ -532,8 +532,9 @@ public:
 				//if the query point is equal with one of the current points
 				return -1;
 			}else if( Pred::Orient(query_po,head->data,tail->data) == 0  &&
-				   ( (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) &&
-				     (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) )  )
+				    (query_po.GetX() >= head->data.GetX() && query_po.GetX() <= tail->data.GetX()) &&
+				   (  (query_po.GetY() >= head->data.GetY() && query_po.GetY() <= tail->data.GetY()) || 
+					(query_po.GetY() >= tail->data.GetY()) && query_po.GetY() <= head->data.GetY()    ) )
 			{
 				// if the query point is collinear with the other two and the query point is between the head
 				// and the tail then it will not be added to the list

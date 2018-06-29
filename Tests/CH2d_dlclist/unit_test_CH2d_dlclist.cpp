@@ -243,6 +243,7 @@ void test_push(std::ostream& write_str)
 	{
 		if(cas == 1)
 		{
+			//one point is added to the empty convex hull(list)
 			bool test_pass1 = false;
 			std::vector<Point2d> vec1;
 			
@@ -280,10 +281,12 @@ void test_push(std::ostream& write_str)
 			
 		}else if(cas == 2)
 		{
+			//one point is added to a convex hull(list) with one point
+			//the new point has bigger x of the current
 			bool test_pass2 = false;
 			std::vector<Point2d> vec2;
 			vec2.push_back(Point2d(5,1));
-						
+			
 			CH2d_dlclist ch2(vec2,"Jarvis");
 			
 			if(ch2.push(Point2d(10,2)) == 1);
@@ -321,26 +324,29 @@ void test_push(std::ostream& write_str)
 			}
 		}else if(cas == 3)
 		{
+			//one point is added to a convex hull(list) with one point
+			//the new point is on the same vertical position but smaller y of the current
 			bool test_pass3 = false;
 			std::vector<Point2d> vec3;
 			vec3.push_back(Point2d(5,1));
 			
 			CH2d_dlclist ch3(vec3,"Jarvis");
 			
-			if(ch3.push(Point2d(5,1)) == -1)
+			if(ch3.push(Point2d(5,0)) == 1);
 			{
-				// then the point wasn't added
-				if(*ch3.begin() == Point2d(5,1))
+				//then the point was added
+				if(*ch3.begin() == Point2d(5,0))
 				{
 					// then the head is correct
 					if(*ch3.end() == Point2d(5,1))
 					{
-						//then the tail is correct
-						CH2d_dlclist::ch_iterator it3 = ch3.begin();
-						if( *it3 == Point2d(5,1) && *(it3+1) == Point2d(5,1) && *(it3-1) == Point2d(5,1))
+						// then the tail is correct
+						CH2d_dlclist::ch_iterator it3(ch3.begin());
+						if(*it3 == Point2d(5,0) && *(it3+1) == Point2d(5,1) && *(it3+2) == Point2d(5,0) &&
+							*(it3-1) == Point2d(5,1) && *(it3-2) == Point2d(5,0))
 						{
 							// then the linkage is correct
-							if(ch3.size() == 1 && ch3.area() == 0)
+							if(ch3.size() == 2 && ch3.area() == 0)
 							{
 								//then the size and the area are correct
 								test_pass3 = true;
@@ -348,8 +354,10 @@ void test_push(std::ostream& write_str)
 						}
 					}
 				}
+				
 			}
-							
+			
+			
 			if(test_pass3 == true)
 			{
 				write_str << "Test " << cas << " passed\n";
@@ -361,6 +369,8 @@ void test_push(std::ostream& write_str)
 			
 		}else if(cas == 4)
 		{
+			//one point is added to a convex hull(list) with one point
+			//the new point is on the same vertical position but greater y of the current
 			bool test_pass4 = false;
 			std::vector<Point2d> vec4;
 			vec4.push_back(Point2d(5,1));
@@ -401,25 +411,27 @@ void test_push(std::ostream& write_str)
 			
 		}else if(cas == 5)
 		{
+			//one point is added to a convex hull(list) with two points
+			//the new point must be equal to the head of the convex hull
 			bool test_pass5 = false;
 			std::vector<Point2d> vec5;
+			vec5.push_back(Point2d(5,1));
 			vec5.push_back(Point2d(3,2));
-			vec5.push_back(Point2d(4,0));
 			
 			CH2d_dlclist ch5(vec5,"Jarvis");
 			
-			if(ch5.push(Point2d(3.5,1)) == -1)
+			if(ch5.push(Point2d(3,2)) == -1)
 			{
-				// then the point wasn't added
+				// then the point was added
 				if(*ch5.begin() == Point2d(3,2))
 				{
 					// then the head is correct
-					if(*ch5.end() == Point2d(4,0))
+					if(*ch5.end() == Point2d(5,1))
 					{
 						//then the tail is correct
 						CH2d_dlclist::ch_iterator it5 = ch5.begin();
-						if( *it5 == Point2d(3,2) && *(it5+1) == Point2d(4,0) && *(it5+2) == Point2d(3,2)
-							&& *(it5-1) == Point2d(4,0) && *(it5-2) == Point2d(3,2))
+						if( *it5 == Point2d(3,2) && *(it5+1) == Point2d(5,1) && *(it5+2) == Point2d(3,2)
+							&& *(it5-1) == Point2d(5,1) && *(it5-2) == Point2d(3,2))
 						{
 							// then the linkage is correct
 							if(ch5.size() == 2 && ch5.area() == 0)
@@ -439,6 +451,54 @@ void test_push(std::ostream& write_str)
 			{
 				write_str << "Test " << cas << " failed\n";
 			}
+		}else if(cas == 6)
+		{
+			//one point is added to a convex hull(list) with two points
+			//the new point must be equal to the tail of the convex hull
+			bool test_pass6 = false;
+			std::vector<Point2d> vec6;
+			vec6.push_back(Point2d(5,1));
+			vec6.push_back(Point2d(3,2));
+			
+			CH2d_dlclist ch6(vec6,"Jarvis");
+			
+			if(ch6.push(Point2d(5,1)) == -1)
+			{
+				// then the point was added
+				if(*ch6.begin() == Point2d(3,2))
+				{
+					// then the head is correct
+					if(*ch6.end() == Point2d(5,1))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it6 = ch6.begin();
+						if( *it6 == Point2d(3,2) && *(it6+1) == Point2d(5,1) && *(it6+2) == Point2d(3,2)
+							&& *(it6-1) == Point2d(5,1) && *(it6-2) == Point2d(3,2))
+						{
+							// then the linkage is correct
+							if(ch6.size() == 2 && ch6.area() == 0)
+							{
+								//then the size and the area are correct
+								test_pass6 = true;
+							}
+						}
+					}
+				}
+			}
+							
+			if(test_pass6 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+		}else if(cas == 7)
+		{
+			//one point is added to a convex hull(list) with two points
+			// the new point must be between the line that connects them
+			
 		}
 			
 					
