@@ -497,10 +497,230 @@ void test_push(std::ostream& write_str)
 		}else if(cas == 7)
 		{
 			//one point is added to a convex hull(list) with two points
-			// the new point must be between the line that connects them
+			// the new point must be in the line between them
+			bool test_pass7 = false;
+			std::vector<Point2d> vec7;
+			vec7.push_back(Point2d(0,0));
+			vec7.push_back(Point2d(1,1));
 			
+			CH2d_dlclist ch7(vec7);
+			
+			if(ch7.push(Point2d(0.1,0.1)) == -1)
+			{
+				// then the point was added
+				if(*ch7.begin() == Point2d(0,0))
+				{
+					// then the head is correct
+					if(*ch7.end() == Point2d(1,1))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it7 = ch7.begin();
+						if( *it7 == Point2d(0,0) && *(it7+1) == Point2d(1,1) && *(it7+2) == Point2d(0,0)
+							&& *(it7-1) == Point2d(1,1) && *(it7-2) == Point2d(0,0))
+						{
+							// then the linkage is correct
+							if(ch7.size() == 2 && ch7.area() == 0)
+							{
+								//then the size and the area are correct
+								test_pass7 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass7 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+			
+		}else if(cas == 8)
+		{
+			//one point is added to a convex hull(list) with two points
+			// the new point is collinear with the other two points but not in the line 
+			//between them and substitutes the head
+			bool test_pass8 = false;
+			std::vector<Point2d> vec8;
+			vec8.push_back(Point2d(0,0));
+			vec8.push_back(Point2d(1,1));
+			
+			CH2d_dlclist ch8(vec8);
+			
+			if(ch8.push(Point2d(-1,-1)) == 1)
+			{
+				// then the point was added
+				if(*ch8.begin() == Point2d(-1,-1))
+				{
+					// then the head is correct
+					if(*ch8.end() == Point2d(1,1))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it8 = ch8.begin();
+						if( *it8 == Point2d(-1,-1) && *(it8+1) == Point2d(1,1) && *(it8+2) == Point2d(-1,-1)
+							&& *(it8-1) == Point2d(1,1) && *(it8-2) == Point2d(-1,-1))
+						{
+							// then the linkage is correct
+							if(ch8.size() == 2 && ch8.area() == 0)
+							{
+								//then the size and the area are correct
+								test_pass8 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass8 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+			
+		}else if(cas == 9)
+		{
+			//one point is added to a convex hull(list) with two points
+			// the new point is collinear with the other two points but not in the line 
+			//between them and substitutes the tail
+			bool test_pass9 = false;
+			std::vector<Point2d> vec9;
+			vec9.push_back(Point2d(0,0));
+			vec9.push_back(Point2d(1,1));
+			
+			CH2d_dlclist ch9(vec9);
+			
+			if(ch9.push(Point2d(2,2)) == 1)
+			{
+				// then the point was added
+				if(*ch9.begin() == Point2d(0,0))
+				{
+					// then the head is correct
+					if(*ch9.end() == Point2d(2,2))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it9 = ch9.begin();
+						if( *it9 == Point2d(0,0) && *(it9+1) == Point2d(2,2) && *(it9+2) == Point2d(0,0)
+							&& *(it9-1) == Point2d(2,2) && *(it9-2) == Point2d(0,0))
+						{
+							// then the linkage is correct
+							if(ch9.size() == 2 && ch9.area() == 0)
+							{
+								//then the size and the area are correct
+								test_pass9 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass9 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+		}else if(cas == 10)
+		{
+			//one point is added to a convex hull(list) with two points tha lie on the same vertical line
+			// the new point is collinear with the other two points but not in the line between them and
+			// substitutes the head
+			bool test_pass10 = false;
+			std::vector<Point2d> vec10;
+			vec10.push_back(Point2d(1,0));
+			vec10.push_back(Point2d(1,1));
+			
+			CH2d_dlclist ch10(vec10);
+			
+			if(ch10.push(Point2d(1,-1)) == 1)
+			{
+				// then the point was added
+				if(*ch10.begin() == Point2d(1,-1))
+				{
+					// then the head is correct
+					if(*ch10.end() == Point2d(1,1))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it10 = ch10.begin();
+						if( *it10 == Point2d(1,-1) && *(it10+1) == Point2d(1,1) && *(it10+2) == Point2d(1,-1)
+							&& *(it10-1) == Point2d(1,1) && *(it10-2) == Point2d(1,-1))
+						{
+							// then the linkage is correct
+							if(ch10.size() == 2 && ch10.area() == 0)
+							{
+								//then the size and the area are correct
+								test_pass10 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass10 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+			
+			
+		}else if(cas == 11)
+		{
+			//one point is added to a convex hull(list) with two points tha lie on the same vertical line
+			// the new point is collinear with the other two points but not in the line between them and
+			// substitutes the tail
+			bool test_pass11 = false;
+			std::vector<Point2d> vec11;
+			vec11.push_back(Point2d(1,0));
+			vec11.push_back(Point2d(1,1));
+			
+			CH2d_dlclist ch11(vec11);
+			
+			if(ch11.push(Point2d(1,2)) == 1)
+			{
+				// then the point was added
+				if(*ch11.begin() == Point2d(1,0))
+				{
+					// then the head is correct
+					if(*ch11.end() == Point2d(1,2))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it11 = ch11.begin();
+						if( *it11 == Point2d(1,0) && *(it11+1) == Point2d(1,2) && *(it11+2) == Point2d(1,0)
+							&& *(it11-1) == Point2d(1,2) && *(it11-2) == Point2d(1,0))
+						{
+							// then the linkage is correct
+							if(ch11.size() == 2 && ch11.area() == 0)
+							{
+								//then the size and the area are correct
+								test_pass11 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass11 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+		}else if(cas == 12)
+		{
+			//else 583 line
 		}
-			
 					
 		
 		cas++;
