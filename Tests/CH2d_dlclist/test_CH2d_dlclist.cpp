@@ -714,44 +714,85 @@ void test_iterators()
 
 void test_parameter_constructor()
 {
-	// this test reads from the file "sets_of_points.txt"
-	// and write the resulted convex hull to "convex_hull_res.txt"
-	std::ifstream infile("sets_of_points.txt");
-	std::ofstream outfile("convex_hull_res.txt");
-	double a;
-	double b;
-	std::string tmp;
-	std::vector<Point2d> vec1;
-	while (infile >> tmp >> a  >> tmp >>  b >> tmp)
+	int cas = 2;
+	
+	while( cas <= 25)
 	{
-		vec1.push_back(Point2d(a,b));
-	}
-	CH2d_dlclist a1(vec1,"Jarvis");
+		if( cas == 1)
+		{
+			// this test reads from the file "sets_of_points.txt"
+			// and write the resulted convex hull to "convex_hull_res.txt"
+			std::ifstream infile("sets_of_points.txt");
+			std::ofstream outfile("convex_hull_res.txt");
+			double a;
+			double b;
+			std::string tmp;
+			std::vector<Point2d> vec1;
+			while (infile >> tmp >> a  >> tmp >>  b >> tmp)
+			{
+				vec1.push_back(Point2d(a,b));
+			}
+			CH2d_dlclist a1(vec1,"Jarvis");
 	
 	
-	CH2d_dlclist::ch_iterator it1 = a1.begin();
-	CH2d_dlclist::ch_iterator flag1 = it1;
-	outfile << *it1 << "\n";
-	while(++it1 != flag1)
-	{
-		outfile << *it1 << "\n" ;
-	}
-	outfile << "The size of the convex hull is " << a1.size() << "\n";
-	outfile << "The head is " << *a1.begin() << "\n";
-	outfile << "The tail is " << *a1.end() << "\n";
-	outfile << "\n";
+			CH2d_dlclist::ch_iterator it1 = a1.begin();
+			CH2d_dlclist::ch_iterator flag1 = it1;
+			outfile << *it1 << "\n";
+			while(++it1 != flag1)
+			{
+				outfile << *it1 << "\n" ;
+			}
+			outfile << "The size of the convex hull is " << a1.size() << "\n";
+			outfile << "The head is " << *a1.begin() << "\n";
+			outfile << "The tail is " << *a1.end() << "\n";
+			outfile << "\n";
 		
-	outfile.close();
+			outfile.close();
+		}else if( cas == 2 )
+		{
+			std::cout  << "This shows that the CH2d_dlclist(points,algorithm) doesn't work for \"points\" with duplicate points\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(2,1));
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(0.5,-2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(2,1));
+			CH2d_dlclist ch(vec,"Jarvis");
+			
+			print_state_ch2d(std::cout, ch);
+			
+		}else if( cas == 3 )
+		{
+			std::cout  << "This shows that the CH2d_dlclist(points,algorithm) doesn't work for \"points\" with duplicate points\n";
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0.5,-2));
+			vec.push_back(Point2d(2,1));
+			vec.push_back(Point2d(0.5,-2));
+			vec.push_back(Point2d(0.5,-2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(0.5,-2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(2,1));
+			vec.push_back(Point2d(0,0));
+			CH2d_dlclist ch(vec,"Jarvis");
+			
+		}
+		cas++;
+	}	
+
 }
-
-
 
 
 
 int main(int argc, char* argv[])
 {
 	std::cout << "!!!In order to test what you want, just uncomment the corresponding function call from the main!!! \n\n";
-	test_push();
+//	test_push();
 //	test_copy_constructor();
 //	test_default_constructor();
 //	test_destructor();
@@ -759,7 +800,7 @@ int main(int argc, char* argv[])
 //	test_size();
 //	test_begin();
 //	test_iterators();
-//	test_parameter_constructor();
+	test_parameter_constructor();
 	
 	
 }

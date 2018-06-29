@@ -191,7 +191,7 @@ public:
 	 */
 	class tree_iterator{
 		private:
-			Node* p;
+			const Node* p;
 		public:
 			tree_iterator(){p=0;}
 			tree_iterator(Node* x){p=x;}
@@ -276,7 +276,7 @@ public:
 		if( two_same )
 		{
 			throw std::runtime_error( "The K2d_tree construction is unsupported for sets where exists points \
-			that have equal x coordinate or y coordinate" );
+			that have equal x coordinate or y coordinate\n" );
 		}else
 		{
 			root = BuildTree(1,sort_by_x,sort_by_y);
