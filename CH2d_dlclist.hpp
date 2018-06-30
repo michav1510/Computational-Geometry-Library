@@ -582,7 +582,7 @@ public:
 				return 1;
 			}else 
 			{
-				// in this case the query point will be added to the list
+				// in this case the query point has a "random" position and it will be added to the list
 				Node* new_elem = new Node;
 				new_elem->data = query_po;
 				if( query_po.GetX() < head->data.GetX() ||
@@ -604,7 +604,7 @@ public:
 						{
 							//if the old head lie on the same vertical
 							// line with the tail then the tail also must change
-							tail = old_head;						
+							tail = old_head;
 						}
 					}else
 					{

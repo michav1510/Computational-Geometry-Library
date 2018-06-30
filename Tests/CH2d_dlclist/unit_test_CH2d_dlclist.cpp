@@ -629,7 +629,7 @@ void test_push(std::ostream& write_str)
 			
 		}else if(cas == 10)
 		{
-			//one point is added to a convex hull(list) with two points tha lie on the same vertical line
+			//one point is added to a convex hull(list) with two points that lie on the same vertical line
 			// the new point is collinear with the other two points but not in the line between them and
 			// substitutes the head
 			bool test_pass10 = false;
@@ -675,7 +675,7 @@ void test_push(std::ostream& write_str)
 			
 		}else if(cas == 11)
 		{
-			//one point is added to a convex hull(list) with two points tha lie on the same vertical line
+			//one point is added to a convex hull(list) with two points that lie on the same vertical line
 			// the new point is collinear with the other two points but not in the line between them and
 			// substitutes the tail
 			bool test_pass11 = false;
@@ -720,8 +720,974 @@ void test_push(std::ostream& write_str)
 		}else if(cas == 12)
 		{
 			//else 583 line
+			//one point is added to a convex hull(list) with two points that lie on the same vertical line
+			// the new point has smaller x than the head
+			bool test_pass12 = false;
+			std::vector<Point2d> vec12;
+			Point2d a12(1,0);
+			Point2d b12(1,1);
+			vec12.push_back(a12);
+			vec12.push_back(b12);
+			
+			CH2d_dlclist ch12(vec12);
+			
+			Point2d c12(-1,0);
+			if(ch12.push(c12) == 1)
+			{
+				// then the point was added
+				if(*ch12.begin() == c12)
+				{
+					// then the head is correct
+					if(*ch12.end() == a12)
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it12 = ch12.begin();
+						if( *it12 == c12 && *(it12+1) == b12 && *(it12+2) == a12
+							&& *(it12+3) == c12  && *(it12-1) == a12 
+							&& *(it12-2) == b12 && *(it12-3) == c12)
+						{
+							// then the linkage is correct
+							if(ch12.size() == 3 && ch12.area() == 1)
+							{
+								//then the size and the area are correct
+								test_pass12 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass12 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+		}else if(cas == 13)
+		{
+			//one point is added to a convex hull(list) with two points that don't lie on the same vertical line
+			// the new point has smaller x than the head
+			bool test_pass13 = false;
+			std::vector<Point2d> vec13;
+			Point2d a13(0,0);
+			Point2d b13(1,1);
+			vec13.push_back(a13);
+			vec13.push_back(b13);
+			
+			CH2d_dlclist ch13(vec13);
+			
+			Point2d c13(-1,0);
+			if(ch13.push(c13) == 1)
+			{
+				// then the point was added
+				if(*ch13.begin() == c13)
+				{
+					// then the head is correct
+					if(*ch13.end() == b13)
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it13 = ch13.begin();
+						if( *it13 == c13 && *(it13+1) == b13 && *(it13+2) == a13
+							&& *(it13+3) == c13  && *(it13-1) == a13 
+							&& *(it13-2) == b13 && *(it13-3) == c13)
+						{
+							// then the linkage is correct
+							if(ch13.size() == 3 && ch13.area() == 0.5)
+							{
+								//then the size and the area are correct
+								test_pass13 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass13 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+		}else if(cas == 14)
+		{
+			//one point is added to a convex hull(list) with two points that don't lie on the same vertical line
+			// the new point has smaller x than the head
+			bool test_pass14 = false;
+			std::vector<Point2d> vec14;
+			vec14.push_back(Point2d(0,1));
+			vec14.push_back(Point2d(1,0));
+			
+			CH2d_dlclist ch14(vec14);
+			
+			
+			if(ch14.push(Point2d(-1,0)) == 1)
+			{
+				// then the point was added
+				if(*ch14.begin() == Point2d(-1,0))
+				{
+					// then the head is correct
+					if(*ch14.end() == Point2d(1,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it14 = ch14.begin();
+						if( *it14 == Point2d(-1,0) && *(it14+1) == Point2d(0,1) && *(it14+2) == Point2d(1,0)
+							&& *(it14+3) == Point2d(-1,0)  && *(it14-1) == Point2d(1,0) 
+							&& *(it14-2) == Point2d(0,1) && *(it14-3) == Point2d(-1,0))
+						{
+							// then the linkage is correct
+							if(ch14.size() == 3 && ch14.area() == 1)
+							{
+								//then the size and the area are correct
+								test_pass14 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass14 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+		}else if(cas == 15)
+		{
+			//one point is added to a convex hull(list) with two points that don't lie on the same vertical line
+			// the new point has bigger x than the tail
+			bool test_pass15 = false;
+			std::vector<Point2d> vec15;
+			vec15.push_back(Point2d(-1,0));
+			vec15.push_back(Point2d(0,1));
+			
+			CH2d_dlclist ch15(vec15);
+			
+			
+			if(ch15.push(Point2d(1,0)) == 1)
+			{
+				// then the point was added
+				if(*ch15.begin() == Point2d(-1,0))
+				{
+					// then the head is correct
+					if(*ch15.end() == Point2d(1,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it15 = ch15.begin();
+						if( *it15 == Point2d(-1,0) && *(it15+1) == Point2d(0,1) && *(it15+2) == Point2d(1,0)
+							&& *(it15+3) == Point2d(-1,0)  && *(it15-1) == Point2d(1,0) 
+							&& *(it15-2) == Point2d(0,1) && *(it15-3) == Point2d(-1,0))
+						{
+							// then the linkage is correct
+							if(ch15.size() == 3 && ch15.area() == 1)
+							{
+								//then the size and the area are correct
+								test_pass15 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass15 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+			
+			
+		}else if(cas == 16)
+		{
+			//one point is added to a convex hull(list) with two points that don't lie on the same vertical line
+			// the new point has bigger x than the tail
+			bool test_pass16 = false;
+			std::vector<Point2d> vec16;
+			vec16.push_back(Point2d(-1,0));
+			vec16.push_back(Point2d(0,-1));
+			
+			CH2d_dlclist ch16(vec16);
+			
+			
+			if(ch16.push(Point2d(1,0)) == 1)
+			{
+				// then the point was added
+				if(*ch16.begin() == Point2d(-1,0))
+				{
+					// then the head is correct
+					if(*ch16.end() == Point2d(1,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it16 = ch16.begin();
+						if( *it16 == Point2d(-1,0) && *(it16+1) == Point2d(1,0) && *(it16+2) == Point2d(0,-1)
+							&& *(it16+3) == Point2d(-1,0)  && *(it16-1) == Point2d(0,-1) 
+							&& *(it16-2) == Point2d(1,0) && *(it16-3) == Point2d(-1,0))
+						{
+							// then the linkage is correct
+							if(ch16.size() == 3 && ch16.area() == 1)
+							{
+								//then the size and the area are correct
+								test_pass16 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass16 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 17)
+		{
+			//one point is added to a convex hull(list) with two points that don't lie on the same vertical line
+			//the new point doesn't substitute the head nor the tail
+			bool test_pass17 = false;
+			std::vector<Point2d> vec17;
+			vec17.push_back(Point2d(-1,0));
+			vec17.push_back(Point2d(1,0));
+			
+			CH2d_dlclist ch17(vec17);
+			
+			
+			if(ch17.push(Point2d(0,1)) == 1)
+			{
+				// then the point was added
+				if(*ch17.begin() == Point2d(-1,0))
+				{
+					// then the head is correct
+					if(*ch17.end() == Point2d(1,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it17 = ch17.begin();
+						if( *it17 == Point2d(-1,0) && *(it17+1) == Point2d(0,1) && *(it17+2) == Point2d(1,0)
+							&& *(it17+3) == Point2d(-1,0)  && *(it17-1) == Point2d(1,0) 
+							&& *(it17-2) == Point2d(0,1) && *(it17-3) == Point2d(-1,0))
+						{
+							// then the linkage is correct
+							if(ch17.size() == 3 && ch17.area() == 1)
+							{
+								//then the size and the area are correct
+								test_pass17 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass17 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 18)
+		{
+			//one point is added to a convex hull(list) with two points that don't lie on the same vertical line
+			//the new point doesn't substitute the head nor the tail
+			bool test_pass18 = false;
+			std::vector<Point2d> vec18;
+			vec18.push_back(Point2d(-1,0));
+			vec18.push_back(Point2d(1,0));
+			
+			CH2d_dlclist ch18(vec18);
+			
+			
+			if(ch18.push(Point2d(0,-1)) == 1)
+			{
+				// then the point was added
+				if(*ch18.begin() == Point2d(-1,0))
+				{
+					// then the head is correct
+					if(*ch18.end() == Point2d(1,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it18 = ch18.begin();
+						if( *it18 == Point2d(-1,0) && *(it18+1) == Point2d(1,0) && *(it18+2) == Point2d(0,-1)
+							&& *(it18+3) == Point2d(-1,0)  && *(it18-1) == Point2d(0,-1) 
+							&& *(it18-2) == Point2d(1,0) && *(it18-3) == Point2d(-1,0))
+						{
+							// then the linkage is correct
+							if(ch18.size() == 3 && ch18.area() == 1)
+							{
+								//then the size and the area are correct
+								test_pass18 = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass18 == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 19)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			//case 1
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d(-4,0.5)) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d(-4,0.5))
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d(3,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d(-4,0.5) && *(it+1) == Point2d(1,2) && *(it+2) == Point2d(2,2) 
+							&& *(it+3) == Point2d(3,1) && *(it+4) == Point2d(3,0) && *(it+5) == Point2d(2,-1)
+							&& *(it+6) == Point2d(1,-1) && *(it+7) == Point2d(-4,0.5) 
+							&& *(it-1) == Point2d(1,-1) && *(it-2) == Point2d(2,-1) && *(it-3) == Point2d(3,0) 
+							&& *(it-4) == Point2d(3,1) && *(it-5) == Point2d(2,2) && *(it-6) == Point2d(1,2)
+							&& *(it-7) == Point2d(-4,0.5))
+						{
+							// then the linkage is correct
+							if(ch.size() == 7 && ch.area() == 12.5)
+							{
+								test_pass = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 20)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d(0,2)) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d(0,0))
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d(3,0))
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d(0,0) && *(it+1) == Point2d(0,2) && *(it+2) == Point2d(2,2) 
+							&& *(it+3) == Point2d(3,1) && *(it+4) == Point2d(3,0) && *(it+5) == Point2d(2,-1)
+							&& *(it+6) == Point2d(1,-1) && *(it+7) == Point2d(0,0) && *(it-1) == Point2d(1,-1)
+							&& *(it-2) == Point2d(2,-1) && *(it-3) == Point2d(3,0) && *(it-4) == Point2d(3,1) 
+							&& *(it-5) == Point2d(2,2) && *(it-6) == Point2d(0,2) && *(it-7) == Point2d(0,0))
+						{
+							// then the linkage is correct
+							if(ch.size() == 7  && ch.area() == 7.5)
+							{
+								test_pass = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
 		}
-					
+		/*
+		else if(cas == 21)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 22)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 22)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 23)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 24)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 25)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 26)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 27)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 28)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 29)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}else if(cas == 30)
+		{
+			//one point is added to a convex hull that contains 8 points 
+			bool test_pass = false;
+			std::vector<Point2d> vec;
+			vec.push_back(Point2d(0,0));
+			vec.push_back(Point2d(0,1));
+			vec.push_back(Point2d(1,2));
+			vec.push_back(Point2d(2,2));
+			vec.push_back(Point2d(3,1));
+			vec.push_back(Point2d(3,0));
+			vec.push_back(Point2d(2,-1));
+			vec.push_back(Point2d(1,-1));
+			
+			CH2d_dlclist ch(vec);
+			
+			if(ch.push(Point2d()) == 1)
+			{
+				// then the point was added
+				if(*ch.begin() == Point2d())
+				{
+					// then the head is correct
+					if(*ch.end() == Point2d())
+					{
+						//then the tail is correct
+						CH2d_dlclist::ch_iterator it = ch.begin();
+						if( *it == Point2d() && *(it+1) == Point2d() && *(it+2) == Point2d() && *(it+3) == Point2d() 
+							&& *(it+4) == Point2d() && *(it+5) == Point2d() && *(it+6) == Point2d()
+							&& *(it+7) == Point2d() && *(it+8) == Point2d()
+							&& *(it-1) == Point2d() && *(it-2) == Point2d() && *(it-3) == Point2d() 
+							&& *(it-4) == Point2d() && *(it-5) == Point2d() && *(it-6) == Point2d()
+							&& *(it-7) == Point2d() && && *(it-8) == Point2d())
+						{
+							// then the linkage is correct
+							if(ch.size() ==  && ch18.area() == )
+							{
+								
+							}
+						}
+					}
+				}
+			}
+			
+			if(test_pass == true)
+			{
+				write_str << "Test " << cas << " passed\n";
+			}else
+			{
+				write_str << "Test " << cas << " failed\n";
+			}
+		}*/
 		
 		cas++;
 	}
