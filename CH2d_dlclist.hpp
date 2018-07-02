@@ -277,6 +277,7 @@ public:
 				// GetX() from Point2d class
 				
 				int pos_head = 0; //we will find the position of the head and this is the initialization
+				int pos_tail = 0; //we will find the position of the tail and this is the initialization
 				for (int i = 1; i < size_of_vec; i++)
 				{
 					if ( (points[i].GetX() <= points[pos_head].GetX()) && (points[i].GetY() <= points[pos_head].GetY()) ||
@@ -284,19 +285,15 @@ public:
 					{
 						pos_head = i;
 					}
-				}// now we have the position of the head for sure the "points[pos_head]" wil be, certainly, 
-				// the first point of the convex hull(2d).
-
-				int pos_tail = 0; //we will find the position of the tail and this is the initialization
-				for( int i = 1; i < size_of_vec; i++ )
-				{
+					
 					if( (points[i].GetX() >= points[pos_tail].GetX()) && (points[i].GetY() <= points[pos_tail].GetY()) ||
 						points[i].GetX() > points[pos_tail].GetX() )
 					{
 						pos_tail = i;
 					}
-				}// now we have the position of the tail for sure the "points[pos_tail]" wil be, certainly, 
-				// a point of the convex hull(2d).
+				}// now we have the position of the head for sure the "points[pos_head]" wil be, certainly, 
+				// the first point of the convex hull(2d).We have also the position of the tail for sure the
+				//"points[pos_tail]" wil be, certainly, a point of the convex hull(2d).
 				
 				head = new Node;
 				head->data = points[pos_head];
