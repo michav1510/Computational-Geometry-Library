@@ -1,11 +1,11 @@
 VPATH=../../
 
 test_Point2d : test_Point2d.cpp Point2d.o
-	g++ -lm -o test_Point2d test_Point2d.cpp Point2d.o
+	g++ -std=c++11 -lm -o test_Point2d test_Point2d.cpp Point2d.o
 	
 	
 Point2d.o : Point2d.cpp
-	g++ -c ../../Point2d.cpp
+	g++ -std=c++11 -c ../../Point2d.cpp
 	
 	
 clean : 
