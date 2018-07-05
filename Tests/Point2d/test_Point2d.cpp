@@ -12,12 +12,12 @@ void test_addition_and_subtraction_binary_operator(std::ostream& write_str);
 
 int main(int argc, char* argv[])
 {
-//	test_default_constructor(std::cout);
-//	test_parameter_constructor(std::cout);
-//	test_copy_constructor(std::cout);
-//	test_assignment_operator(std::cout);
-//	test_plus_minus_unary_operator();
-//	test_addition_and_subtraction_binary_operator();
+	test_default_constructor(std::cout);
+	test_parameter_constructor(std::cout);
+	test_copy_constructor(std::cout);
+	test_assignment_operator(std::cout);
+	test_plus_minus_unary_operator(std::cout);
+	test_addition_and_subtraction_binary_operator(std::cout);
 
 }
 
@@ -178,10 +178,10 @@ void test_assignment_operator(std::ostream& write_str)
 void test_plus_minus_unary_operator(std::ostream& write_str)
 {
 	write_str << "\n\nHere is checked the \n";
-	write_str << "Point2d operator+(const Point2d& p1) const; and  \n";
-	write_str << "Point2d operator-(const Point2d& p1) const; and  \n";
+	write_str << "Point2d operator+() const; and  \n";
+	write_str << "Point2d operator-() const; :\n";
 	
-	int numberofexperim = 1000;
+	int numberofexperim = 100;
 	int numberofpassed = 0;
 	int cas = 1;
 	while(cas <= numberofexperim)
@@ -190,16 +190,59 @@ void test_plus_minus_unary_operator(std::ostream& write_str)
 		std::default_random_engine eng{r()};
 		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
 		//here must be the check of the plus and minus operator of the Point2d
+		double ran_num1 = urd(eng);
+		double ran_num2 = urd(eng);
+		Point2d a(ran_num1,ran_num2);
 		
-			
+		Point2d c = a;
+		Point2d d = -a; 
+		if(c.GetX() == ran_num1 && c.GetY() == ran_num2 && d.GetX() == -ran_num1 && d.GetY() == -ran_num2 )
+		{
+			numberofpassed++;
+		}
+		
 		cas++;
 	}
 	
+	write_str << "Number of tests were done: " << numberofexperim  << "\n";
+	write_str << "Percentage of tests were passed: " << (numberofpassed/numberofexperim)*100 << "%" <<"\n";
 	write_str << "\n\n";
 }
 
 
 void test_addition_and_subtraction_binary_operator(std::ostream& write_str)
 {
+	write_str << "\n\nHere is checked the \n";
+	write_str << "Point2d operator+(const Point2d& p1) const; and  \n";
+	write_str << "Point2d operator-(const Point2d& p1) const; :\n";
 	
+	
+	int numberofexperim = 100;
+	int numberofpassed = 0;
+	int cas = 1;
+	while(cas <= numberofexperim)
+	{
+		std::random_device r;
+		std::default_random_engine eng{r()};
+		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
+		double ran_num1 = urd(eng);
+		double ran_num2 = urd(eng);
+		double ran_num3 = urd(eng);
+		double ran_num4 = urd(eng);
+		Point2d a(ran_num1,ran_num2);
+		Point2d b(ran_num3,ran_num4);
+		Point2d c = a+b;
+		Point2d d = a-b;
+		if( c.GetX() == ran_num1 + ran_num3 && d.GetX() == ran_num1 - ran_num3 && c.GetY() == ran_num2 + ran_num4 
+			&& d.GetY() == ran_num2 - ran_num4)
+		{
+			numberofpassed++;
+		}
+		
+		cas++;
+	}
+	
+	write_str << "Number of tests were done: " << numberofexperim  << "\n";
+	write_str << "Percentage of tests were passed: " << (numberofpassed/numberofexperim)*100 << "%" <<"\n";
+	write_str << "\n\n";
 }
