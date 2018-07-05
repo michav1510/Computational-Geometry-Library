@@ -14,8 +14,8 @@ int main(int argc, char* argv[])
 {
 //	test_default_constructor(std::cout);
 //	test_parameter_constructor(std::cout);
-	test_copy_constructor(std::cout);
-//	test_assignment_operator();
+//	test_copy_constructor(std::cout);
+//	test_assignment_operator(std::cout);
 //	test_plus_minus_unary_operator();
 //	test_addition_and_subtraction_binary_operator();
 
@@ -113,14 +113,14 @@ void test_copy_constructor(std::ostream& write_str)
 	write_str << "\n\nHere is checked the \n";
 	write_str << "Point2d(const Point2d& otherPoint); :\n";
 	
-	int numberofexperim = 10000;
+	int numberofexperim = 1000;
 	int numberofpassed = 0;
 	int cas = 1;
 	while(cas <= numberofexperim)
 	{
 		std::random_device r;
 		std::default_random_engine eng{r()};
-		std::uniform_real_distribution<double> urd(-1000000000,100000000);
+		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
 		Point2d a(urd(eng),urd(eng));
 		Point2d b(a);
 		
@@ -144,13 +144,58 @@ void test_copy_constructor(std::ostream& write_str)
 
 void test_assignment_operator(std::ostream& write_str)
 {
+	write_str << "\n\nHere is checked the \n";
+	write_str << "bool operator==(const Point2d& other_point) const; :\n";
 	
+	int numberofexperim = 1000;
+	int numberofpassed = 0;
+	int cas = 1;
+	while(cas <= numberofexperim)
+	{
+		std::random_device r;
+		std::default_random_engine eng{r()};
+		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
+		Point2d a(urd(eng),urd(eng));
+		Point2d b(a);
+		
+		if(a == b)
+		{
+			numberofpassed++;
+		}
+			
+		cas++;
+	}
+	
+	write_str << "Number of tests were done: " << numberofexperim  << "\n";
+	write_str << "Percentage of tests were passed: " << (numberofpassed/numberofexperim)*100 << "%" <<"\n";
+
+	
+	
+	write_str << "\n\n";
 }
 
 
 void test_plus_minus_unary_operator(std::ostream& write_str)
 {
+	write_str << "\n\nHere is checked the \n";
+	write_str << "Point2d operator+(const Point2d& p1) const; and  \n";
+	write_str << "Point2d operator-(const Point2d& p1) const; and  \n";
 	
+	int numberofexperim = 1000;
+	int numberofpassed = 0;
+	int cas = 1;
+	while(cas <= numberofexperim)
+	{
+		std::random_device r;
+		std::default_random_engine eng{r()};
+		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
+		//here must be the check of the plus and minus operator of the Point2d
+		
+			
+		cas++;
+	}
+	
+	write_str << "\n\n";
 }
 
 
