@@ -1,96 +1,131 @@
 #include<iostream>
 #include<vector>
+#include<random>
 #include"../../Point2d.hpp"
 #include"../../Edge2d.hpp"
 
-void test_parameter_constructor()
-{
-	std::cout << "\n";
-	std::cout << "Start---Testing: parameter constructor----------" << "\n\n"; 
-	
-	std::cout << "Edge2d a(Point2d(1,1),Point2d(2,2));\n";
-	Edge2d a(Point2d(1,1),Point2d(2,2));
-	std::cout << "a : " << a << "\n";
-
-	std::cout << "Edge2d b(Point2d(-10,1),Point2d(2,-2));\n";
-	Edge2d b(Point2d(-10,1),Point2d(2,-2));
-	std::cout << "b : " << b << "\n";
-	
-	std::cout << "\n" <<"End---Testing: parameter constructor----------" << "\n\n"; 
-	std::cout << "\n";
-}
-
-
-void test_copy_constructor()
-{
-	std::cout << "\n";
-	std::cout << "Start---Testing: copy constructor----------" << "\n\n"; 
-	
-	std::cout << "Edge2d a(Point2d(1,1),Point2d(2,2));\n";
-	Edge2d a(Point2d(1,1),Point2d(2,2));
-	std::cout << "a : " << a << "\n";
-	std::cout << "Edge2d b(a);\n";
-	Edge2d b(a);
-	std::cout << "b : " << b << "\n";
-	std::cout << "Are the addresses of a and b equal ? (&a==&b) : " << (&a==&b) << "\n";
-	
-	std::cout << "\n" <<"End---Testing: copy constructor----------" << "\n\n"; 
-	std::cout << "\n";
-}
-
-
-void test_IsNeighbour()
-{
-	std::cout << "\n";
-	std::cout << "Start---Testing: IsNeighbour function----------" << "\n\n"; 
-	
-	std::cout << "TOL_OF_EQUALITY_OF_POINTS2D = " << Point2d::GetToleranceOfEquality() << "\n"; 
-	
-	Edge2d a(Point2d(-1,0),Point2d(0,1));
-	std::cout << "a : " << a << "\n";
-	Edge2d b(Point2d(2,2),Point2d(Point2d::GetToleranceOfEquality(),1));
-	std::cout << "b : " << b << "\n";
-	Edge2d c(Point2d(Point2d::GetToleranceOfEquality(),1),Point2d(2,2));
-	std::cout << "c : " << c << "\n";
-	Edge2d d(Point2d(2,2),Point2d(3,3));
-	std:: cout << "d : " << d << "\n";
-
-	std::cout << "a.IsNeighbour(b) : " << a.IsNeighbour(b) << "\n";
-	std::cout << "b.IsNeighbour(a) : " << b.IsNeighbour(a) << "\n";
-	std::cout << "c.IsNeighbour(a) : " << c.IsNeighbour(a) << "\n";
-	std::cout << "a.IsNeighbour(c) : " << a.IsNeighbour(c) << "\n";
-	std::cout << "b.IsNeighbour(c) : " << b.IsNeighbour(c) << "\n";
-	std::cout << "c.IsNeighbour(b) : " << c.IsNeighbour(b) << "\n";
-	std::cout << "d.IsNeighbour(a) : " << d.IsNeighbour(a) << "\n";
-	std::cout << "a.IsNeighbour(d) : " << a.IsNeighbour(d) << "\n";
-	
-	std::cout << "\n" <<"End---Testing: IsNeighbour function----------" << "\n\n"; 
-	std::cout << "\n";
-}
-
-
-void test_GetPoints()
-{
-	std::cout << "\n";
-	std::cout << "Start---Testing: GetPoints function----------" << "\n\n";
-	
-	std::cout << "Edge2d a(Point2d(1,1),Point2d(2,2));\n";
-	Edge2d a(Point2d(1,1),Point2d(2,2));
-	std::cout << "std::vector<Point2d> b = a.GetPoints();\n";
-	std::vector<Point2d> b = a.GetPoints();
-	std::cout << "b[0] :" << b[0] << "\n";
-	std::cout << "b[1] :" << b[1] << "\n";
-	
-	std::cout << "\n" <<"End---Testing: GetPoints function----------" << "\n\n"; 
-	std::cout << "\n";
-}
+void test_parameter_constructor_and_get_points(std::ostream& write_str);
+void test_copy_constructor(std::ostream& write_str);
+void test_IsNeighbour(std::ostream& write_str);
+void test_GetPoints();
 
 
 int main(int argc, char *argv[])
 {
-	std::cout << "!!!In order to test what you want, just uncomment the corresponding function call from the main!!! \n";
-	//test_parameter_constructor();
-	//test_copy_constructor();
-	//test_IsNeighbour();
-	//test_GetPoints();
+	test_parameter_constructor_and_get_points(std::cout);
+	test_copy_constructor(std::cout);
+	test_IsNeighbour(std::cout);
 }
+
+
+
+
+void test_parameter_constructor_and_get_points(std::ostream& write_str)
+{
+	write_str << "\n\nHere is checked the \n";
+	write_str << "Edge2d(const Point2d& p1, const Point2d& p2) and :\n"; 
+	write_str << "std::vector<Point2d> GetPoints() const :\n";
+		
+
+	int numberofexperim = 1000;
+	int numberofpassed = 0;
+	int cas = 1;
+	while(cas <= numberofexperim)
+	{
+		std::random_device r;
+		std::default_random_engine eng{r()};
+		std::uniform_real_distribution<double> urd(100000000000000000-1,100000000000000000);
+		double num1 = urd(eng);
+		double num2 = urd(eng);
+		double num3 = urd(eng);
+		double num4 = urd(eng);
+		Edge2d ed(Point2d(num1,num2),Point2d(num3,num4));
+		std::vector<Point2d> points = ed.GetPoints();
+		if(points[0]== Point2d(num1,num2) && points[1] == Point2d(num3,num4) )
+		{
+			numberofpassed++;
+		}
+			
+		cas++;
+	}
+	
+	write_str << "Number of tests were done: " << numberofexperim  << "\n";
+	write_str << "Percentage of tests were passed: " << (numberofpassed/numberofexperim)*100 << "%" <<"\n";
+
+
+	write_str << "\n\n";
+
+}
+
+
+void test_copy_constructor(std::ostream& write_str)
+{
+	write_str << "\n\nHere is checked the \n";
+	write_str << "Edge2d(const Point2d& p1, const Point2d& p2) :\n"; 
+	
+	int numberofexperim = 1000;
+	int numberofpassed = 0;
+	int cas = 1;
+	while(cas <= numberofexperim)
+	{
+		std::random_device r;
+		std::default_random_engine eng{r()};
+		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
+		double num1 = urd(eng);
+		double num2 = urd(eng);
+		double num3 = urd(eng);
+		double num4 = urd(eng);
+		Edge2d ed1(Point2d(num1,num2),Point2d(num3,num4));
+		Edge2d ed2(ed1);
+		std::vector<Point2d> poi1 = ed1.GetPoints();
+		std::vector<Point2d> poi2 = ed2.GetPoints();
+		if( poi1[0] == poi2[0] && poi1[1] == poi2[1] )
+		{
+			numberofpassed++;
+		}
+			
+		cas++;
+	}
+	
+	write_str << "Number of tests were done: " << numberofexperim  << "\n";
+	write_str << "Percentage of tests were passed: " << (numberofpassed/numberofexperim)*100 << "%" <<"\n";
+
+
+	write_str << "\n\n";
+}
+
+
+void test_IsNeighbour(std::ostream& write_str)
+{
+	write_str << "\n\nHere is checked the \n";
+	write_str << "bool IsNeighbour(const Edge2d& other_edge) :\n"; 
+	
+	int numberofexperim = 1000;
+	int numberofpassed = 0;
+	int cas = 1;
+	while(cas <= numberofexperim)
+	{
+		std::random_device r;
+		std::default_random_engine eng{r()};
+		std::uniform_real_distribution<double> urd(1000000000000000-1,1000000000000000);
+		double num1 = urd(eng);
+		double num2 = urd(eng);
+		double num3 = urd(eng);
+		double num4 = urd(eng);
+		
+		if( 0 )
+		{
+			numberofpassed++;
+		}
+			
+		cas++;
+	}
+	
+	write_str << "Number of tests were done: " << numberofexperim  << "\n";
+	write_str << "Percentage of tests were passed: " << (numberofpassed/numberofexperim)*100 << "%" <<"\n";
+	
+	write_str << "\n\n";
+}
+
+
+
