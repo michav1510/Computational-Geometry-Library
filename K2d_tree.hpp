@@ -39,7 +39,7 @@ private:
 	Node* root;                     // pointer to the root of the tree
 	std::vector<Point2d> sort_by_x; // the points of the tree sorted by x
 	std::vector<Point2d> sort_by_y; // the points of the tree sorted by y
-
+	unsigned int my_size;           // the number of the leaves for which we constructed the tree
 	
 	
 	/**
@@ -71,7 +71,7 @@ private:
 		std::vector<Point2d> right_by_x;
 		std::vector<Point2d> right_by_y;
 		Node* nod = new Node;
-		if( points_by_x.size() == 0)
+		if(points_by_x.size() == 0)
 		{
 			delete nod;
 			return 0;
@@ -260,6 +260,8 @@ public:
 		std::sort (points.begin(), points.end(), comp_func_by_y);
 		sort_by_y= points;
 		
+		my_size = sort_by_x.size();
+		
 		bool two_same = false;
 		int siz = sort_by_x.size();
 		for(int i = 0; i < siz-1; i++)
@@ -285,7 +287,7 @@ public:
 	
 	
 	/**
-	 *  The destructor is necessary to destruct all the nodes which was constructed
+	 *  The destructor is necessary to destruct all the nodes which were constructed
 	 *  by using the command "new".
 	 */
 	~K2d_tree()
@@ -304,7 +306,7 @@ public:
 	 */
 	tree_iterator begin() const
 	{
-		assert(root!=0);
+		assert(root != 0);
 		return tree_iterator(root);
 	}
 	
@@ -345,10 +347,20 @@ public:
 			}
 			it++;
 		}
+		//the point that was added must increase the size of the tree
+		my_size++;
+		
 		//third step rebuild the tree with the calling of the BuildTree
 		root = BuildTree(1,sort_by_x,sort_by_y);
 	}
 	
+	/**
+	 * @returns the number of the leaves of the tree 
+	 */
+	unsigned int size() const
+	{
+		return my_size;
+	}
 	
 };
 
