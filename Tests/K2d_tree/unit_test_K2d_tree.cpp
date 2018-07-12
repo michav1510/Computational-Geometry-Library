@@ -58,7 +58,10 @@ void test_parameter_constructor(std::ostream& write_str)
 											K2d_tree::tree_iterator it19 = it1.getLeftChild().getLeftChild().getRightChild();
 											if(it19.getSplitCoord() == 0 && it19.getSplitValue() == 0 && it19.getLeafPoint() == Point2d(2,1) && it19.isInternalNode() == false)
 											{
-												test_pass1 = true;
+												if(tree1.size() == 5)
+												{
+													test_pass1 = true;
+												}
 											}
 										}
 									}
